@@ -39,7 +39,3 @@ type Product {
   rating: Float!
   reviewCount: Int!
 }
-
-type ProductCategory {
-  id: ID!
-}

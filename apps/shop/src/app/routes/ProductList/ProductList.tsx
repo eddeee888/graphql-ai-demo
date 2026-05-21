@@ -1,11 +1,12 @@
 import { useState, useEffect, FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LoadingSpinner, ErrorMessage } from '@org/shop-shared-ui';
 import styles from './ProductList.module.css';
 import { useQuery } from '@apollo/client/react';
 import { ProductListDoc } from './ProductList.graphql';
 import { ProductsInput } from '../../../gql/graphql';
 import { ProductGrid } from './ProductGrid';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
+import { ErrorMessage } from '../../components/ErrorMessage';
 
 const categories = [
   'Electronics',

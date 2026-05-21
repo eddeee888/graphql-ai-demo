@@ -1,0 +1,57 @@
+input PaginationInput {
+  page: Int
+  pageSize: Int
+}
+
+type PaginationResult {
+  page: Int!
+  pageSize: Int!
+  total: Int!
+  totalPages: Int!
+}
+
+type Product {
+  category: String!
+  description: String!
+  id: ID!
+  imageUrl: String!
+  inStock: Boolean!
+  name: String!
+  price: Float!
+}
+
+type ProductRating {
+  id: ID!
+  value: Float!
+}
+
+type ProductReviewCount {
+  id: ID!
+  value: Int!
+}
+
+input ProductsInput {
+  category: String
+  inStock: Boolean
+  maxPrice: Int
+  minPrice: Int
+  searchTerm: String
+}
+
+type ProductsResponse {
+  pagination: PaginationResult!
+  result: [Product!]!
+}
+
+type Query {
+  product(id: ID!): Product
+  products(input: ProductsInput!, pagination: PaginationInput!): ProductsResponse!
+}
+
+type ResponseError {
+  type: ResponseErrorType!
+}
+
+enum ResponseErrorType {
+  SERVER_ERROR
+}

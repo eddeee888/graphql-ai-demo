@@ -1,0 +1,4 @@
+type ProductRating {
+  id: ID! # Product ID
+  value: Float!
+}

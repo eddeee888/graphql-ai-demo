@@ -27,11 +27,6 @@ export type Product = {
   reviewCount: Scalars['Int']['output'];
 };
 
-export type ProductCategory = {
-  __typename?: 'ProductCategory';
-  id: Scalars['ID']['output'];
-};
-
 export type ProductResponse = ProductResponseSuccess | ResponseError;
 
 export type ProductResponseSuccess = {
@@ -174,7 +169,6 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
-  ProductCategory: ResolverTypeWrapper<ProductCategory>;
   ProductResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['ProductResponse']>;
   ProductResponseSuccess: ResolverTypeWrapper<ProductResponseSuccess>;
   ProductsInput: ProductsInput;
@@ -193,7 +187,6 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   Float: Scalars['Float']['output'];
   Int: Scalars['Int']['output'];
-  ProductCategory: ProductCategory;
   ProductResponse: ResolversUnionTypes<ResolversParentTypes>['ProductResponse'];
   ProductResponseSuccess: ProductResponseSuccess;
   ProductsInput: ProductsInput;
@@ -213,10 +206,6 @@ export type ProductResolvers<ContextType = ResolverContext, ParentType extends R
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   rating?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   reviewCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-};
-
-export type ProductCategoryResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductCategory'] = ResolversParentTypes['ProductCategory']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
 };
 
 export type ProductResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductResponse'] = ResolversParentTypes['ProductResponse']> = {
@@ -255,7 +244,6 @@ export type ResponseErrorTypeResolvers = EnumResolverSignature<{ SERVER_ERROR?: 
 
 export type Resolvers<ContextType = ResolverContext> = {
   Product?: ProductResolvers<ContextType>;
-  ProductCategory?: ProductCategoryResolvers<ContextType>;
   ProductResponse?: ProductResponseResolvers<ContextType>;
   ProductResponseSuccess?: ProductResponseSuccessResolvers<ContextType>;
   ProductsResponse?: ProductsResponseResolvers<ContextType>;

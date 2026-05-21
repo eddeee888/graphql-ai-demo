@@ -1,0 +1,21 @@
+type Query
+
+type ResponseError {
+  type: ResponseErrorType!
+}
+
+enum ResponseErrorType {
+  SERVER_ERROR
+}
+
+input PaginationInput {
+  page: Int
+  pageSize: Int
+}
+
+type PaginationResult {
+  total: Int!
+  page: Int!
+  pageSize: Int!
+  totalPages: Int!
+}

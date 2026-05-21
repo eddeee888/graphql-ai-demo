@@ -1,11 +1,11 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { LoadingSpinner } from '@org/shop-shared-ui';
 import './app.css';
 import { ApolloClient } from '@apollo/client';
 import { InMemoryCache } from '@apollo/client';
 import { HttpLink } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client/react';
+import { LoadingSpinner } from './components/LoadingSpinner';
 
 // Lazy load feature components
 const ProductList = lazy(() =>

@@ -1,0 +1,30 @@
+extend type Query {
+  product(id: ID!): Product
+  products(
+    input: ProductsInput!
+    pagination: PaginationInput!
+  ): ProductsResponse!
+}
+
+type ProductsResponse {
+  result: [Product!]!
+  pagination: PaginationResult!
+}
+
+input ProductsInput {
+  category: String
+  minPrice: Int
+  maxPrice: Int
+  inStock: Boolean
+  searchTerm: String
+}
+
+type Product {
+  id: ID!
+  name: String!
+  description: String!
+  price: Float!
+  category: String!
+  imageUrl: String!
+  inStock: Boolean!
+}

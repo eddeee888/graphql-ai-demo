@@ -1,4 +1,9 @@
-schema:
-  - 'apps/experience-graph/**/schema.graphqls'
-documents:
-  - 'apps/shop/src/**/*.graphql.ts'
+projects:
+  experience-graph:
+    schema:
+      - 'apps/experience-graph/src/schema/**/schema.graphqls'
+    documents:
+      - 'apps/shop/src/**/*.graphql.ts'
+  internal-graph:
+    schema:
+      - 'apps/internal-graph/src/schema/**/schema.graphqls'

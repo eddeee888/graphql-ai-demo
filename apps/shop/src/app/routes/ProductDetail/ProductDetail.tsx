@@ -1,9 +1,10 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { LoadingSpinner, ErrorMessage } from '@org/shop-shared-ui';
 import styles from './ProductDetail.module.css';
 import { FC } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { ProductDetailDoc } from './ProductDetail.graphql';
+import { ErrorMessage } from '../../components/ErrorMessage';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
 
 const handleRetry = () => {
   // Force re-fetch by navigating to the same URL

@@ -10,18 +10,21 @@
     "targets": {
       "serve": {
         "dependsOn": [
-          "@org/experience-graph:serve"
+          "@org/experience-graph:serve",
+          "@org/internal-graph:serve"
         ]
       },
       "dev": {
         "dependsOn": [
-          "@org/experience-graph:serve"
+          "@org/experience-graph:serve",
+          "@org/internal-graph:serve"
         ]
       },
       "preview": {
         "dependsOn": [
           "build",
-          "@org/experience-graph:serve"
+          "@org/experience-graph:serve",
+          "@org/internal-graph:serve"
         ]
       }
     }
