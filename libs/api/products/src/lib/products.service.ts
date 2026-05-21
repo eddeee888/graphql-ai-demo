@@ -161,7 +161,7 @@ export class ProductsService {
     },
   ];
 
-  getProducts(filter?: ProductFilter, page = 1, pageSize = 10) {
+  getProducts(filter?: ProductFilter) {
     let filteredProducts = [...this.products];
 
     // Apply filters
@@ -197,6 +197,9 @@ export class ProductsService {
       }
     }
 
+    const page = filter?.page || 1;
+    const pageSize = filter?.pageSize || 10;
+
     // Calculate pagination
     const total = filteredProducts.length;
     const totalPages = Math.ceil(total / pageSize);
@@ -215,10 +218,5 @@ export class ProductsService {
 
   getProductById(id: string): Product | undefined {
     return this.products.find((p) => p.id === id);
-  }
-
-  getCategories(): string[] {
-    const categories = new Set(this.products.map((p) => p.category));
-    return Array.from(categories).sort();
   }
 }

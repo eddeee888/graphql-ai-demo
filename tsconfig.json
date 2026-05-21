@@ -22,9 +22,6 @@
       "path": "./libs/shop/feature-product-detail"
     },
     {
-      "path": "./libs/shop/feature-products"
-    },
-    {
       "path": "./libs/shop/shared-ui"
     },
     {

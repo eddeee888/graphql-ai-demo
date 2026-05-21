@@ -16,8 +16,29 @@ type ProductResponseSuccess {
   result: Product
 }
 
+input ProductsInput {
+  category: String
+  inStock: Boolean
+  maxPrice: Int
+  minPrice: Int
+  page: Int
+  pageSize: Int
+  searchTerm: String
+}
+
+union ProductsResponse = ProductsResponseSuccess | ResponseError
+
+type ProductsResponseSuccess {
+  page: Int!
+  pageSize: Int!
+  result: [Product!]!
+  total: Int!
+  totalPages: Int!
+}
+
 type Query {
   product(id: ID!): ProductResponse!
+  products(input: ProductsInput!): ProductsResponse!
 }
 
 type ResponseError {

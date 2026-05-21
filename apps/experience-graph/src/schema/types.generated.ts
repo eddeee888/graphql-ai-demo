@@ -34,14 +34,41 @@ export type ProductResponseSuccess = {
   result?: Maybe<Product>;
 };
 
+export type ProductsInput = {
+  category?: InputMaybe<Scalars['String']['input']>;
+  inStock?: InputMaybe<Scalars['Boolean']['input']>;
+  maxPrice?: InputMaybe<Scalars['Int']['input']>;
+  minPrice?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  pageSize?: InputMaybe<Scalars['Int']['input']>;
+  searchTerm?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ProductsResponse = ProductsResponseSuccess | ResponseError;
+
+export type ProductsResponseSuccess = {
+  __typename?: 'ProductsResponseSuccess';
+  page: Scalars['Int']['output'];
+  pageSize: Scalars['Int']['output'];
+  result: Array<Product>;
+  total: Scalars['Int']['output'];
+  totalPages: Scalars['Int']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
   product: ProductResponse;
+  products: ProductsResponse;
 };
 
 
 export type QueryproductArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QueryproductsArgs = {
+  input: ProductsInput;
 };
 
 export type ResponseError = {
@@ -127,6 +154,10 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
     | ( ProductResponseSuccess & { __typename: 'ProductResponseSuccess' } )
     | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
   ;
+  ProductsResponse:
+    | ( ProductsResponseSuccess & { __typename: 'ProductsResponseSuccess' } )
+    | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
+  ;
 };
 
 
@@ -140,6 +171,9 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   ProductResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['ProductResponse']>;
   ProductResponseSuccess: ResolverTypeWrapper<ProductResponseSuccess>;
+  ProductsInput: ProductsInput;
+  ProductsResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['ProductsResponse']>;
+  ProductsResponseSuccess: ResolverTypeWrapper<ProductsResponseSuccess>;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   ResponseError: ResolverTypeWrapper<Omit<ResponseError, 'type'> & { type: ResolversTypes['ResponseErrorType'] }>;
   ResponseErrorType: ResolverTypeWrapper<'SERVER_ERROR'>;
@@ -155,6 +189,9 @@ export type ResolversParentTypes = {
   Int: Scalars['Int']['output'];
   ProductResponse: ResolversUnionTypes<ResolversParentTypes>['ProductResponse'];
   ProductResponseSuccess: ProductResponseSuccess;
+  ProductsInput: ProductsInput;
+  ProductsResponse: ResolversUnionTypes<ResolversParentTypes>['ProductsResponse'];
+  ProductsResponseSuccess: ProductsResponseSuccess;
   Query: Record<PropertyKey, never>;
   ResponseError: ResponseError;
 };
@@ -180,8 +217,22 @@ export type ProductResponseSuccessResolvers<ContextType = ResolverContext, Paren
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ProductsResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductsResponse'] = ResolversParentTypes['ProductsResponse']> = {
+  __resolveType?: TypeResolveFn<'ProductsResponseSuccess' | 'ResponseError', ParentType, ContextType>;
+};
+
+export type ProductsResponseSuccessResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductsResponseSuccess'] = ResolversParentTypes['ProductsResponseSuccess']> = {
+  page?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  pageSize?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  result?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalPages?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   product?: Resolver<ResolversTypes['ProductResponse'], ParentType, ContextType, RequireFields<QueryproductArgs, 'id'>>;
+  products?: Resolver<ResolversTypes['ProductsResponse'], ParentType, ContextType, RequireFields<QueryproductsArgs, 'input'>>;
 };
 
 export type ResponseErrorResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ResponseError'] = ResolversParentTypes['ResponseError']> = {
@@ -195,6 +246,8 @@ export type Resolvers<ContextType = ResolverContext> = {
   Product?: ProductResolvers<ContextType>;
   ProductResponse?: ProductResponseResolvers<ContextType>;
   ProductResponseSuccess?: ProductResponseSuccessResolvers<ContextType>;
+  ProductsResponse?: ProductsResponseResolvers<ContextType>;
+  ProductsResponseSuccess?: ProductsResponseSuccessResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   ResponseError?: ResponseErrorResolvers<ContextType>;
   ResponseErrorType?: ResponseErrorTypeResolvers;

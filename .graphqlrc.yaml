@@ -1,0 +1,4 @@
+schema:
+  - 'apps/experience-graph/**/schema.graphqls'
+documents:
+  - 'apps/shop/src/**/*.graphql.ts'

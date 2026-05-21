@@ -7,16 +7,20 @@
     "gg": "graphql-codegen"
   },
   "dependencies": {
-    "@eddeee888/gcg-typescript-resolver-files": "0.16.0",
-    "@graphql-codegen/cli": "7.0.0",
+    "@apollo/client": "4.1.9",
     "express": "^4.21.2",
     "graphql": "16.14.0",
     "graphql-yoga": "5.21.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-router-dom": "6.30.3"
+    "react-router-dom": "6.30.3",
+    "rxjs": "7.8.2",
+    "@graphql-typed-document-node/core": "3.2.0"
   },
   "devDependencies": {
+    "@eddeee888/gcg-typescript-resolver-files": "0.16.0",
+    "@graphql-codegen/cli": "7.0.0",
+    "@parcel/watcher": "2.5.6",
     "@babel/core": "^7.14.5",
     "@babel/preset-react": "^7.14.5",
     "@eslint/js": "^9.8.0",

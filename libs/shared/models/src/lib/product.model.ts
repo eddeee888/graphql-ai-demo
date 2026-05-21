@@ -26,9 +26,11 @@ export interface PaginatedResponse<T> {
 }
 
 export interface ProductFilter {
-  category?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  inStock?: boolean;
-  searchTerm?: string;
+  category?: string | null;
+  minPrice?: number | null;
+  maxPrice?: number | null;
+  inStock?: boolean | null;
+  searchTerm?: string | null;
+  page?: number | null;
+  pageSize?: number | null;
 }

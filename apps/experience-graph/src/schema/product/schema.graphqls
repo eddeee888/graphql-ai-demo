@@ -1,8 +1,32 @@
 extend type Query {
   product(id: ID!): ProductResponse!
+  products(input: ProductsInput!): ProductsResponse!
 }
 
 union ProductResponse = ProductResponseSuccess | ResponseError
+union ProductsResponse = ProductsResponseSuccess | ResponseError
+
+type ProductResponseSuccess {
+  result: Product
+}
+
+input ProductsInput {
+  category: String
+  minPrice: Int
+  maxPrice: Int
+  inStock: Boolean
+  searchTerm: String
+  page: Int
+  pageSize: Int
+}
+
+type ProductsResponseSuccess {
+  result: [Product!]!
+  total: Int!
+  page: Int!
+  pageSize: Int!
+  totalPages: Int!
+}
 
 type Product {
   id: ID!
@@ -16,6 +40,6 @@ type Product {
   reviewCount: Int!
 }
 
-type ProductResponseSuccess {
-  result: Product
+type ProductCategory {
+  id: ID!
 }

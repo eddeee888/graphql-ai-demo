@@ -1,6 +1,11 @@
 import express from 'express';
 import { ProductsService } from '@org/api-products';
-import { ApiResponse, Product, ProductFilter, PaginatedResponse } from '@org/models';
+import {
+  ApiResponse,
+  Product,
+  ProductFilter,
+  PaginatedResponse,
+} from '@org/models';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3333;
@@ -15,7 +20,10 @@ app.use(express.json());
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept',
+  );
   if (req.method === 'OPTIONS') {
     res.sendStatus(200);
   } else {
@@ -48,10 +56,7 @@ app.get('/api/products', (req, res) => {
       filter.searchTerm = req.query.searchTerm as string;
     }
 
-    const page = req.query.page ? Number(req.query.page) : 1;
-    const pageSize = req.query.pageSize ? Number(req.query.pageSize) : 10;
-
-    const result = productsService.getProducts(filter, page, pageSize);
+    const result = productsService.getProducts(filter);
 
     const response: ApiResponse<PaginatedResponse<Product>> = {
       data: result,
