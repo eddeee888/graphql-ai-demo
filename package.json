@@ -2,10 +2,16 @@
   "name": "@org/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
   "private": true,
+  "scripts": {
+    "gg": "graphql-codegen"
+  },
   "dependencies": {
+    "@eddeee888/gcg-typescript-resolver-files": "0.16.0",
+    "@graphql-codegen/cli": "7.0.0",
     "express": "^4.21.2",
+    "graphql": "16.14.0",
+    "graphql-yoga": "5.21.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-router-dom": "6.30.3"
