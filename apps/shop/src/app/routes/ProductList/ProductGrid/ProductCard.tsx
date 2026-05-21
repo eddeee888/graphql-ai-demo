@@ -1,4 +1,4 @@
-import styles from './product-card.module.css';
+import styles from './ProductCard.module.css';
 
 export interface Product {
   id: string;
@@ -69,5 +69,3 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
     </div>
   );
 }
-
-export default ProductCard;

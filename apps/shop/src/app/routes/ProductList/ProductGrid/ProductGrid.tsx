@@ -1,5 +1,5 @@
-import { Product, ProductCard } from '../product-card/product-card';
-import styles from './product-grid.module.css';
+import { Product, ProductCard } from './ProductCard';
+import styles from './ProductGrid.module.css';
 
 interface ProductGridProps {
   products: Product[];
@@ -27,5 +27,3 @@ export function ProductGrid({ products, onProductSelect }: ProductGridProps) {
     </div>
   );
 }
-
-export default ProductGrid;
