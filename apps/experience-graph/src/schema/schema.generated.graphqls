@@ -1,5 +1,3 @@
-type Mutation
-
 type Product {
   category: String!
   description: String!
@@ -8,7 +6,7 @@ type Product {
   inStock: Boolean!
   name: String!
   price: Float!
-  rating: Int!
+  rating: Float!
   reviewCount: Int!
 }
 

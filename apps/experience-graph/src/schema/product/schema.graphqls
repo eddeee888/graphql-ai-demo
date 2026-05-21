@@ -12,7 +12,7 @@ type Product {
   category: String!
   imageUrl: String!
   inStock: Boolean!
-  rating: Int!
+  rating: Float!
   reviewCount: Int!
 }
 

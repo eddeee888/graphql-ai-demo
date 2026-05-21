@@ -1,3 +1,13 @@
+import type { QueryResolvers } from './../../../types.generated';
 
-        import type   { QueryResolvers } from './../../../../../schema/types.generated';
-        export const product: NonNullable<QueryResolvers['product']> = async (_parent, _arg, _ctx) => { /* Implement Query.product resolver logic here */ };
+export const product: NonNullable<QueryResolvers['product']> = async (
+  _parent,
+  { id },
+  { productsService },
+) => {
+  const product = productsService.getProductById(id);
+  return {
+    __typename: 'ProductResponseSuccess',
+    result: product,
+  };
+};

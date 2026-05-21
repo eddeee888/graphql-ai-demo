@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { ResolverContext } from '../main';
 export type Maybe<T> = T | null | undefined;
 export type InputMaybe<T> = T | null | undefined;
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
@@ -13,10 +14,6 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
-export type Mutation = {
-  __typename?: 'Mutation';
-};
-
 export type Product = {
   __typename?: 'Product';
   category: Scalars['String']['output'];
@@ -26,7 +23,7 @@ export type Product = {
   inStock: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   price: Scalars['Float']['output'];
-  rating: Scalars['Int']['output'];
+  rating: Scalars['Float']['output'];
   reviewCount: Scalars['Int']['output'];
 };
 
@@ -135,7 +132,6 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   Product: ResolverTypeWrapper<Product>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
@@ -151,7 +147,6 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Mutation: Record<PropertyKey, never>;
   Product: Product;
   String: Scalars['String']['output'];
   ID: Scalars['ID']['output'];
@@ -164,7 +159,7 @@ export type ResolversParentTypes = {
   ResponseError: ResponseError;
 };
 
-export type ProductResolvers<ContextType = any, ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']> = {
+export type ProductResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']> = {
   category?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -172,31 +167,31 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   inStock?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  rating?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  rating?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   reviewCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 };
 
-export type ProductResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductResponse'] = ResolversParentTypes['ProductResponse']> = {
+export type ProductResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductResponse'] = ResolversParentTypes['ProductResponse']> = {
   __resolveType?: TypeResolveFn<'ProductResponseSuccess' | 'ResponseError', ParentType, ContextType>;
 };
 
-export type ProductResponseSuccessResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductResponseSuccess'] = ResolversParentTypes['ProductResponseSuccess']> = {
+export type ProductResponseSuccessResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductResponseSuccess'] = ResolversParentTypes['ProductResponseSuccess']> = {
   result?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+export type QueryResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   product?: Resolver<ResolversTypes['ProductResponse'], ParentType, ContextType, RequireFields<QueryproductArgs, 'id'>>;
 };
 
-export type ResponseErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResponseError'] = ResolversParentTypes['ResponseError']> = {
+export type ResponseErrorResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ResponseError'] = ResolversParentTypes['ResponseError']> = {
   type?: Resolver<ResolversTypes['ResponseErrorType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ResponseErrorTypeResolvers = EnumResolverSignature<{ SERVER_ERROR?: any }, ResolversTypes['ResponseErrorType']>;
 
-export type Resolvers<ContextType = any> = {
+export type Resolvers<ContextType = ResolverContext> = {
   Product?: ProductResolvers<ContextType>;
   ProductResponse?: ProductResponseResolvers<ContextType>;
   ProductResponseSuccess?: ProductResponseSuccessResolvers<ContextType>;
