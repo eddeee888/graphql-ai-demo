@@ -29,6 +29,9 @@
     },
     {
       "path": "./libs/shared/test-utils"
+    },
+    {
+      "path": "./apps/experience-graph"
     }
   ]
 }
