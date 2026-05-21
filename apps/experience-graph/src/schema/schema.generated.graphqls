@@ -10,6 +10,10 @@ type Product {
   reviewCount: Int!
 }
 
+type ProductCategory {
+  id: ID!
+}
+
 union ProductResponse = ProductResponseSuccess | ResponseError
 
 type ProductResponseSuccess {

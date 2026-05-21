@@ -105,6 +105,17 @@ export const ProductList: FC = () => {
         </div>
       </div>
 
+      {loading && <LoadingSpinner />}
+
+      {(error || data?.products.__typename === 'ResponseError') && (
+        <ErrorMessage
+          message={'Oopsie! Error happened!'}
+          onRetry={() => {
+            setFilter({ ...filter });
+          }}
+        />
+      )}
+
       {data && data.products.__typename === 'ProductsResponseSuccess'
         ? (() => {
             const products = data.products.result;
@@ -157,17 +168,6 @@ export const ProductList: FC = () => {
             );
           })()
         : null}
-
-      {loading && <LoadingSpinner />}
-
-      {error || data?.products.__typename === 'ResponseError' ? (
-        <ErrorMessage
-          message={'Oopsie! Error happened!'}
-          onRetry={() => {
-            setFilter({ ...filter });
-          }}
-        />
-      ) : null}
     </div>
   );
 };

@@ -12,7 +12,7 @@ const ProductList = lazy(() =>
   import('./routes/ProductList').then((m) => ({ default: m.ProductList })),
 );
 const ProductDetail = lazy(() =>
-  import('@org/shop-feature-product-detail').then((m) => ({
+  import('./routes/ProductDetail').then((m) => ({
     default: m.ProductDetail,
   })),
 );

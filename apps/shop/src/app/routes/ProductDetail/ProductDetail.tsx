@@ -1,28 +1,54 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useProduct } from '@org/shop-data';
 import { LoadingSpinner, ErrorMessage } from '@org/shop-shared-ui';
-import styles from './product-detail.module.css';
+import styles from './ProductDetail.module.css';
+import { FC } from 'react';
+import { useQuery } from '@apollo/client/react';
+import { ProductDetailDoc } from './ProductDetail.graphql';
 
-export function ProductDetail() {
+const handleRetry = () => {
+  // Force re-fetch by navigating to the same URL
+  window.location.reload();
+};
+
+const productNotFoundError = (
+  <ErrorMessage message="Product not found" onRetry={handleRetry} />
+);
+
+export const ProductDetail: FC = () => {
   const { id } = useParams<{ id: string }>();
+
+  if (!id) {
+    return productNotFoundError;
+  }
+
+  return <ProductDetailInner id={id} />;
+};
+
+const ProductDetailInner: FC<{ id: string }> = ({ id }) => {
   const navigate = useNavigate();
-  const { product, loading, error } = useProduct(id);
+  const { data, loading, error } = useQuery(ProductDetailDoc, {
+    variables: { id },
+  });
 
-  const handleBackClick = () => {
-    navigate('/products');
-  };
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
-  const handleAddToCart = () => {
-    // Placeholder for add to cart functionality
-    alert(`Added ${product?.name} to cart!`);
-  };
+  if (error || data?.product.__typename === 'ResponseError') {
+    return <ErrorMessage message="Error!" onRetry={handleRetry} />;
+  }
 
-  const handleRetry = () => {
-    // Force re-fetch by navigating to the same URL
-    window.location.reload();
-  };
+  if (!data) {
+    return null;
+  }
 
-  const getStars = () => {
+  const product = data.product.result;
+
+  if (!product) {
+    return <ErrorMessage message="Product not found" onRetry={handleRetry} />;
+  }
+
+  const getStars = (product: { rating: number } | null) => {
     if (!product) return [];
     const stars = [];
     for (let i = 0; i < 5; i++) {
@@ -31,21 +57,14 @@ export function ProductDetail() {
     return stars;
   };
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
-  if (error) {
-    return <ErrorMessage message={error} onRetry={handleRetry} />;
-  }
-
-  if (!product) {
-    return <ErrorMessage message="Product not found" onRetry={handleRetry} />;
-  }
-
   return (
     <div className={styles['product-detail-container']}>
-      <button className={styles['back-button']} onClick={handleBackClick}>
+      <button
+        className={styles['back-button']}
+        onClick={() => {
+          navigate('/products');
+        }}
+      >
         ← Back to Products
       </button>
 
@@ -63,7 +82,7 @@ export function ProductDetail() {
 
           <div className={styles['product-rating']}>
             <span className={styles['stars']}>
-              {getStars().map((filled, index) => (
+              {getStars(product).map((filled, index) => (
                 <span key={index} className={filled ? styles['filled'] : ''}>
                   ★
                 </span>
@@ -94,7 +113,10 @@ export function ProductDetail() {
           <div className={styles['product-actions']}>
             <button
               className={styles['add-to-cart-btn']}
-              onClick={handleAddToCart}
+              onClick={() => {
+                // Placeholder for add to cart functionality
+                alert(`Added ${product?.name} to cart!`);
+              }}
               disabled={!product.inStock}
             >
               {product.inStock ? 'Add to Cart' : 'Out of Stock'}
@@ -122,6 +144,6 @@ export function ProductDetail() {
       </div>
     </div>
   );
-}
+};
 
 export default ProductDetail;

@@ -1,5 +1,15 @@
-import { Product } from '@org/models';
 import styles from './product-card.module.css';
+
+export interface Product {
+  id: string;
+  rating: number;
+  inStock: boolean;
+  name: string;
+  imageUrl: string;
+  category: string;
+  reviewCount: number;
+  price: number;
+}
 
 interface ProductCardProps {
   product: Product;
@@ -48,7 +58,9 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
               </span>
             ))}
           </span>
-          <span className={styles['review-count']}>({product.reviewCount})</span>
+          <span className={styles['review-count']}>
+            ({product.reviewCount})
+          </span>
         </div>
         <div className={styles['product-price']}>
           ${product.price.toFixed(2)}

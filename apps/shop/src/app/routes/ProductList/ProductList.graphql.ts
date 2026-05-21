@@ -7,7 +7,6 @@ export const ProductListDoc = graphql(`
         result {
           id
           name
-          description
           price
           category
           imageUrl
