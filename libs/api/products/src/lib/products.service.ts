@@ -1,5 +1,24 @@
-// eslint-disable-next-line
-import { Product, ProductFilter } from '@org/models';
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  imageUrl: string;
+  inStock: boolean;
+  rating: number;
+  reviewCount: number;
+}
+
+interface ProductsFilter {
+  category?: string | null;
+  minPrice?: number | null;
+  maxPrice?: number | null;
+  inStock?: boolean | null;
+  searchTerm?: string | null;
+  page?: number | null;
+  pageSize?: number | null;
+}
 
 export class ProductsService {
   private products: Product[] = [
@@ -161,7 +180,7 @@ export class ProductsService {
     },
   ];
 
-  getProducts(filter?: ProductFilter) {
+  getProducts(filter?: ProductsFilter) {
     let filteredProducts = [...this.products];
 
     // Apply filters

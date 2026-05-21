@@ -23,7 +23,7 @@ export const ProductList: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [inStockOnly, setInStockOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filter, setFilter] = useState<ProductsInput>({});
+  const [filter, setFilter] = useState<Omit<ProductsInput, 'page'>>({});
 
   const { data, error, loading } = useQuery(ProductListDoc, {
     variables: {
@@ -33,7 +33,7 @@ export const ProductList: FC = () => {
         maxPrice: filter.maxPrice,
         minPrice: filter.minPrice,
         searchTerm: filter.searchTerm,
-        page: filter.page,
+        page: currentPage,
         pageSize: filter.pageSize,
       },
     },
@@ -172,5 +172,3 @@ export const ProductList: FC = () => {
     </div>
   );
 };
-
-export default ProductList;

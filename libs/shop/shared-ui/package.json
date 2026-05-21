@@ -16,9 +16,5 @@
       "scope:shop",
       "type:ui"
     ]
-  },
-  "devDependencies": {
-    "@org/models": "*",
-    "@org/shared-test-utils": "*"
   }
 }

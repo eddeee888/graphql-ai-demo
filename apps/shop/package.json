@@ -10,30 +10,20 @@
     "targets": {
       "serve": {
         "dependsOn": [
-          "@org/api:serve",
           "@org/experience-graph:serve"
         ]
       },
       "dev": {
         "dependsOn": [
-          "@org/api:serve",
           "@org/experience-graph:serve"
         ]
       },
       "preview": {
         "dependsOn": [
           "build",
-          "@org/api:serve",
           "@org/experience-graph:serve"
         ]
       }
     }
-  },
-  "devDependencies": {
-    "@org/models": "*",
-    "@org/shop-data": "*",
-    "@org/shop-feature-product-detail": "*",
-    "@org/shop-feature-products": "*",
-    "@org/shop-shared-ui": "*"
   }
 }
