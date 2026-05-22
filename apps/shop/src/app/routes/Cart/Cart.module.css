@@ -3,3 +3,21 @@
   margin: 0 auto;
   padding: 24px;
 }
+
+.cart-item-row {
+  padding-top: 8px;
+}
+
+.cart-item-row:first-child {
+  padding-top: 16px;
+  border-top: 1px solid black;
+}
+
+.cart-item-row:last-child {
+  padding-bottom: 16px;
+  border-bottom: 1px solid black;
+}
+
+.clear-cart-btn {
+  margin-top: 16px;
+}

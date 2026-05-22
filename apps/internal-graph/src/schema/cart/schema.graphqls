@@ -3,7 +3,8 @@ extend type Query {
 }
 
 extend type Mutation {
-  addItemToCart(input: AddItemToCartInput!): Cart
+  addItemToCart(input: AddItemToCartInput!): Cart!
+  clearCart: Cart!
 }
 
 input AddItemToCartInput {

@@ -14,7 +14,8 @@ type CartItem {
 }
 
 type Mutation {
-  addItemToCart(input: AddItemToCartInput!): Cart
+  addItemToCart(input: AddItemToCartInput!): Cart!
+  clearCart: Cart!
   rateProduct(input: RateProductInput!): ProductRating
 }
 

@@ -68,15 +68,15 @@ export class ProductRatingsService {
     creatorActorId: string;
     productId: string;
     rating: number;
-  }): number | null {
-    // return null when errors
-    const product = this.data[productId];
-    if (!product) {
+  }): number {
+    if (!this.data[productId]) {
       this.data[productId] = {
         productId,
         ratings: [],
       };
     }
+
+    const product = this.data[productId];
 
     product.ratings.push({
       creatorActorId,

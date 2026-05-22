@@ -52,9 +52,17 @@ export type CartResponseSuccess = {
   result?: Maybe<Cart>;
 };
 
+export type ClearCartResponse = ClearCartResponseSuccess | ResponseError;
+
+export type ClearCartResponseSuccess = {
+  __typename?: 'ClearCartResponseSuccess';
+  result: Cart;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addItemToCart: AddItemToCartResponse;
+  clearCart: ClearCartResponse;
   rateProduct: RateProductResponse;
 };
 
@@ -251,6 +259,10 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
     | ( Omit<CartResponseSuccess, 'result'> & { result?: Maybe<_RefType['Cart']> } & { __typename: 'CartResponseSuccess' } )
     | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
   ;
+  ClearCartResponse:
+    | ( Omit<ClearCartResponseSuccess, 'result'> & { result: _RefType['Cart'] } & { __typename: 'ClearCartResponseSuccess' } )
+    | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
+  ;
   ProductRatingResponse:
     | ( ProductRatingResponseSuccess & { __typename: 'ProductRatingResponseSuccess' } )
     | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
@@ -283,6 +295,8 @@ export type ResolversTypes = {
   CartItemProductResponseSuccess: ResolverTypeWrapper<Omit<CartItemProductResponseSuccess, 'result'> & { result: ResolversTypes['Product'] }>;
   CartResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['CartResponse']>;
   CartResponseSuccess: ResolverTypeWrapper<Omit<CartResponseSuccess, 'result'> & { result?: Maybe<ResolversTypes['Cart']> }>;
+  ClearCartResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['ClearCartResponse']>;
+  ClearCartResponseSuccess: ResolverTypeWrapper<Omit<ClearCartResponseSuccess, 'result'> & { result: ResolversTypes['Cart'] }>;
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   PaginationInput: PaginationInput;
   Product: ResolverTypeWrapper<ProductMapper>;
@@ -318,6 +332,8 @@ export type ResolversParentTypes = {
   CartItemProductResponseSuccess: Omit<CartItemProductResponseSuccess, 'result'> & { result: ResolversParentTypes['Product'] };
   CartResponse: ResolversUnionTypes<ResolversParentTypes>['CartResponse'];
   CartResponseSuccess: Omit<CartResponseSuccess, 'result'> & { result?: Maybe<ResolversParentTypes['Cart']> };
+  ClearCartResponse: ResolversUnionTypes<ResolversParentTypes>['ClearCartResponse'];
+  ClearCartResponseSuccess: Omit<ClearCartResponseSuccess, 'result'> & { result: ResolversParentTypes['Cart'] };
   Mutation: Record<PropertyKey, never>;
   PaginationInput: PaginationInput;
   Product: ProductMapper;
@@ -376,8 +392,18 @@ export type CartResponseSuccessResolvers<ContextType = ResolverContext, ParentTy
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ClearCartResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ClearCartResponse'] = ResolversParentTypes['ClearCartResponse']> = {
+  __resolveType?: TypeResolveFn<'ClearCartResponseSuccess' | 'ResponseError', ParentType, ContextType>;
+};
+
+export type ClearCartResponseSuccessResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ClearCartResponseSuccess'] = ResolversParentTypes['ClearCartResponseSuccess']> = {
+  result?: Resolver<ResolversTypes['Cart'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addItemToCart?: Resolver<ResolversTypes['AddItemToCartResponse'], ParentType, ContextType, RequireFields<MutationaddItemToCartArgs, 'input'>>;
+  clearCart?: Resolver<ResolversTypes['ClearCartResponse'], ParentType, ContextType>;
   rateProduct?: Resolver<ResolversTypes['RateProductResponse'], ParentType, ContextType, RequireFields<MutationrateProductArgs, 'input'>>;
 };
 
@@ -460,6 +486,8 @@ export type Resolvers<ContextType = ResolverContext> = {
   CartItemProductResponseSuccess?: CartItemProductResponseSuccessResolvers<ContextType>;
   CartResponse?: CartResponseResolvers<ContextType>;
   CartResponseSuccess?: CartResponseSuccessResolvers<ContextType>;
+  ClearCartResponse?: ClearCartResponseResolvers<ContextType>;
+  ClearCartResponseSuccess?: ClearCartResponseSuccessResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
   ProductRating?: ProductRatingResolvers<ContextType>;

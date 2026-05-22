@@ -19,6 +19,7 @@ type Documents = {
     "\n  fragment ProductMapper on Product {\n    id\n    name\n    description\n    price\n    category\n    imageUrl\n    stockCount\n    reviewCount\n    stockCount\n  }\n": typeof types.ProductMapperFragmentDoc,
     "\n  query CartItemProduct($id: ID!) {\n    product(id: $id) {\n      ...ProductMapper\n    }\n  }\n": typeof types.CartItemProductDocument,
     "\n  mutation AddItemToCart($input: AddItemToCartInput!) {\n    addItemToCart(input: $input) {\n      id\n      items {\n        ...CartItemMapper\n      }\n    }\n  }\n": typeof types.AddItemToCartDocument,
+    "\n  mutation ClearCart {\n    clearCart {\n      id\n      items {\n        ...CartItemMapper\n      }\n    }\n  }\n": typeof types.ClearCartDocument,
     "\n  mutation RateProduct($input: RateProductInput!) {\n    rateProduct(input: $input) {\n      id\n      value\n    }\n  }\n": typeof types.RateProductDocument,
     "\n  query ProductRating($id: ID!) {\n    productRating(id: $id) {\n      id\n      value\n    }\n  }\n": typeof types.ProductRatingDocument,
     "\n  query Cart($id: ID!) {\n    cart(id: $id) {\n      id\n      items {\n        productId\n        count\n      }\n    }\n  }\n": typeof types.CartDocument,
@@ -30,6 +31,7 @@ const documents: Documents = {
     "\n  fragment ProductMapper on Product {\n    id\n    name\n    description\n    price\n    category\n    imageUrl\n    stockCount\n    reviewCount\n    stockCount\n  }\n": types.ProductMapperFragmentDoc,
     "\n  query CartItemProduct($id: ID!) {\n    product(id: $id) {\n      ...ProductMapper\n    }\n  }\n": types.CartItemProductDocument,
     "\n  mutation AddItemToCart($input: AddItemToCartInput!) {\n    addItemToCart(input: $input) {\n      id\n      items {\n        ...CartItemMapper\n      }\n    }\n  }\n": types.AddItemToCartDocument,
+    "\n  mutation ClearCart {\n    clearCart {\n      id\n      items {\n        ...CartItemMapper\n      }\n    }\n  }\n": types.ClearCartDocument,
     "\n  mutation RateProduct($input: RateProductInput!) {\n    rateProduct(input: $input) {\n      id\n      value\n    }\n  }\n": types.RateProductDocument,
     "\n  query ProductRating($id: ID!) {\n    productRating(id: $id) {\n      id\n      value\n    }\n  }\n": types.ProductRatingDocument,
     "\n  query Cart($id: ID!) {\n    cart(id: $id) {\n      id\n      items {\n        productId\n        count\n      }\n    }\n  }\n": types.CartDocument,
@@ -53,6 +55,10 @@ export function graphql(source: "\n  query CartItemProduct($id: ID!) {\n    prod
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation AddItemToCart($input: AddItemToCartInput!) {\n    addItemToCart(input: $input) {\n      id\n      items {\n        ...CartItemMapper\n      }\n    }\n  }\n"): typeof import('./graphql').AddItemToCartDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation ClearCart {\n    clearCart {\n      id\n      items {\n        ...CartItemMapper\n      }\n    }\n  }\n"): typeof import('./graphql').ClearCartDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

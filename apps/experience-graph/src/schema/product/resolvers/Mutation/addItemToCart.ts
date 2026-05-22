@@ -24,7 +24,7 @@ export const addItemToCart: NonNullable<
       },
     });
 
-    if (!result.data || !result.data.addItemToCart) {
+    if (!result.data) {
       return {
         __typename: 'ResponseError',
         type: 'SERVER_ERROR',

@@ -28,10 +28,14 @@ export class CartsService {
     userId: string;
     productId: string;
     count: number;
-  }): DatabaseCart | undefined {
-    const cart = this.data[userId];
+  }): DatabaseCart {
+    let cart = this.data[userId];
     if (!cart) {
-      return;
+      this.data[userId] = {
+        id: userId,
+        items: [],
+      };
+      cart = this.data[userId];
     }
 
     const itemIndex = cart.items.findIndex(
@@ -44,6 +48,21 @@ export class CartsService {
     }
 
     cart.items[itemIndex].count += count;
+
+    return cart;
+  }
+
+  clearCart(userId: string): DatabaseCart {
+    if (!this.data[userId]) {
+      this.data[userId] = {
+        id: userId,
+        items: [],
+      };
+    }
+
+    const cart = this.data[userId];
+
+    cart.items = [];
 
     return cart;
   }

@@ -43,7 +43,12 @@ export type AddItemToCartMutationVariables = Exact<{
 }>;
 
 
-export type AddItemToCartMutation = { addItemToCart: { id: string, items: Array<{ productId: string, count: number }> } | null };
+export type AddItemToCartMutation = { addItemToCart: { id: string, items: Array<{ productId: string, count: number }> } };
+
+export type ClearCartMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ClearCartMutation = { clearCart: { id: string, items: Array<{ productId: string, count: number }> } };
 
 export type RateProductMutationVariables = Exact<{
   input: RateProductInput;
@@ -148,6 +153,19 @@ export const AddItemToCartDocument = new TypedDocumentString(`
   productId
   count
 }`) as unknown as TypedDocumentString<AddItemToCartMutation, AddItemToCartMutationVariables>;
+export const ClearCartDocument = new TypedDocumentString(`
+    mutation ClearCart {
+  clearCart {
+    id
+    items {
+      ...CartItemMapper
+    }
+  }
+}
+    fragment CartItemMapper on CartItem {
+  productId
+  count
+}`) as unknown as TypedDocumentString<ClearCartMutation, ClearCartMutationVariables>;
 export const RateProductDocument = new TypedDocumentString(`
     mutation RateProduct($input: RateProductInput!) {
   rateProduct(input: $input) {

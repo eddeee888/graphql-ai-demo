@@ -30,8 +30,15 @@ type CartResponseSuccess {
   result: Cart
 }
 
+union ClearCartResponse = ClearCartResponseSuccess | ResponseError
+
+type ClearCartResponseSuccess {
+  result: Cart!
+}
+
 type Mutation {
   addItemToCart(input: AddItemToCartInput!): AddItemToCartResponse!
+  clearCart: ClearCartResponse!
   rateProduct(input: RateProductInput!): RateProductResponse!
 }
 

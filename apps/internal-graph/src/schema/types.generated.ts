@@ -34,7 +34,8 @@ export type CartItem = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addItemToCart?: Maybe<Cart>;
+  addItemToCart: Cart;
+  clearCart: Cart;
   rateProduct?: Maybe<ProductRating>;
 };
 
@@ -270,7 +271,8 @@ export type CartItemResolvers<ContextType = ResolverContext, ParentType extends 
 };
 
 export type MutationResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addItemToCart?: Resolver<Maybe<ResolversTypes['Cart']>, ParentType, ContextType, RequireFields<MutationaddItemToCartArgs, 'input'>>;
+  addItemToCart?: Resolver<ResolversTypes['Cart'], ParentType, ContextType, RequireFields<MutationaddItemToCartArgs, 'input'>>;
+  clearCart?: Resolver<ResolversTypes['Cart'], ParentType, ContextType>;
   rateProduct?: Resolver<Maybe<ResolversTypes['ProductRating']>, ParentType, ContextType, RequireFields<MutationrateProductArgs, 'input'>>;
 };
 
