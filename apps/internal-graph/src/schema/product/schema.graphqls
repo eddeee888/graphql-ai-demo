@@ -26,5 +26,6 @@ type Product {
   price: Float!
   category: String!
   imageUrl: String!
-  inStock: Boolean!
+  stockCount: Int!
+  reviewCount: Int!
 }

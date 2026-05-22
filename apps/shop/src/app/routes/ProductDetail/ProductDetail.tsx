@@ -49,11 +49,11 @@ const ProductDetailInner: FC<{ id: string }> = ({ id }) => {
     return <ErrorMessage message="Product not found" onRetry={handleRetry} />;
   }
 
-  const getStars = (product: { rating: number } | null) => {
+  const getStars = (rating: number) => {
     if (!product) return [];
     const stars = [];
     for (let i = 0; i < 5; i++) {
-      stars.push(i < Math.floor(product.rating));
+      stars.push(i < Math.floor(rating));
     }
     return stars;
   };
@@ -83,7 +83,11 @@ const ProductDetailInner: FC<{ id: string }> = ({ id }) => {
 
           <div className={styles['product-rating']}>
             <span className={styles['stars']}>
-              {getStars(product).map((filled, index) => (
+              {getStars(
+                product.rating.__typename === 'ProductRatingResponseSuccess'
+                  ? product.rating.result.value
+                  : 0,
+              ).map((filled, index) => (
                 <span key={index} className={filled ? styles['filled'] : ''}>
                   ★
                 </span>
@@ -133,9 +137,12 @@ const ProductDetailInner: FC<{ id: string }> = ({ id }) => {
               <li>
                 <strong>Category:</strong> {product.category}
               </li>
-              <li>
-                <strong>Rating:</strong> {product.rating.toFixed(1)} out of 5
-              </li>
+              {product.rating.__typename === 'ProductRatingResponseSuccess' && (
+                <li>
+                  <strong>Rating:</strong>{' '}
+                  {product.rating.result.value.toFixed(1)} out of 5
+                </li>
+              )}
               <li>
                 <strong>Reviews:</strong> {product.reviewCount} customer reviews
               </li>
@@ -146,5 +153,3 @@ const ProductDetailInner: FC<{ id: string }> = ({ id }) => {
     </div>
   );
 };
-
-export default ProductDetail;

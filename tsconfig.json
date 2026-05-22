@@ -10,12 +10,6 @@
       "path": "./apps/shop"
     },
     {
-      "path": "./libs/api/products"
-    },
-    {
-      "path": "./libs/shop/shared-ui"
-    },
-    {
       "path": "./apps/internal-graph"
     }
   ]

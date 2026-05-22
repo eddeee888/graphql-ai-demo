@@ -1,5 +1,5 @@
 {
-  "name": "internal-graph",
+  "name": "@org/internal-graph",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/internal-graph/src",
   "projectType": "application",
@@ -67,15 +67,15 @@
       "defaultConfiguration": "development",
       "dependsOn": ["build"],
       "options": {
-        "buildTarget": "internal-graph:build",
+        "buildTarget": "@org/internal-graph:build",
         "runBuildTargetDependencies": false
       },
       "configurations": {
         "development": {
-          "buildTarget": "internal-graph:build:development"
+          "buildTarget": "@org/internal-graph:build:development"
         },
         "production": {
-          "buildTarget": "internal-graph:build:production"
+          "buildTarget": "@org/internal-graph:build:production"
         }
       }
     }

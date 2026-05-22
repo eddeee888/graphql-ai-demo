@@ -1,9 +1,20 @@
 projects:
-  experience-graph:
+  shop:
     schema:
       - 'apps/experience-graph/src/schema/**/schema.graphqls'
     documents:
       - 'apps/shop/src/**/*.graphql.ts'
+
+  experience-graph-client:
+    schema:
+      - 'apps/internal-graph/src/schema/**/schema.graphqls'
+    documents:
+      - 'apps/experience-graph/src/**/*.ts'
+
+  experience-graph-server:
+    schema:
+      - 'apps/experience-graph/src/schema/**/schema.graphqls'
+
   internal-graph:
     schema:
       - 'apps/internal-graph/src/schema/**/schema.graphqls'

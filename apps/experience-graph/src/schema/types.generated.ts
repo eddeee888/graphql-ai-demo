@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { ProductMapper } from './product/schema.mappers';
 import { ResolverContext } from '../main';
 export type Maybe<T> = T | null | undefined;
 export type InputMaybe<T> = T | null | undefined;
@@ -14,6 +15,11 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type PaginationInput = {
+  page?: InputMaybe<Scalars['Int']['input']>;
+  pageSize?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type Product = {
   __typename?: 'Product';
   category: Scalars['String']['output'];
@@ -23,8 +29,21 @@ export type Product = {
   inStock: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   price: Scalars['Float']['output'];
-  rating: Scalars['Float']['output'];
+  rating: ProductRatingResponse;
   reviewCount: Scalars['Int']['output'];
+};
+
+export type ProductRating = {
+  __typename?: 'ProductRating';
+  id: Scalars['ID']['output'];
+  value: Scalars['Float']['output'];
+};
+
+export type ProductRatingResponse = ProductRatingResponseSuccess | ResponseError;
+
+export type ProductRatingResponseSuccess = {
+  __typename?: 'ProductRatingResponseSuccess';
+  result: ProductRating;
 };
 
 export type ProductResponse = ProductResponseSuccess | ResponseError;
@@ -39,8 +58,6 @@ export type ProductsInput = {
   inStock?: InputMaybe<Scalars['Boolean']['input']>;
   maxPrice?: InputMaybe<Scalars['Int']['input']>;
   minPrice?: InputMaybe<Scalars['Int']['input']>;
-  page?: InputMaybe<Scalars['Int']['input']>;
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
   searchTerm?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -69,6 +86,7 @@ export type QueryproductArgs = {
 
 export type QueryproductsArgs = {
   input: ProductsInput;
+  pagination: PaginationInput;
 };
 
 export type ResponseError = {
@@ -150,12 +168,16 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
 
 /** Mapping of union types */
 export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
+  ProductRatingResponse:
+    | ( ProductRatingResponseSuccess & { __typename: 'ProductRatingResponseSuccess' } )
+    | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
+  ;
   ProductResponse:
-    | ( ProductResponseSuccess & { __typename: 'ProductResponseSuccess' } )
+    | ( Omit<ProductResponseSuccess, 'result'> & { result?: Maybe<_RefType['Product']> } & { __typename: 'ProductResponseSuccess' } )
     | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
   ;
   ProductsResponse:
-    | ( ProductsResponseSuccess & { __typename: 'ProductsResponseSuccess' } )
+    | ( Omit<ProductsResponseSuccess, 'result'> & { result: Array<_RefType['Product']> } & { __typename: 'ProductsResponseSuccess' } )
     | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
   ;
 };
@@ -163,17 +185,21 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Product: ResolverTypeWrapper<Product>;
+  PaginationInput: PaginationInput;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  Product: ResolverTypeWrapper<ProductMapper>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
-  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  ProductRating: ResolverTypeWrapper<ProductRating>;
+  ProductRatingResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['ProductRatingResponse']>;
+  ProductRatingResponseSuccess: ResolverTypeWrapper<ProductRatingResponseSuccess>;
   ProductResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['ProductResponse']>;
-  ProductResponseSuccess: ResolverTypeWrapper<ProductResponseSuccess>;
+  ProductResponseSuccess: ResolverTypeWrapper<Omit<ProductResponseSuccess, 'result'> & { result?: Maybe<ResolversTypes['Product']> }>;
   ProductsInput: ProductsInput;
   ProductsResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['ProductsResponse']>;
-  ProductsResponseSuccess: ResolverTypeWrapper<ProductsResponseSuccess>;
+  ProductsResponseSuccess: ResolverTypeWrapper<Omit<ProductsResponseSuccess, 'result'> & { result: Array<ResolversTypes['Product']> }>;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   ResponseError: ResolverTypeWrapper<Omit<ResponseError, 'type'> & { type: ResolversTypes['ResponseErrorType'] }>;
   ResponseErrorType: ResolverTypeWrapper<'SERVER_ERROR'>;
@@ -181,17 +207,21 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Product: Product;
+  PaginationInput: PaginationInput;
+  Int: Scalars['Int']['output'];
+  Product: ProductMapper;
   String: Scalars['String']['output'];
   ID: Scalars['ID']['output'];
   Boolean: Scalars['Boolean']['output'];
   Float: Scalars['Float']['output'];
-  Int: Scalars['Int']['output'];
+  ProductRating: ProductRating;
+  ProductRatingResponse: ResolversUnionTypes<ResolversParentTypes>['ProductRatingResponse'];
+  ProductRatingResponseSuccess: ProductRatingResponseSuccess;
   ProductResponse: ResolversUnionTypes<ResolversParentTypes>['ProductResponse'];
-  ProductResponseSuccess: ProductResponseSuccess;
+  ProductResponseSuccess: Omit<ProductResponseSuccess, 'result'> & { result?: Maybe<ResolversParentTypes['Product']> };
   ProductsInput: ProductsInput;
   ProductsResponse: ResolversUnionTypes<ResolversParentTypes>['ProductsResponse'];
-  ProductsResponseSuccess: ProductsResponseSuccess;
+  ProductsResponseSuccess: Omit<ProductsResponseSuccess, 'result'> & { result: Array<ResolversParentTypes['Product']> };
   Query: Record<PropertyKey, never>;
   ResponseError: ResponseError;
 };
@@ -204,8 +234,22 @@ export type ProductResolvers<ContextType = ResolverContext, ParentType extends R
   inStock?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  rating?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  rating?: Resolver<ResolversTypes['ProductRatingResponse'], ParentType, ContextType>;
   reviewCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+};
+
+export type ProductRatingResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductRating'] = ResolversParentTypes['ProductRating']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+};
+
+export type ProductRatingResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductRatingResponse'] = ResolversParentTypes['ProductRatingResponse']> = {
+  __resolveType?: TypeResolveFn<'ProductRatingResponseSuccess' | 'ResponseError', ParentType, ContextType>;
+};
+
+export type ProductRatingResponseSuccessResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductRatingResponseSuccess'] = ResolversParentTypes['ProductRatingResponseSuccess']> = {
+  result?: Resolver<ResolversTypes['ProductRating'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ProductResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductResponse'] = ResolversParentTypes['ProductResponse']> = {
@@ -232,7 +276,7 @@ export type ProductsResponseSuccessResolvers<ContextType = ResolverContext, Pare
 
 export type QueryResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   product?: Resolver<ResolversTypes['ProductResponse'], ParentType, ContextType, RequireFields<QueryproductArgs, 'id'>>;
-  products?: Resolver<ResolversTypes['ProductsResponse'], ParentType, ContextType, RequireFields<QueryproductsArgs, 'input'>>;
+  products?: Resolver<ResolversTypes['ProductsResponse'], ParentType, ContextType, RequireFields<QueryproductsArgs, 'input' | 'pagination'>>;
 };
 
 export type ResponseErrorResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ResponseError'] = ResolversParentTypes['ResponseError']> = {
@@ -244,6 +288,9 @@ export type ResponseErrorTypeResolvers = EnumResolverSignature<{ SERVER_ERROR?: 
 
 export type Resolvers<ContextType = ResolverContext> = {
   Product?: ProductResolvers<ContextType>;
+  ProductRating?: ProductRatingResolvers<ContextType>;
+  ProductRatingResponse?: ProductRatingResponseResolvers<ContextType>;
+  ProductRatingResponseSuccess?: ProductRatingResponseSuccessResolvers<ContextType>;
   ProductResponse?: ProductResponseResolvers<ContextType>;
   ProductResponseSuccess?: ProductResponseSuccessResolvers<ContextType>;
   ProductsResponse?: ProductsResponseResolvers<ContextType>;

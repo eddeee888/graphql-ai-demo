@@ -1,3 +1,8 @@
+input PaginationInput {
+  page: Int
+  pageSize: Int
+}
+
 type Product {
   category: String!
   description: String!
@@ -6,8 +11,19 @@ type Product {
   inStock: Boolean!
   name: String!
   price: Float!
-  rating: Float!
+  rating: ProductRatingResponse!
   reviewCount: Int!
+}
+
+type ProductRating {
+  id: ID!
+  value: Float!
+}
+
+union ProductRatingResponse = ProductRatingResponseSuccess | ResponseError
+
+type ProductRatingResponseSuccess {
+  result: ProductRating!
 }
 
 union ProductResponse = ProductResponseSuccess | ResponseError
@@ -21,8 +37,6 @@ input ProductsInput {
   inStock: Boolean
   maxPrice: Int
   minPrice: Int
-  page: Int
-  pageSize: Int
   searchTerm: String
 }
 
@@ -38,7 +52,7 @@ type ProductsResponseSuccess {
 
 type Query {
   product(id: ID!): ProductResponse!
-  products(input: ProductsInput!): ProductsResponse!
+  products(input: ProductsInput!, pagination: PaginationInput!): ProductsResponse!
 }
 
 type ResponseError {

@@ -7,3 +7,8 @@ type ResponseError {
 enum ResponseErrorType {
   SERVER_ERROR
 }
+
+input PaginationInput {
+  page: Int
+  pageSize: Int
+}

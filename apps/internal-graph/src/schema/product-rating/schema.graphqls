@@ -1,3 +1,7 @@
+extend type Query {
+  productRating(id: ID!): ProductRating!
+}
+
 type ProductRating {
   id: ID! # Product ID
   value: Float!

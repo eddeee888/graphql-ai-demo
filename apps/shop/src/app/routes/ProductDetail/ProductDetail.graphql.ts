@@ -13,8 +13,21 @@ export const ProductDetailDoc = graphql(`
           reviewCount
           price
           description
-          rating
+          rating {
+            ... on ProductRatingResponseSuccess {
+              result {
+                id
+                value
+              }
+            }
+            ... on ResponseError {
+              __typename
+            }
+          }
         }
+      }
+      ... on ResponseError {
+        __typename
       }
     }
   }

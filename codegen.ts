@@ -1,10 +1,15 @@
 import { defineConfig } from '@eddeee888/gcg-typescript-resolver-files';
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
+const experienceGraphSchemaPattern =
+  'apps/experience-graph/src/**/schema.graphqls';
+const internalGraphSchemaPattern = 'apps/internal-graph/src/**/schema.graphqls';
+
 const config: CodegenConfig = {
+  ignoreNoDocuments: true,
   generates: {
     'apps/shop/src/gql/': {
-      schema: 'apps/experience-graph/src/**/schema.graphqls',
+      schema: experienceGraphSchemaPattern,
       documents: ['apps/shop/src/**/*.graphql.ts'],
       preset: 'client',
       presetConfig: {
@@ -15,6 +20,14 @@ const config: CodegenConfig = {
         skipTypeNameForRoot: true,
       },
     },
+    'apps/experience-graph/src/gql/': {
+      schema: internalGraphSchemaPattern,
+      documents: ['apps/experience-graph/src/schema/**/resolvers/**/*.ts'],
+      preset: 'client',
+      config: {
+        documentMode: 'string',
+      },
+    },
     'apps/experience-graph/src/schema': defineConfig(
       {
         resolverGeneration: 'minimal',
@@ -22,7 +35,7 @@ const config: CodegenConfig = {
           contextType: '../main#ResolverContext',
         },
       },
-      { schema: 'apps/experience-graph/src/**/schema.graphqls' },
+      { schema: experienceGraphSchemaPattern },
     ),
     'apps/internal-graph/src/schema': defineConfig(
       {
@@ -31,7 +44,7 @@ const config: CodegenConfig = {
           contextType: '../main#ResolverContext',
         },
       },
-      { schema: 'apps/internal-graph/src/**/schema.graphqls' },
+      { schema: internalGraphSchemaPattern },
     ),
   },
 };

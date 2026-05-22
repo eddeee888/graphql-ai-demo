@@ -1,8 +1,8 @@
 import { graphql } from '../../../gql';
 
 export const ProductListDoc = graphql(`
-  query ProductList($input: ProductsInput!) {
-    products(input: $input) {
+  query ProductList($input: ProductsInput!, $pagination: PaginationInput!) {
+    products(input: $input, pagination: $pagination) {
       ... on ProductsResponseSuccess {
         result {
           id
@@ -11,7 +11,17 @@ export const ProductListDoc = graphql(`
           category
           imageUrl
           inStock
-          rating
+          rating {
+            ... on ProductRatingResponseSuccess {
+              result {
+                id
+                value
+              }
+            }
+            ... on ResponseError {
+              __typename
+            }
+          }
           reviewCount
         }
         total

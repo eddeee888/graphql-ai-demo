@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './ProductList.module.css';
 import { useQuery } from '@apollo/client/react';
 import { ProductListDoc } from './ProductList.graphql';
-import { ProductsInput } from '../../../gql/graphql';
+import { PaginationInput, ProductsInput } from '../../../gql/graphql';
 import { ProductGrid } from './ProductGrid';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { ErrorMessage } from '../../components/ErrorMessage';
@@ -24,7 +24,9 @@ export const ProductList: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [inStockOnly, setInStockOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filter, setFilter] = useState<Omit<ProductsInput, 'page'>>({});
+  const [filter, setFilter] = useState<
+    Omit<ProductsInput, 'page'> & PaginationInput
+  >({});
 
   const { data, error, loading } = useQuery(ProductListDoc, {
     variables: {
@@ -34,6 +36,8 @@ export const ProductList: FC = () => {
         maxPrice: filter.maxPrice,
         minPrice: filter.minPrice,
         searchTerm: filter.searchTerm,
+      },
+      pagination: {
         page: currentPage,
         pageSize: filter.pageSize,
       },
@@ -131,7 +135,20 @@ export const ProductList: FC = () => {
                 </div>
 
                 <ProductGrid
-                  products={products}
+                  products={products.map((product) => ({
+                    id: product.id,
+                    category: product.category,
+                    imageUrl: product.imageUrl,
+                    inStock: product.inStock,
+                    name: product.name,
+                    price: product.price,
+                    reviewCount: product.reviewCount,
+                    rating:
+                      product.rating.__typename ===
+                      'ProductRatingResponseSuccess'
+                        ? product.rating.result.value
+                        : 0,
+                  }))}
                   onProductSelect={(product) => {
                     navigate(`/products/${product.id}`);
                   }}

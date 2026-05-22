@@ -15,9 +15,10 @@ type Product {
   description: String!
   id: ID!
   imageUrl: String!
-  inStock: Boolean!
   name: String!
   price: Float!
+  reviewCount: Int!
+  stockCount: Int!
 }
 
 type ProductRating {
@@ -45,6 +46,7 @@ type ProductsResponse {
 
 type Query {
   product(id: ID!): Product
+  productRating(id: ID!): ProductRating!
   products(input: ProductsInput!, pagination: PaginationInput!): ProductsResponse!
 }
 
