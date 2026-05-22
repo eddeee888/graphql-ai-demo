@@ -2,7 +2,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styles from './ProductDetail.module.css';
 import { FC } from 'react';
 import { useMutation, useQuery } from '@apollo/client/react';
-import { ProductDetailDoc, RateProductDoc } from './ProductDetail.graphql';
+import {
+  AddItemToCardDoc,
+  ProductDetailDoc,
+  RateProductDoc,
+} from './ProductDetail.graphql';
 import { ErrorMessage } from '../../components/ErrorMessage';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 
@@ -31,7 +35,8 @@ const ProductDetailInner: FC<{ id: string }> = ({ id }) => {
     variables: { id },
   });
 
-  const [rateProduct, rateProductResut] = useMutation(RateProductDoc);
+  const [rateProduct] = useMutation(RateProductDoc);
+  const [addItemToCard] = useMutation(AddItemToCardDoc);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -133,9 +138,15 @@ const ProductDetailInner: FC<{ id: string }> = ({ id }) => {
           <div className={styles['product-actions']}>
             <button
               className={styles['add-to-cart-btn']}
-              onClick={() => {
-                // Placeholder for add to cart functionality
-                alert(`Added ${product?.name} to cart!`);
+              onClick={async () => {
+                await addItemToCard({
+                  variables: {
+                    input: {
+                      productId: product.id,
+                    },
+                  },
+                });
+                alert(`Added ${product.name} to cart!`);
               }}
               disabled={!product.inStock}
             >

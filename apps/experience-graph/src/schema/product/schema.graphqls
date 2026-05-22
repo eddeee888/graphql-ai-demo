@@ -9,12 +9,14 @@ extend type Query {
 
 extend type Mutation {
   rateProduct(input: RateProductInput!): RateProductResponse!
+  addItemToCart(input: AddItemToCartInput!): AddItemToCartResponse!
 }
 
 union ProductResponse = ProductResponseSuccess | ResponseError
 union ProductsResponse = ProductsResponseSuccess | ResponseError
 union RateProductResponse = RateProductResponseSuccess | ResponseError
 union CartResponse = CartResponseSuccess | ResponseError
+union AddItemToCartResponse = AddItemToCartResponseSuccess | ResponseError
 
 type ProductResponseSuccess {
   result: Product
@@ -70,6 +72,14 @@ type ProductRatingResponseSuccess {
 type ProductRating {
   id: ID!
   value: Float!
+}
+
+input AddItemToCartInput {
+  productId: ID!
+}
+
+type AddItemToCartResponseSuccess {
+  result: Cart!
 }
 
 type Cart {

@@ -4,6 +4,11 @@ type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** Internal type. DO NOT USE DIRECTLY. */
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 import { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
+export type AddItemToCartInput = {
+  count: number;
+  productId: string | number;
+};
+
 export type PaginationInput = {
   page?: number | null | undefined;
   pageSize?: number | null | undefined;
@@ -22,6 +27,8 @@ export type RateProductInput = {
   rating: number;
 };
 
+export type CartItemMapperFragment = { productId: string, count: number };
+
 export type ProductMapperFragment = { id: string, name: string, description: string, price: number, category: string, imageUrl: string, stockCount: number, reviewCount: number };
 
 export type CartItemProductQueryVariables = Exact<{
@@ -30,6 +37,13 @@ export type CartItemProductQueryVariables = Exact<{
 
 
 export type CartItemProductQuery = { product: { id: string, name: string, description: string, price: number, category: string, imageUrl: string, stockCount: number, reviewCount: number } | null };
+
+export type AddItemToCartMutationVariables = Exact<{
+  input: AddItemToCartInput;
+}>;
+
+
+export type AddItemToCartMutation = { addItemToCart: { id: string, items: Array<{ productId: string, count: number }> } | null };
 
 export type RateProductMutationVariables = Exact<{
   input: RateProductInput;
@@ -85,6 +99,12 @@ export class TypedDocumentString<TResult, TVariables>
     return this.value;
   }
 }
+export const CartItemMapperFragmentDoc = new TypedDocumentString(`
+    fragment CartItemMapper on CartItem {
+  productId
+  count
+}
+    `, {"fragmentName":"CartItemMapper"}) as unknown as TypedDocumentString<CartItemMapperFragment, unknown>;
 export const ProductMapperFragmentDoc = new TypedDocumentString(`
     fragment ProductMapper on Product {
   id
@@ -115,6 +135,19 @@ export const CartItemProductDocument = new TypedDocumentString(`
   reviewCount
   stockCount
 }`) as unknown as TypedDocumentString<CartItemProductQuery, CartItemProductQueryVariables>;
+export const AddItemToCartDocument = new TypedDocumentString(`
+    mutation AddItemToCart($input: AddItemToCartInput!) {
+  addItemToCart(input: $input) {
+    id
+    items {
+      ...CartItemMapper
+    }
+  }
+}
+    fragment CartItemMapper on CartItem {
+  productId
+  count
+}`) as unknown as TypedDocumentString<AddItemToCartMutation, AddItemToCartMutationVariables>;
 export const RateProductDocument = new TypedDocumentString(`
     mutation RateProduct($input: RateProductInput!) {
   rateProduct(input: $input) {

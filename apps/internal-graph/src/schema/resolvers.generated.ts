@@ -4,11 +4,12 @@
 import    { product as Query_product } from './product/resolvers/Query/product';
 import    { productRating as Query_productRating } from './product-rating/resolvers/Query/productRating';
 import    { products as Query_products } from './product/resolvers/Query/products';
+import    { addItemToCart as Mutation_addItemToCart } from './cart/resolvers/Mutation/addItemToCart';
 import    { rateProduct as Mutation_rateProduct } from './product-rating/resolvers/Mutation/rateProduct';
 import    { Product } from './product/resolvers/Product';
     export const resolvers: Resolvers = {
       Query: { cart: Query_cart,product: Query_product,productRating: Query_productRating,products: Query_products },
-      Mutation: { rateProduct: Mutation_rateProduct },
+      Mutation: { addItemToCart: Mutation_addItemToCart,rateProduct: Mutation_rateProduct },
       
       Product: Product
     }

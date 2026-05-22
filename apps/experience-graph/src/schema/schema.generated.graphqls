@@ -1,3 +1,13 @@
+input AddItemToCartInput {
+  productId: ID!
+}
+
+union AddItemToCartResponse = AddItemToCartResponseSuccess | ResponseError
+
+type AddItemToCartResponseSuccess {
+  result: Cart!
+}
+
 type Cart {
   id: ID!
   items: [CartItem!]!
@@ -21,6 +31,7 @@ type CartResponseSuccess {
 }
 
 type Mutation {
+  addItemToCart(input: AddItemToCartInput!): AddItemToCartResponse!
   rateProduct(input: RateProductInput!): RateProductResponse!
 }
 

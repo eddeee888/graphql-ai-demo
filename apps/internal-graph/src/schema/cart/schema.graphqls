@@ -2,6 +2,15 @@ extend type Query {
   cart(id: ID!): Cart
 }
 
+extend type Mutation {
+  addItemToCart(input: AddItemToCartInput!): Cart
+}
+
+input AddItemToCartInput {
+  productId: ID!
+  count: Int!
+}
+
 type Cart {
   id: ID!
   items: [CartItem!]!

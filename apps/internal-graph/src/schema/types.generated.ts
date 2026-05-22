@@ -15,6 +15,11 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type AddItemToCartInput = {
+  count: Scalars['Int']['input'];
+  productId: Scalars['ID']['input'];
+};
+
 export type Cart = {
   __typename?: 'Cart';
   id: Scalars['ID']['output'];
@@ -29,7 +34,13 @@ export type CartItem = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addItemToCart?: Maybe<Cart>;
   rateProduct?: Maybe<ProductRating>;
+};
+
+
+export type MutationaddItemToCartArgs = {
+  input: AddItemToCartInput;
 };
 
 
@@ -203,10 +214,11 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Cart: ResolverTypeWrapper<Cart>;
-  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
-  CartItem: ResolverTypeWrapper<CartItem>;
+  AddItemToCartInput: AddItemToCartInput;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  Cart: ResolverTypeWrapper<Cart>;
+  CartItem: ResolverTypeWrapper<CartItem>;
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   PaginationInput: PaginationInput;
   PaginationResult: ResolverTypeWrapper<PaginationResult>;
@@ -226,10 +238,11 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Cart: Cart;
-  ID: Scalars['ID']['output'];
-  CartItem: CartItem;
+  AddItemToCartInput: AddItemToCartInput;
   Int: Scalars['Int']['output'];
+  ID: Scalars['ID']['output'];
+  Cart: Cart;
+  CartItem: CartItem;
   Mutation: Record<PropertyKey, never>;
   PaginationInput: PaginationInput;
   PaginationResult: PaginationResult;
@@ -257,6 +270,7 @@ export type CartItemResolvers<ContextType = ResolverContext, ParentType extends 
 };
 
 export type MutationResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addItemToCart?: Resolver<Maybe<ResolversTypes['Cart']>, ParentType, ContextType, RequireFields<MutationaddItemToCartArgs, 'input'>>;
   rateProduct?: Resolver<Maybe<ResolversTypes['ProductRating']>, ParentType, ContextType, RequireFields<MutationrateProductArgs, 'input'>>;
 };
 

@@ -48,3 +48,16 @@ export const RateProductDoc = graphql(`
     }
   }
 `);
+
+export const AddItemToCardDoc = graphql(`
+  mutation AddItemToCard($input: AddItemToCartInput!) {
+    addItemToCart(input: $input) {
+      ... on AddItemToCartResponseSuccess {
+        __typename
+      }
+      ... on ResponseError {
+        __typename
+      }
+    }
+  }
+`);
