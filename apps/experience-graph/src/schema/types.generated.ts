@@ -15,6 +15,16 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  rateProduct: RateProductResponse;
+};
+
+
+export type MutationrateProductArgs = {
+  input: RateProductInput;
+};
+
 export type PaginationInput = {
   page?: InputMaybe<Scalars['Int']['input']>;
   pageSize?: InputMaybe<Scalars['Int']['input']>;
@@ -87,6 +97,18 @@ export type QueryproductArgs = {
 export type QueryproductsArgs = {
   input: ProductsInput;
   pagination: PaginationInput;
+};
+
+export type RateProductInput = {
+  id: Scalars['ID']['input'];
+  rating: Scalars['Int']['input'];
+};
+
+export type RateProductResponse = RateProductResponseSuccess | ResponseError;
+
+export type RateProductResponseSuccess = {
+  __typename?: 'RateProductResponseSuccess';
+  result: ProductRating;
 };
 
 export type ResponseError = {
@@ -180,11 +202,16 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
     | ( Omit<ProductsResponseSuccess, 'result'> & { result: Array<_RefType['Product']> } & { __typename: 'ProductsResponseSuccess' } )
     | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
   ;
+  RateProductResponse:
+    | ( RateProductResponseSuccess & { __typename: 'RateProductResponseSuccess' } )
+    | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
+  ;
 };
 
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   PaginationInput: PaginationInput;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Product: ResolverTypeWrapper<ProductMapper>;
@@ -201,12 +228,16 @@ export type ResolversTypes = {
   ProductsResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['ProductsResponse']>;
   ProductsResponseSuccess: ResolverTypeWrapper<Omit<ProductsResponseSuccess, 'result'> & { result: Array<ResolversTypes['Product']> }>;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
+  RateProductInput: RateProductInput;
+  RateProductResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['RateProductResponse']>;
+  RateProductResponseSuccess: ResolverTypeWrapper<RateProductResponseSuccess>;
   ResponseError: ResolverTypeWrapper<Omit<ResponseError, 'type'> & { type: ResolversTypes['ResponseErrorType'] }>;
   ResponseErrorType: ResolverTypeWrapper<'SERVER_ERROR'>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Mutation: Record<PropertyKey, never>;
   PaginationInput: PaginationInput;
   Int: Scalars['Int']['output'];
   Product: ProductMapper;
@@ -223,7 +254,14 @@ export type ResolversParentTypes = {
   ProductsResponse: ResolversUnionTypes<ResolversParentTypes>['ProductsResponse'];
   ProductsResponseSuccess: Omit<ProductsResponseSuccess, 'result'> & { result: Array<ResolversParentTypes['Product']> };
   Query: Record<PropertyKey, never>;
+  RateProductInput: RateProductInput;
+  RateProductResponse: ResolversUnionTypes<ResolversParentTypes>['RateProductResponse'];
+  RateProductResponseSuccess: RateProductResponseSuccess;
   ResponseError: ResponseError;
+};
+
+export type MutationResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  rateProduct?: Resolver<ResolversTypes['RateProductResponse'], ParentType, ContextType, RequireFields<MutationrateProductArgs, 'input'>>;
 };
 
 export type ProductResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']> = {
@@ -279,6 +317,15 @@ export type QueryResolvers<ContextType = ResolverContext, ParentType extends Res
   products?: Resolver<ResolversTypes['ProductsResponse'], ParentType, ContextType, RequireFields<QueryproductsArgs, 'input' | 'pagination'>>;
 };
 
+export type RateProductResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['RateProductResponse'] = ResolversParentTypes['RateProductResponse']> = {
+  __resolveType?: TypeResolveFn<'RateProductResponseSuccess' | 'ResponseError', ParentType, ContextType>;
+};
+
+export type RateProductResponseSuccessResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['RateProductResponseSuccess'] = ResolversParentTypes['RateProductResponseSuccess']> = {
+  result?: Resolver<ResolversTypes['ProductRating'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type ResponseErrorResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ResponseError'] = ResolversParentTypes['ResponseError']> = {
   type?: Resolver<ResolversTypes['ResponseErrorType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -287,6 +334,7 @@ export type ResponseErrorResolvers<ContextType = ResolverContext, ParentType ext
 export type ResponseErrorTypeResolvers = EnumResolverSignature<{ SERVER_ERROR?: any }, ResolversTypes['ResponseErrorType']>;
 
 export type Resolvers<ContextType = ResolverContext> = {
+  Mutation?: MutationResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
   ProductRating?: ProductRatingResolvers<ContextType>;
   ProductRatingResponse?: ProductRatingResponseResolvers<ContextType>;
@@ -296,6 +344,8 @@ export type Resolvers<ContextType = ResolverContext> = {
   ProductsResponse?: ProductsResponseResolvers<ContextType>;
   ProductsResponseSuccess?: ProductsResponseSuccessResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  RateProductResponse?: RateProductResponseResolvers<ContextType>;
+  RateProductResponseSuccess?: RateProductResponseSuccessResolvers<ContextType>;
   ResponseError?: ResponseErrorResolvers<ContextType>;
   ResponseErrorType?: ResponseErrorTypeResolvers;
 };

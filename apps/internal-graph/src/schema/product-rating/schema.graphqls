@@ -2,6 +2,15 @@ extend type Query {
   productRating(id: ID!): ProductRating!
 }
 
+extend type Mutation {
+  rateProduct(input: RateProductInput!): ProductRating
+}
+
+input RateProductInput {
+  id: ID!
+  rating: Int!
+}
+
 type ProductRating {
   id: ID! # Product ID
   value: Float!

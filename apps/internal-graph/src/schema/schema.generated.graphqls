@@ -1,3 +1,7 @@
+type Mutation {
+  rateProduct(input: RateProductInput!): ProductRating
+}
+
 input PaginationInput {
   page: Int
   pageSize: Int
@@ -48,6 +52,11 @@ type Query {
   product(id: ID!): Product
   productRating(id: ID!): ProductRating!
   products(input: ProductsInput!, pagination: PaginationInput!): ProductsResponse!
+}
+
+input RateProductInput {
+  id: ID!
+  rating: Int!
 }
 
 type ResponseError {

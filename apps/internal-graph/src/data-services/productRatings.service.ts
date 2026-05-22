@@ -37,21 +37,45 @@ export class ProductRatingsService {
     },
   };
 
-  getRatingAvg(productId: string): number | null {
+  getRatingAvg(productId: string): number {
     const product = this.data[productId];
 
     if (!product) {
-      return null;
+      return 0;
     }
 
     const ratings = product.ratings;
 
     if (ratings.length === 0) {
-      return null;
+      return 0;
     }
 
     return (
       ratings.reduce((sum, rating) => sum + rating.rating, 0) / ratings.length
     );
+  }
+
+  rate({
+    creatorActorId,
+    productId,
+    rating,
+  }: {
+    creatorActorId: string;
+    productId: string;
+    rating: number;
+  }): number | null {
+    // return null when errors
+    const product = this.data[productId];
+    if (!product) {
+      return null;
+    }
+
+    product.ratings.push({
+      creatorActorId,
+      rating,
+      createdAt: new Date(),
+    });
+
+    return this.getRatingAvg(productId);
   }
 }

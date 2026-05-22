@@ -6,8 +6,13 @@ extend type Query {
   ): ProductsResponse!
 }
 
+extend type Mutation {
+  rateProduct(input: RateProductInput!): RateProductResponse!
+}
+
 union ProductResponse = ProductResponseSuccess | ResponseError
 union ProductsResponse = ProductsResponseSuccess | ResponseError
+union RateProductResponse = RateProductResponseSuccess | ResponseError
 
 type ProductResponseSuccess {
   result: Product
@@ -27,6 +32,15 @@ type ProductsResponseSuccess {
   page: Int!
   pageSize: Int!
   totalPages: Int!
+}
+
+input RateProductInput {
+  id: ID!
+  rating: Int!
+}
+
+type RateProductResponseSuccess {
+  result: ProductRating!
 }
 
 type Product {

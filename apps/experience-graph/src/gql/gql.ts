@@ -15,16 +15,22 @@ import * as types from './graphql';
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
+    "\n  mutation RateProduct($input: RateProductInput!) {\n    rateProduct(input: $input) {\n      id\n      value\n    }\n  }\n": typeof types.RateProductDocument,
     "\n  query ProductRating($id: ID!) {\n    productRating(id: $id) {\n      id\n      value\n    }\n  }\n": typeof types.ProductRatingDocument,
     "\n  query Product($id: ID!) {\n    product(id: $id) {\n      id\n      name\n      description\n      price\n      category\n      imageUrl\n      stockCount\n      reviewCount\n      stockCount\n    }\n  }\n": typeof types.ProductDocument,
     "\n  query Products($input: ProductsInput!, $pagination: PaginationInput!) {\n    products(input: $input, pagination: $pagination) {\n      result {\n        id\n        name\n        description\n        price\n        category\n        imageUrl\n        stockCount\n        reviewCount\n      }\n      pagination {\n        total\n        totalPages\n        page\n        pageSize\n      }\n    }\n  }\n": typeof types.ProductsDocument,
 };
 const documents: Documents = {
+    "\n  mutation RateProduct($input: RateProductInput!) {\n    rateProduct(input: $input) {\n      id\n      value\n    }\n  }\n": types.RateProductDocument,
     "\n  query ProductRating($id: ID!) {\n    productRating(id: $id) {\n      id\n      value\n    }\n  }\n": types.ProductRatingDocument,
     "\n  query Product($id: ID!) {\n    product(id: $id) {\n      id\n      name\n      description\n      price\n      category\n      imageUrl\n      stockCount\n      reviewCount\n      stockCount\n    }\n  }\n": types.ProductDocument,
     "\n  query Products($input: ProductsInput!, $pagination: PaginationInput!) {\n    products(input: $input, pagination: $pagination) {\n      result {\n        id\n        name\n        description\n        price\n        category\n        imageUrl\n        stockCount\n        reviewCount\n      }\n      pagination {\n        total\n        totalPages\n        page\n        pageSize\n      }\n    }\n  }\n": types.ProductsDocument,
 };
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation RateProduct($input: RateProductInput!) {\n    rateProduct(input: $input) {\n      id\n      value\n    }\n  }\n"): typeof import('./graphql').RateProductDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

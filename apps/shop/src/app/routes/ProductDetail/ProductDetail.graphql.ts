@@ -32,3 +32,19 @@ export const ProductDetailDoc = graphql(`
     }
   }
 `);
+
+export const RateProductDoc = graphql(`
+  mutation RateProduct($input: RateProductInput!) {
+    rateProduct(input: $input) {
+      ... on RateProductResponseSuccess {
+        result {
+          id
+          value
+        }
+      }
+      ... on ResponseError {
+        __typename
+      }
+    }
+  }
+`);

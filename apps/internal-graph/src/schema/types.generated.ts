@@ -15,6 +15,16 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  rateProduct?: Maybe<ProductRating>;
+};
+
+
+export type MutationrateProductArgs = {
+  input: RateProductInput;
+};
+
 export type PaginationInput = {
   page?: InputMaybe<Scalars['Int']['input']>;
   pageSize?: InputMaybe<Scalars['Int']['input']>;
@@ -87,6 +97,11 @@ export type QueryproductRatingArgs = {
 export type QueryproductsArgs = {
   input: ProductsInput;
   pagination: PaginationInput;
+};
+
+export type RateProductInput = {
+  id: Scalars['ID']['input'];
+  rating: Scalars['Int']['input'];
 };
 
 export type ResponseError = {
@@ -170,6 +185,7 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   PaginationInput: PaginationInput;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   PaginationResult: ResolverTypeWrapper<PaginationResult>;
@@ -183,12 +199,14 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   ProductsResponse: ResolverTypeWrapper<Omit<ProductsResponse, 'result'> & { result: Array<ResolversTypes['Product']> }>;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
+  RateProductInput: RateProductInput;
   ResponseError: ResolverTypeWrapper<Omit<ResponseError, 'type'> & { type: ResolversTypes['ResponseErrorType'] }>;
   ResponseErrorType: ResolverTypeWrapper<'SERVER_ERROR'>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Mutation: Record<PropertyKey, never>;
   PaginationInput: PaginationInput;
   Int: Scalars['Int']['output'];
   PaginationResult: PaginationResult;
@@ -202,7 +220,12 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   ProductsResponse: Omit<ProductsResponse, 'result'> & { result: Array<ResolversParentTypes['Product']> };
   Query: Record<PropertyKey, never>;
+  RateProductInput: RateProductInput;
   ResponseError: ResponseError;
+};
+
+export type MutationResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  rateProduct?: Resolver<Maybe<ResolversTypes['ProductRating']>, ParentType, ContextType, RequireFields<MutationrateProductArgs, 'input'>>;
 };
 
 export type PaginationResultResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['PaginationResult'] = ResolversParentTypes['PaginationResult']> = {
@@ -251,6 +274,7 @@ export type ResponseErrorResolvers<ContextType = ResolverContext, ParentType ext
 export type ResponseErrorTypeResolvers = EnumResolverSignature<{ SERVER_ERROR?: any }, ResolversTypes['ResponseErrorType']>;
 
 export type Resolvers<ContextType = ResolverContext> = {
+  Mutation?: MutationResolvers<ContextType>;
   PaginationResult?: PaginationResultResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
   ProductRating?: ProductRatingResolvers<ContextType>;

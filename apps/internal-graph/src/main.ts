@@ -6,6 +6,7 @@ import { ProductsService } from './data-services/products.service';
 import { ProductRatingsService } from './data-services/productRatings.service';
 
 export interface ResolverContext {
+  currentUser: string;
   productsService: ProductsService;
   productRatingsService: ProductRatingsService;
 }
@@ -13,7 +14,8 @@ export interface ResolverContext {
 const server = createServer(
   createYoga<ResolverContext>({
     schema: createSchema<ResolverContext>({ typeDefs, resolvers }),
-    context: () => ({
+    context: (): ResolverContext => ({
+      currentUser: 'user-1', // FIXME: hardcoded user
       productsService: new ProductsService(),
       productRatingsService: new ProductRatingsService(),
     }),

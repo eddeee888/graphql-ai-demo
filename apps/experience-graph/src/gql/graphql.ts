@@ -17,6 +17,18 @@ export type ProductsInput = {
   searchTerm?: string | null | undefined;
 };
 
+export type RateProductInput = {
+  id: string | number;
+  rating: number;
+};
+
+export type RateProductMutationVariables = Exact<{
+  input: RateProductInput;
+}>;
+
+
+export type RateProductMutation = { rateProduct: { id: string, value: number } | null };
+
 export type ProductRatingQueryVariables = Exact<{
   id: string | number;
 }>;
@@ -58,6 +70,14 @@ export class TypedDocumentString<TResult, TVariables>
   }
 }
 
+export const RateProductDocument = new TypedDocumentString(`
+    mutation RateProduct($input: RateProductInput!) {
+  rateProduct(input: $input) {
+    id
+    value
+  }
+}
+    `) as unknown as TypedDocumentString<RateProductMutation, RateProductMutationVariables>;
 export const ProductRatingDocument = new TypedDocumentString(`
     query ProductRating($id: ID!) {
   productRating(id: $id) {

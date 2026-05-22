@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from './ProductDetail.module.css';
 import { FC } from 'react';
-import { useQuery } from '@apollo/client/react';
-import { ProductDetailDoc } from './ProductDetail.graphql';
+import { useMutation, useQuery } from '@apollo/client/react';
+import { ProductDetailDoc, RateProductDoc } from './ProductDetail.graphql';
 import { ErrorMessage } from '../../components/ErrorMessage';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 
@@ -30,6 +30,8 @@ const ProductDetailInner: FC<{ id: string }> = ({ id }) => {
   const { data, loading, error } = useQuery(ProductDetailDoc, {
     variables: { id },
   });
+
+  const [rateProduct, rateProductResut] = useMutation(RateProductDoc);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -88,7 +90,20 @@ const ProductDetailInner: FC<{ id: string }> = ({ id }) => {
                   ? product.rating.result.value
                   : 0,
               ).map((filled, index) => (
-                <span key={index} className={filled ? styles['filled'] : ''}>
+                <span
+                  key={index}
+                  className={filled ? styles['filled'] : ''}
+                  onClick={() => {
+                    rateProduct({
+                      variables: {
+                        input: {
+                          id,
+                          rating: index + 1,
+                        },
+                      },
+                    });
+                  }}
+                >
                   ★
                 </span>
               ))}
