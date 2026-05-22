@@ -22,8 +22,14 @@ const config: CodegenConfig = {
     },
     'apps/experience-graph/src/gql/': {
       schema: internalGraphSchemaPattern,
-      documents: ['apps/experience-graph/src/schema/**/resolvers/**/*.ts'],
+      documents: [
+        'apps/experience-graph/src/schema/**/resolvers/**/*.ts',
+        'apps/experience-graph/src/schema/**/*.graphql.ts',
+      ],
       preset: 'client',
+      presetConfig: {
+        fragmentMasking: false,
+      },
       config: {
         documentMode: 'string',
       },

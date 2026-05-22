@@ -22,6 +22,15 @@ export type RateProductInput = {
   rating: number;
 };
 
+export type ProductMapperFragment = { id: string, name: string, description: string, price: number, category: string, imageUrl: string, stockCount: number, reviewCount: number };
+
+export type CartItemProductQueryVariables = Exact<{
+  id: string | number;
+}>;
+
+
+export type CartItemProductQuery = { product: { id: string, name: string, description: string, price: number, category: string, imageUrl: string, stockCount: number, reviewCount: number } | null };
+
 export type RateProductMutationVariables = Exact<{
   input: RateProductInput;
 }>;
@@ -35,6 +44,13 @@ export type ProductRatingQueryVariables = Exact<{
 
 
 export type ProductRatingQuery = { productRating: { id: string, value: number } };
+
+export type CartQueryVariables = Exact<{
+  id: string | number;
+}>;
+
+
+export type CartQuery = { cart: { id: string, items: Array<{ productId: string, count: number }> } | null };
 
 export type ProductQueryVariables = Exact<{
   id: string | number;
@@ -69,7 +85,36 @@ export class TypedDocumentString<TResult, TVariables>
     return this.value;
   }
 }
-
+export const ProductMapperFragmentDoc = new TypedDocumentString(`
+    fragment ProductMapper on Product {
+  id
+  name
+  description
+  price
+  category
+  imageUrl
+  stockCount
+  reviewCount
+  stockCount
+}
+    `, {"fragmentName":"ProductMapper"}) as unknown as TypedDocumentString<ProductMapperFragment, unknown>;
+export const CartItemProductDocument = new TypedDocumentString(`
+    query CartItemProduct($id: ID!) {
+  product(id: $id) {
+    ...ProductMapper
+  }
+}
+    fragment ProductMapper on Product {
+  id
+  name
+  description
+  price
+  category
+  imageUrl
+  stockCount
+  reviewCount
+  stockCount
+}`) as unknown as TypedDocumentString<CartItemProductQuery, CartItemProductQueryVariables>;
 export const RateProductDocument = new TypedDocumentString(`
     mutation RateProduct($input: RateProductInput!) {
   rateProduct(input: $input) {
@@ -86,21 +131,34 @@ export const ProductRatingDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ProductRatingQuery, ProductRatingQueryVariables>;
+export const CartDocument = new TypedDocumentString(`
+    query Cart($id: ID!) {
+  cart(id: $id) {
+    id
+    items {
+      productId
+      count
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<CartQuery, CartQueryVariables>;
 export const ProductDocument = new TypedDocumentString(`
     query Product($id: ID!) {
   product(id: $id) {
-    id
-    name
-    description
-    price
-    category
-    imageUrl
-    stockCount
-    reviewCount
-    stockCount
+    ...ProductMapper
   }
 }
-    `) as unknown as TypedDocumentString<ProductQuery, ProductQueryVariables>;
+    fragment ProductMapper on Product {
+  id
+  name
+  description
+  price
+  category
+  imageUrl
+  stockCount
+  reviewCount
+  stockCount
+}`) as unknown as TypedDocumentString<ProductQuery, ProductQueryVariables>;
 export const ProductsDocument = new TypedDocumentString(`
     query Products($input: ProductsInput!, $pagination: PaginationInput!) {
   products(input: $input, pagination: $pagination) {

@@ -15,6 +15,18 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type Cart = {
+  __typename?: 'Cart';
+  id: Scalars['ID']['output'];
+  items: Array<CartItem>;
+};
+
+export type CartItem = {
+  __typename?: 'CartItem';
+  count: Scalars['Int']['output'];
+  productId: Scalars['ID']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   rateProduct?: Maybe<ProductRating>;
@@ -78,9 +90,15 @@ export type ProductsResponse = {
 
 export type Query = {
   __typename?: 'Query';
+  cart?: Maybe<Cart>;
   product?: Maybe<Product>;
   productRating: ProductRating;
   products: ProductsResponse;
+};
+
+
+export type QuerycartArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -185,13 +203,15 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Cart: ResolverTypeWrapper<Cart>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  CartItem: ResolverTypeWrapper<CartItem>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   PaginationInput: PaginationInput;
-  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   PaginationResult: ResolverTypeWrapper<PaginationResult>;
   Product: ResolverTypeWrapper<ProductMapper>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
-  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ProductRating: ResolverTypeWrapper<ProductRating>;
   ProductReviewCount: ResolverTypeWrapper<ProductReviewCount>;
@@ -206,13 +226,15 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Cart: Cart;
+  ID: Scalars['ID']['output'];
+  CartItem: CartItem;
+  Int: Scalars['Int']['output'];
   Mutation: Record<PropertyKey, never>;
   PaginationInput: PaginationInput;
-  Int: Scalars['Int']['output'];
   PaginationResult: PaginationResult;
   Product: ProductMapper;
   String: Scalars['String']['output'];
-  ID: Scalars['ID']['output'];
   Float: Scalars['Float']['output'];
   ProductRating: ProductRating;
   ProductReviewCount: ProductReviewCount;
@@ -222,6 +244,16 @@ export type ResolversParentTypes = {
   Query: Record<PropertyKey, never>;
   RateProductInput: RateProductInput;
   ResponseError: ResponseError;
+};
+
+export type CartResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Cart'] = ResolversParentTypes['Cart']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['CartItem']>, ParentType, ContextType>;
+};
+
+export type CartItemResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['CartItem'] = ResolversParentTypes['CartItem']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  productId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
 };
 
 export type MutationResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
@@ -262,6 +294,7 @@ export type ProductsResponseResolvers<ContextType = ResolverContext, ParentType 
 };
 
 export type QueryResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  cart?: Resolver<Maybe<ResolversTypes['Cart']>, ParentType, ContextType, RequireFields<QuerycartArgs, 'id'>>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryproductArgs, 'id'>>;
   productRating?: Resolver<ResolversTypes['ProductRating'], ParentType, ContextType, RequireFields<QueryproductRatingArgs, 'id'>>;
   products?: Resolver<ResolversTypes['ProductsResponse'], ParentType, ContextType, RequireFields<QueryproductsArgs, 'input' | 'pagination'>>;
@@ -274,6 +307,8 @@ export type ResponseErrorResolvers<ContextType = ResolverContext, ParentType ext
 export type ResponseErrorTypeResolvers = EnumResolverSignature<{ SERVER_ERROR?: any }, ResolversTypes['ResponseErrorType']>;
 
 export type Resolvers<ContextType = ResolverContext> = {
+  Cart?: CartResolvers<ContextType>;
+  CartItem?: CartItemResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   PaginationResult?: PaginationResultResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;

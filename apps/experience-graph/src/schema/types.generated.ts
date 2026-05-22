@@ -1,5 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { ProductMapper } from './product/schema.mappers';
+import { CartItemMapper, ProductMapper } from './product/schema.mappers';
 import { ResolverContext } from '../main';
 export type Maybe<T> = T | null | undefined;
 export type InputMaybe<T> = T | null | undefined;
@@ -13,6 +13,32 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+};
+
+export type Cart = {
+  __typename?: 'Cart';
+  id: Scalars['ID']['output'];
+  items: Array<CartItem>;
+};
+
+export type CartItem = {
+  __typename?: 'CartItem';
+  count: Scalars['Int']['output'];
+  product: CartItemProductResponse;
+};
+
+export type CartItemProductResponse = CartItemProductResponseSuccess | ResponseError;
+
+export type CartItemProductResponseSuccess = {
+  __typename?: 'CartItemProductResponseSuccess';
+  result: Product;
+};
+
+export type CartResponse = CartResponseSuccess | ResponseError;
+
+export type CartResponseSuccess = {
+  __typename?: 'CartResponseSuccess';
+  result?: Maybe<Cart>;
 };
 
 export type Mutation = {
@@ -84,8 +110,14 @@ export type ProductsResponseSuccess = {
 
 export type Query = {
   __typename?: 'Query';
+  cart: CartResponse;
   product: ProductResponse;
   products: ProductsResponse;
+};
+
+
+export type QuerycartArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -190,6 +222,14 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
 
 /** Mapping of union types */
 export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
+  CartItemProductResponse:
+    | ( Omit<CartItemProductResponseSuccess, 'result'> & { result: _RefType['Product'] } & { __typename: 'CartItemProductResponseSuccess' } )
+    | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
+  ;
+  CartResponse:
+    | ( Omit<CartResponseSuccess, 'result'> & { result?: Maybe<_RefType['Cart']> } & { __typename: 'CartResponseSuccess' } )
+    | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
+  ;
   ProductRatingResponse:
     | ( ProductRatingResponseSuccess & { __typename: 'ProductRatingResponseSuccess' } )
     | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
@@ -211,12 +251,18 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Cart: ResolverTypeWrapper<Omit<Cart, 'items'> & { items: Array<ResolversTypes['CartItem']> }>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  CartItem: ResolverTypeWrapper<CartItemMapper>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  CartItemProductResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['CartItemProductResponse']>;
+  CartItemProductResponseSuccess: ResolverTypeWrapper<Omit<CartItemProductResponseSuccess, 'result'> & { result: ResolversTypes['Product'] }>;
+  CartResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['CartResponse']>;
+  CartResponseSuccess: ResolverTypeWrapper<Omit<CartResponseSuccess, 'result'> & { result?: Maybe<ResolversTypes['Cart']> }>;
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   PaginationInput: PaginationInput;
-  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Product: ResolverTypeWrapper<ProductMapper>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
-  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ProductRating: ResolverTypeWrapper<ProductRating>;
@@ -237,12 +283,18 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Cart: Omit<Cart, 'items'> & { items: Array<ResolversParentTypes['CartItem']> };
+  ID: Scalars['ID']['output'];
+  CartItem: CartItemMapper;
+  Int: Scalars['Int']['output'];
+  CartItemProductResponse: ResolversUnionTypes<ResolversParentTypes>['CartItemProductResponse'];
+  CartItemProductResponseSuccess: Omit<CartItemProductResponseSuccess, 'result'> & { result: ResolversParentTypes['Product'] };
+  CartResponse: ResolversUnionTypes<ResolversParentTypes>['CartResponse'];
+  CartResponseSuccess: Omit<CartResponseSuccess, 'result'> & { result?: Maybe<ResolversParentTypes['Cart']> };
   Mutation: Record<PropertyKey, never>;
   PaginationInput: PaginationInput;
-  Int: Scalars['Int']['output'];
   Product: ProductMapper;
   String: Scalars['String']['output'];
-  ID: Scalars['ID']['output'];
   Boolean: Scalars['Boolean']['output'];
   Float: Scalars['Float']['output'];
   ProductRating: ProductRating;
@@ -258,6 +310,34 @@ export type ResolversParentTypes = {
   RateProductResponse: ResolversUnionTypes<ResolversParentTypes>['RateProductResponse'];
   RateProductResponseSuccess: RateProductResponseSuccess;
   ResponseError: ResponseError;
+};
+
+export type CartResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Cart'] = ResolversParentTypes['Cart']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['CartItem']>, ParentType, ContextType>;
+};
+
+export type CartItemResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['CartItem'] = ResolversParentTypes['CartItem']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  product?: Resolver<ResolversTypes['CartItemProductResponse'], ParentType, ContextType>;
+};
+
+export type CartItemProductResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['CartItemProductResponse'] = ResolversParentTypes['CartItemProductResponse']> = {
+  __resolveType?: TypeResolveFn<'CartItemProductResponseSuccess' | 'ResponseError', ParentType, ContextType>;
+};
+
+export type CartItemProductResponseSuccessResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['CartItemProductResponseSuccess'] = ResolversParentTypes['CartItemProductResponseSuccess']> = {
+  result?: Resolver<ResolversTypes['Product'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CartResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['CartResponse'] = ResolversParentTypes['CartResponse']> = {
+  __resolveType?: TypeResolveFn<'CartResponseSuccess' | 'ResponseError', ParentType, ContextType>;
+};
+
+export type CartResponseSuccessResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['CartResponseSuccess'] = ResolversParentTypes['CartResponseSuccess']> = {
+  result?: Resolver<Maybe<ResolversTypes['Cart']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MutationResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
@@ -313,6 +393,7 @@ export type ProductsResponseSuccessResolvers<ContextType = ResolverContext, Pare
 };
 
 export type QueryResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  cart?: Resolver<ResolversTypes['CartResponse'], ParentType, ContextType, RequireFields<QuerycartArgs, 'id'>>;
   product?: Resolver<ResolversTypes['ProductResponse'], ParentType, ContextType, RequireFields<QueryproductArgs, 'id'>>;
   products?: Resolver<ResolversTypes['ProductsResponse'], ParentType, ContextType, RequireFields<QueryproductsArgs, 'input' | 'pagination'>>;
 };
@@ -334,6 +415,12 @@ export type ResponseErrorResolvers<ContextType = ResolverContext, ParentType ext
 export type ResponseErrorTypeResolvers = EnumResolverSignature<{ SERVER_ERROR?: any }, ResolversTypes['ResponseErrorType']>;
 
 export type Resolvers<ContextType = ResolverContext> = {
+  Cart?: CartResolvers<ContextType>;
+  CartItem?: CartItemResolvers<ContextType>;
+  CartItemProductResponse?: CartItemProductResponseResolvers<ContextType>;
+  CartItemProductResponseSuccess?: CartItemProductResponseSuccessResolvers<ContextType>;
+  CartResponse?: CartResponseResolvers<ContextType>;
+  CartResponseSuccess?: CartResponseSuccessResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
   ProductRating?: ProductRatingResolvers<ContextType>;

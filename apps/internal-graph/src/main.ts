@@ -4,11 +4,13 @@ import { typeDefs } from './schema/typeDefs.generated';
 import { resolvers } from './schema/resolvers.generated';
 import { ProductsService } from './data-services/products.service';
 import { ProductRatingsService } from './data-services/productRatings.service';
+import { CartsService } from './data-services/cart.service';
 
 export interface ResolverContext {
   currentUser: string;
   productsService: ProductsService;
   productRatingsService: ProductRatingsService;
+  cartsService: CartsService;
 }
 
 const server = createServer(
@@ -18,6 +20,7 @@ const server = createServer(
       currentUser: 'user-1', // FIXME: hardcoded user
       productsService: new ProductsService(),
       productRatingsService: new ProductRatingsService(),
+      cartsService: new CartsService(),
     }),
   }),
 );

@@ -5,15 +5,7 @@ import type { QueryResolvers } from './../../../types.generated';
 const ProductDoc = graphql(`
   query Product($id: ID!) {
     product(id: $id) {
-      id
-      name
-      description
-      price
-      category
-      imageUrl
-      stockCount
-      reviewCount
-      stockCount
+      ...ProductMapper
     }
   }
 `);

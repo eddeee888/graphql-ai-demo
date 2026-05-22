@@ -190,12 +190,12 @@ export class ProductsService {
           (p) => p.category === filter.category,
         );
       }
-      if (filter.minPrice !== undefined) {
+      if (filter.minPrice !== undefined && filter.minPrice !== null) {
         filteredProducts = filteredProducts.filter(
           (p) => p.price >= filter.minPrice!,
         );
       }
-      if (filter.maxPrice !== undefined) {
+      if (filter.maxPrice !== undefined && filter.maxPrice !== null) {
         filteredProducts = filteredProducts.filter(
           (p) => p.price <= filter.maxPrice!,
         );

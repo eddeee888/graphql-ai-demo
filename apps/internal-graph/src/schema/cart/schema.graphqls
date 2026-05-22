@@ -1,0 +1,13 @@
+extend type Query {
+  cart(id: ID!): Cart
+}
+
+type Cart {
+  id: ID!
+  items: [CartItem!]!
+}
+
+type CartItem {
+  productId: ID!
+  count: Int!
+}

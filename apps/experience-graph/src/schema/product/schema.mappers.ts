@@ -1,10 +1,6 @@
-export type ProductMapper = {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  imageUrl: string;
-  stockCount: number;
-  reviewCount: number;
+export type { ProductMapperFragment as ProductMapper } from '../../gql/graphql';
+
+export type CartItemMapper = {
+  productId: string;
+  count: number;
 };

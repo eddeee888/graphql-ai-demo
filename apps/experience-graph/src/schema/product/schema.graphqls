@@ -4,6 +4,7 @@ extend type Query {
     input: ProductsInput!
     pagination: PaginationInput!
   ): ProductsResponse!
+  cart(id: ID!): CartResponse!
 }
 
 extend type Mutation {
@@ -13,6 +14,7 @@ extend type Mutation {
 union ProductResponse = ProductResponseSuccess | ResponseError
 union ProductsResponse = ProductsResponseSuccess | ResponseError
 union RateProductResponse = RateProductResponseSuccess | ResponseError
+union CartResponse = CartResponseSuccess | ResponseError
 
 type ProductResponseSuccess {
   result: Product
@@ -32,6 +34,10 @@ type ProductsResponseSuccess {
   page: Int!
   pageSize: Int!
   totalPages: Int!
+}
+
+type CartResponseSuccess {
+  result: Cart
 }
 
 input RateProductInput {
@@ -64,4 +70,20 @@ type ProductRatingResponseSuccess {
 type ProductRating {
   id: ID!
   value: Float!
+}
+
+type Cart {
+  id: ID!
+  items: [CartItem!]!
+}
+
+type CartItem {
+  product: CartItemProductResponse!
+  count: Int!
+}
+
+union CartItemProductResponse = CartItemProductResponseSuccess | ResponseError
+
+type CartItemProductResponseSuccess {
+  result: Product!
 }

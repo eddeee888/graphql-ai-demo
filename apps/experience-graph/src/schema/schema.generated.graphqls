@@ -1,3 +1,25 @@
+type Cart {
+  id: ID!
+  items: [CartItem!]!
+}
+
+type CartItem {
+  count: Int!
+  product: CartItemProductResponse!
+}
+
+union CartItemProductResponse = CartItemProductResponseSuccess | ResponseError
+
+type CartItemProductResponseSuccess {
+  result: Product!
+}
+
+union CartResponse = CartResponseSuccess | ResponseError
+
+type CartResponseSuccess {
+  result: Cart
+}
+
 type Mutation {
   rateProduct(input: RateProductInput!): RateProductResponse!
 }
@@ -55,6 +77,7 @@ type ProductsResponseSuccess {
 }
 
 type Query {
+  cart(id: ID!): CartResponse!
   product(id: ID!): ProductResponse!
   products(input: ProductsInput!, pagination: PaginationInput!): ProductsResponse!
 }

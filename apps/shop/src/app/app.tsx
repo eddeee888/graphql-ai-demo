@@ -16,6 +16,9 @@ const ProductDetail = lazy(() =>
     default: m.ProductDetail,
   })),
 );
+const Cart = lazy(() =>
+  import('./routes/Cart').then((m) => ({ default: m.Cart })),
+);
 
 const client = new ApolloClient({
   link: new HttpLink({ uri: 'http://localhost:3000/graphql' }),
@@ -27,7 +30,10 @@ export function App() {
     <div className="app">
       <header className="app-header">
         <div className="header-content">
-          <h1 className="app-title">Nx Shop Demo</h1>
+          <h1 className="app-title">
+            <a href="/products">Shop Demo</a>
+          </h1>
+          <a href="/cart">Go to cart</a>
         </div>
       </header>
 
@@ -38,6 +44,7 @@ export function App() {
               <Route path="/" element={<Navigate to="/products" replace />} />
               <Route path="/products" element={<ProductList />} />
               <Route path="/products/:id" element={<ProductDetail />} />
+              <Route path="/cart" element={<Cart />} />
               <Route path="*" element={<Navigate to="/products" replace />} />
             </Routes>
           </Suspense>
