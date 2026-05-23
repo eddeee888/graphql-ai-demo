@@ -86,7 +86,8 @@
         ],
         "options": {
           "buildTarget": "@org/experience-graph:build",
-          "runBuildTargetDependencies": false
+          "runBuildTargetDependencies": false,
+          "port": 9229
         },
         "configurations": {
           "development": {
