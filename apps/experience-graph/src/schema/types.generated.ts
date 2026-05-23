@@ -115,7 +115,7 @@ export type ProductResponseSuccess = {
 };
 
 export type ProductsInput = {
-  category?: InputMaybe<Scalars['String']['input']>;
+  categories?: InputMaybe<Array<Scalars['String']['input']>>;
   inStock?: InputMaybe<Scalars['Boolean']['input']>;
   maxPrice?: InputMaybe<Scalars['Int']['input']>;
   minPrice?: InputMaybe<Scalars['Int']['input']>;

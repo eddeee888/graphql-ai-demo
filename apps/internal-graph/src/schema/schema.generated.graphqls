@@ -53,7 +53,7 @@ type ProductReviewCount {
 }
 
 input ProductsInput {
-  category: String
+  categories: [String!]
   inStock: Boolean
   maxPrice: Int
   minPrice: Int

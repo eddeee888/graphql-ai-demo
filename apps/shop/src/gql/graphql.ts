@@ -14,7 +14,7 @@ export type PaginationInput = {
 };
 
 export type ProductsInput = {
-  category?: string | null | undefined;
+  categories?: Array<string> | null | undefined;
   inStock?: boolean | null | undefined;
   maxPrice?: number | null | undefined;
   minPrice?: number | null | undefined;

@@ -165,7 +165,7 @@ export class ProductsService {
     pagination,
   }: {
     filter?: {
-      category?: string | null;
+      categories?: string[] | null;
       minPrice?: number | null;
       maxPrice?: number | null;
       inStock?: boolean | null;
@@ -188,9 +188,9 @@ export class ProductsService {
 
     // Apply filters
     if (filter) {
-      if (filter.category) {
-        filteredProducts = filteredProducts.filter(
-          (p) => p.category === filter.category,
+      if (filter.categories) {
+        filteredProducts = filteredProducts.filter((p) =>
+          filter.categories?.includes(p.category),
         );
       }
       if (filter.minPrice !== undefined && filter.minPrice !== null) {

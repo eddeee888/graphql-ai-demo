@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import styles from './ProductList.module.css';
 import { useQuery } from '@apollo/client/react';
 import { ProductListDoc } from './ProductList.graphql';
-import { PaginationInput, ProductsInput } from '../../../gql/graphql';
 import { ProductGrid } from './ProductGrid';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { ErrorMessage } from '../../components/ErrorMessage';
@@ -16,6 +15,16 @@ const categories = [
   'Accessories',
 ];
 
+type Filter = {
+  category?: string | null | undefined;
+  inStock?: boolean | null | undefined;
+  maxPrice?: number | null | undefined;
+  minPrice?: number | null | undefined;
+  searchTerm?: string | null | undefined;
+  page?: number | null | undefined;
+  pageSize?: number | null | undefined;
+};
+
 export const ProductList: FC = () => {
   const navigate = useNavigate();
 
@@ -24,14 +33,12 @@ export const ProductList: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [inStockOnly, setInStockOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filter, setFilter] = useState<
-    Omit<ProductsInput, 'page'> & PaginationInput
-  >({});
+  const [filter, setFilter] = useState<Filter>({});
 
   const { data, error, loading } = useQuery(ProductListDoc, {
     variables: {
       input: {
-        category: filter.category,
+        categories: filter.category ? [filter.category] : undefined,
         inStock: filter.inStock,
         maxPrice: filter.maxPrice,
         minPrice: filter.minPrice,
@@ -46,7 +53,7 @@ export const ProductList: FC = () => {
 
   // Update filter when filter inputs change
   useEffect(() => {
-    const newFilter: ProductsInput = {};
+    const newFilter: Filter = {};
 
     if (searchTerm) {
       newFilter.searchTerm = searchTerm;

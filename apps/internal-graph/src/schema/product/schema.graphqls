@@ -12,7 +12,7 @@ type ProductsResponse {
 }
 
 input ProductsInput {
-  category: String
+  categories: [String!]
   minPrice: Int
   maxPrice: Int
   inStock: Boolean
