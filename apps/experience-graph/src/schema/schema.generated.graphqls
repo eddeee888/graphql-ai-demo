@@ -27,7 +27,7 @@ type CartItemProductResponseSuccess {
 union CartResponse = CartResponseSuccess | ResponseError
 
 type CartResponseSuccess {
-  result: Cart
+  result: Cart!
 }
 
 union ClearCartResponse = ClearCartResponseSuccess | ResponseError

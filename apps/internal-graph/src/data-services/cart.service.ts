@@ -1,5 +1,5 @@
-export interface DatabaseCart {
-  id: string;
+interface DatabaseCart {
+  id: string; // userId
   items: { productId: string; count: number }[];
 }
 
@@ -16,8 +16,17 @@ export class CartsService {
     this.data = data;
   }
 
-  getCart(userId: string): DatabaseCart | undefined {
-    return this.data[userId];
+  getCart(userId: string): DatabaseCart {
+    let cart = this.data[userId];
+    if (!cart) {
+      this.data[userId] = {
+        id: userId,
+        items: [],
+      };
+      cart = this.data[userId];
+    }
+
+    return cart;
   }
 
   addItemToCart({

@@ -1,17 +1,21 @@
 extend type Query {
-  product(id: ID!): Product
-  products(
-    input: ProductsInput!
+  productsByIds(ids: [ID!]!): ProductsByIdsResponse!
+  productList(
+    filter: ProductListFilterInput!
     pagination: PaginationInput!
-  ): ProductsResponse!
+  ): ProductListResponse!
 }
 
-type ProductsResponse {
+type ProductsByIdsResponse {
+  result: [Product]!
+}
+
+type ProductListResponse {
   result: [Product!]!
   pagination: PaginationResult!
 }
 
-input ProductsInput {
+input ProductListFilterInput {
   categories: [String!]
   minPrice: Int
   maxPrice: Int

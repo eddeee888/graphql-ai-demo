@@ -5,8 +5,10 @@ import type { MutationResolvers } from './../../../types.generated';
 const RateProductDoc = graphql(`
   mutation RateProduct($input: RateProductInput!) {
     rateProduct(input: $input) {
-      id
-      value
+      result {
+        id
+        value
+      }
     }
   }
 `);
@@ -15,9 +17,15 @@ export const rateProduct: NonNullable<
   MutationResolvers['rateProduct']
 > = async (_parent, { input }) => {
   try {
-    const result = await execute(RateProductDoc, { input });
+    const response = await execute(RateProductDoc, { input });
 
-    const rating = result.data?.rateProduct?.value || 0;
+    const rating = response.data?.rateProduct?.result.value;
+    if (rating === undefined) {
+      return {
+        __typename: 'ResponseError',
+        type: 'SERVER_ERROR',
+      };
+    }
 
     return {
       __typename: 'RateProductResponseSuccess',

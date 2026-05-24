@@ -3,8 +3,11 @@ import { execute } from '../../../execute';
 import type { QueryResolvers } from './../../../types.generated';
 
 const ProductsDoc = graphql(`
-  query Products($input: ProductsInput!, $pagination: PaginationInput!) {
-    products(input: $input, pagination: $pagination) {
+  query Products(
+    $filter: ProductListFilterInput!
+    $pagination: PaginationInput!
+  ) {
+    productList(filter: $filter, pagination: $pagination) {
       result {
         id
         name
@@ -28,12 +31,12 @@ export const products: NonNullable<QueryResolvers['products']> = async (
   _parent,
   { input, pagination },
 ) => {
-  const result = await execute(ProductsDoc, {
-    input,
+  const response = await execute(ProductsDoc, {
+    filter: input,
     pagination,
   });
 
-  if (!result.data) {
+  if (!response.data || !response.data.productList) {
     return {
       __typename: 'ResponseError',
       type: 'SERVER_ERROR',
@@ -42,10 +45,10 @@ export const products: NonNullable<QueryResolvers['products']> = async (
 
   return {
     __typename: 'ProductsResponseSuccess',
-    result: result.data.products.result,
-    total: result.data.products.pagination.total,
-    totalPages: result.data.products.pagination.totalPages,
-    page: result.data.products.pagination.page,
-    pageSize: result.data.products.pagination.pageSize,
+    result: response.data.productList.result,
+    total: response.data.productList.pagination.total,
+    totalPages: response.data.productList.pagination.totalPages,
+    page: response.data.productList.pagination.page,
+    pageSize: response.data.productList.pagination.pageSize,
   };
 };

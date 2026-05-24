@@ -5,5 +5,9 @@ export const cart: NonNullable<QueryResolvers['cart']> = async (
   { cartsService },
 ) => {
   const result = cartsService.getCart(id);
-  return result;
+
+  return {
+    __typename: 'CartResponse',
+    result,
+  };
 };

@@ -1,4 +1,4 @@
-export interface DatabaseProduct {
+interface DatabaseProduct {
   id: string;
   name: string;
   description: string;
@@ -160,7 +160,7 @@ export class ProductsService {
     this.data = data;
   }
 
-  getProducts({
+  getProductList({
     filter,
     pagination,
   }: {
@@ -238,7 +238,12 @@ export class ProductsService {
     };
   }
 
-  getProductById(id: string): DatabaseProduct | undefined {
-    return this.data[id];
+  getProductByIds(ids: string[]): (DatabaseProduct | null)[] {
+    const result: (DatabaseProduct | null)[] = [];
+    for (const id of ids) {
+      result.push(this.data[id] || null);
+    }
+
+    return result;
   }
 }

@@ -4,8 +4,10 @@ import type { QueryResolvers } from './../../../types.generated';
 
 const ProductDoc = graphql(`
   query Product($id: ID!) {
-    product(id: $id) {
-      ...ProductMapper
+    productsByIds(ids: [$id]) {
+      result {
+        ...ProductMapper
+      }
     }
   }
 `);
@@ -15,8 +17,18 @@ export const product: NonNullable<QueryResolvers['product']> = async (
   { id },
 ) => {
   const product = await execute(ProductDoc, { id });
+
+  if (!product.data?.productsByIds?.result) {
+    return {
+      __typename: 'ResponseError',
+      type: 'SERVER_ERROR',
+    };
+  }
+
+  const productResult = product.data.productsByIds.result[0];
+
   return {
     __typename: 'ProductResponseSuccess',
-    result: product.data?.product,
+    result: productResult,
   };
 };

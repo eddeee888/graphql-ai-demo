@@ -5,5 +5,9 @@ export const clearCart: NonNullable<MutationResolvers['clearCart']> = async (
   { currentUser, cartsService },
 ) => {
   const result = cartsService.clearCart(currentUser);
-  return result;
+
+  return {
+    __typename: 'ClearCartResponse',
+    result,
+  };
 };

@@ -35,7 +35,7 @@ export type CartQuery = { cart:
     | { __typename: 'CartResponseSuccess', result: { __typename: 'Cart', id: string, items: Array<{ __typename: 'CartItem', count: number, product:
             | { __typename: 'CartItemProductResponseSuccess', result: { __typename: 'Product', id: string, name: string } }
             | { __typename: 'ResponseError' }
-           }> } | null }
+           }> } }
     | { __typename: 'ResponseError' }
    };
 

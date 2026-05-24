@@ -49,7 +49,7 @@ export type CartResponse = CartResponseSuccess | ResponseError;
 
 export type CartResponseSuccess = {
   __typename?: 'CartResponseSuccess';
-  result?: Maybe<Cart>;
+  result: Cart;
 };
 
 export type ClearCartResponse = ClearCartResponseSuccess | ResponseError;
@@ -256,7 +256,7 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
     | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
   ;
   CartResponse:
-    | ( Omit<CartResponseSuccess, 'result'> & { result?: Maybe<_RefType['Cart']> } & { __typename: 'CartResponseSuccess' } )
+    | ( Omit<CartResponseSuccess, 'result'> & { result: _RefType['Cart'] } & { __typename: 'CartResponseSuccess' } )
     | ( Omit<ResponseError, 'type'> & { type: _RefType['ResponseErrorType'] } & { __typename: 'ResponseError' } )
   ;
   ClearCartResponse:
@@ -294,7 +294,7 @@ export type ResolversTypes = {
   CartItemProductResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['CartItemProductResponse']>;
   CartItemProductResponseSuccess: ResolverTypeWrapper<Omit<CartItemProductResponseSuccess, 'result'> & { result: ResolversTypes['Product'] }>;
   CartResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['CartResponse']>;
-  CartResponseSuccess: ResolverTypeWrapper<Omit<CartResponseSuccess, 'result'> & { result?: Maybe<ResolversTypes['Cart']> }>;
+  CartResponseSuccess: ResolverTypeWrapper<Omit<CartResponseSuccess, 'result'> & { result: ResolversTypes['Cart'] }>;
   ClearCartResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['ClearCartResponse']>;
   ClearCartResponseSuccess: ResolverTypeWrapper<Omit<ClearCartResponseSuccess, 'result'> & { result: ResolversTypes['Cart'] }>;
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
@@ -331,7 +331,7 @@ export type ResolversParentTypes = {
   CartItemProductResponse: ResolversUnionTypes<ResolversParentTypes>['CartItemProductResponse'];
   CartItemProductResponseSuccess: Omit<CartItemProductResponseSuccess, 'result'> & { result: ResolversParentTypes['Product'] };
   CartResponse: ResolversUnionTypes<ResolversParentTypes>['CartResponse'];
-  CartResponseSuccess: Omit<CartResponseSuccess, 'result'> & { result?: Maybe<ResolversParentTypes['Cart']> };
+  CartResponseSuccess: Omit<CartResponseSuccess, 'result'> & { result: ResolversParentTypes['Cart'] };
   ClearCartResponse: ResolversUnionTypes<ResolversParentTypes>['ClearCartResponse'];
   ClearCartResponseSuccess: Omit<ClearCartResponseSuccess, 'result'> & { result: ResolversParentTypes['Cart'] };
   Mutation: Record<PropertyKey, never>;
@@ -388,7 +388,7 @@ export type CartResponseResolvers<ContextType = ResolverContext, ParentType exte
 };
 
 export type CartResponseSuccessResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['CartResponseSuccess'] = ResolversParentTypes['CartResponseSuccess']> = {
-  result?: Resolver<Maybe<ResolversTypes['Cart']>, ParentType, ContextType>;
+  result?: Resolver<ResolversTypes['Cart'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

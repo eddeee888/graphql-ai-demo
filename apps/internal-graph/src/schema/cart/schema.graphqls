@@ -1,15 +1,27 @@
 extend type Query {
-  cart(id: ID!): Cart
+  cart(id: ID!): CartResponse!
 }
 
 extend type Mutation {
-  addItemToCart(input: AddItemToCartInput!): Cart!
-  clearCart: Cart!
+  addItemToCart(input: AddItemToCartInput!): AddItemToCartResponse!
+  clearCart: ClearCartResponse!
+}
+
+type CartResponse {
+  result: Cart!
 }
 
 input AddItemToCartInput {
   productId: ID!
   count: Int!
+}
+
+type AddItemToCartResponse {
+  result: Cart!
+}
+
+type ClearCartResponse {
+  result: Cart!
 }
 
 type Cart {

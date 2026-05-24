@@ -4,9 +4,11 @@ import type { ProductResolvers } from './../../types.generated';
 
 const ProductRatingDoc = graphql(`
   query ProductRating($id: ID!) {
-    productRating(id: $id) {
-      id
-      value
+    productRatingByProductIds(ids: [$id]) {
+      result {
+        id
+        value
+      }
     }
   }
 `);
@@ -16,20 +18,20 @@ export const Product: ProductResolvers = {
     return stockCount > 0;
   },
   rating: async ({ id }) => {
-    const result = await execute(ProductRatingDoc, {
-      id,
-    });
+    const resp = await execute(ProductRatingDoc, { id });
 
-    if (!result.data) {
+    if (!resp.data?.productRatingByProductIds?.result[0]) {
       return {
         __typename: 'ResponseError',
         type: 'SERVER_ERROR',
       };
     }
 
+    const result = resp.data.productRatingByProductIds.result[0];
+
     return {
       __typename: 'ProductRatingResponseSuccess',
-      result: result.data.productRating,
+      result,
     };
   },
 };

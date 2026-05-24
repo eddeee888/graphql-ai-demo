@@ -41,7 +41,7 @@ type ProductsResponseSuccess {
 }
 
 type CartResponseSuccess {
-  result: Cart
+  result: Cart!
 }
 
 input RateProductInput {

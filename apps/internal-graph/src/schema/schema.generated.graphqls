@@ -3,6 +3,10 @@ input AddItemToCartInput {
   productId: ID!
 }
 
+type AddItemToCartResponse {
+  result: Cart!
+}
+
 type Cart {
   id: ID!
   items: [CartItem!]!
@@ -13,10 +17,18 @@ type CartItem {
   productId: ID!
 }
 
+type CartResponse {
+  result: Cart!
+}
+
+type ClearCartResponse {
+  result: Cart!
+}
+
 type Mutation {
-  addItemToCart(input: AddItemToCartInput!): Cart!
-  clearCart: Cart!
-  rateProduct(input: RateProductInput!): ProductRating
+  addItemToCart(input: AddItemToCartInput!): AddItemToCartResponse!
+  clearCart: ClearCartResponse!
+  rateProduct(input: RateProductInput!): RateProductResponse!
 }
 
 input PaginationInput {
@@ -42,17 +54,7 @@ type Product {
   stockCount: Int!
 }
 
-type ProductRating {
-  id: ID!
-  value: Float!
-}
-
-type ProductReviewCount {
-  id: ID!
-  value: Int!
-}
-
-input ProductsInput {
+input ProductListFilterInput {
   categories: [String!]
   inStock: Boolean
   maxPrice: Int
@@ -60,16 +62,34 @@ input ProductsInput {
   searchTerm: String
 }
 
-type ProductsResponse {
+type ProductListResponse {
   pagination: PaginationResult!
   result: [Product!]!
 }
 
+type ProductRating {
+  id: ID!
+  value: Float!
+}
+
+type ProductRatingByProductIdsResponse {
+  result: [ProductRating!]!
+}
+
+type ProductReviewCount {
+  id: ID!
+  value: Int!
+}
+
+type ProductsByIdsResponse {
+  result: [Product]!
+}
+
 type Query {
-  cart(id: ID!): Cart
-  product(id: ID!): Product
-  productRating(id: ID!): ProductRating!
-  products(input: ProductsInput!, pagination: PaginationInput!): ProductsResponse!
+  cart(id: ID!): CartResponse!
+  productList(filter: ProductListFilterInput!, pagination: PaginationInput!): ProductListResponse!
+  productRatingByProductIds(ids: [ID!]!): ProductRatingByProductIdsResponse!
+  productsByIds(ids: [ID!]!): ProductsByIdsResponse!
 }
 
 input RateProductInput {
@@ -77,10 +97,6 @@ input RateProductInput {
   rating: Int!
 }
 
-type ResponseError {
-  type: ResponseErrorType!
-}
-
-enum ResponseErrorType {
-  SERVER_ERROR
+type RateProductResponse {
+  result: ProductRating!
 }

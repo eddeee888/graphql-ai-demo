@@ -5,10 +5,11 @@ import type { QueryResolvers } from './../../../types.generated';
 const CartDoc = graphql(`
   query Cart($id: ID!) {
     cart(id: $id) {
-      id
-      items {
-        productId
-        count
+      result {
+        id
+        items {
+          ...CartItemMapper
+        }
       }
     }
   }
@@ -19,22 +20,19 @@ export const cart: NonNullable<QueryResolvers['cart']> = async (
   { id },
 ) => {
   try {
-    const result = await execute(CartDoc, { id });
+    const response = await execute(CartDoc, { id });
 
-    const cardResult = result.data?.cart;
-    if (!cardResult) {
+    const result = response.data?.cart.result;
+    if (!result) {
       return {
-        __typename: 'CartResponseSuccess',
-        result: cardResult,
+        __typename: 'ResponseError',
+        type: 'SERVER_ERROR',
       };
     }
 
     return {
       __typename: 'CartResponseSuccess',
-      result: {
-        id: cardResult.id,
-        items: cardResult.items,
-      },
+      result,
     };
   } catch {
     return {

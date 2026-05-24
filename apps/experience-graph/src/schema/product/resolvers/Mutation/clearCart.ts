@@ -5,9 +5,11 @@ import type { MutationResolvers } from './../../../types.generated';
 const ClearCartDoc = graphql(`
   mutation ClearCart {
     clearCart {
-      id
-      items {
-        ...CartItemMapper
+      result {
+        id
+        items {
+          ...CartItemMapper
+        }
       }
     }
   }
@@ -16,9 +18,9 @@ export const clearCart: NonNullable<
   MutationResolvers['clearCart']
 > = async () => {
   try {
-    const result = await execute(ClearCartDoc);
+    const response = await execute(ClearCartDoc);
 
-    if (!result.data) {
+    if (!response.data) {
       return {
         __typename: 'ResponseError',
         type: 'SERVER_ERROR',
@@ -27,7 +29,7 @@ export const clearCart: NonNullable<
 
     return {
       __typename: 'ClearCartResponseSuccess',
-      result: result.data.clearCart,
+      result: response.data.clearCart.result,
     };
   } catch {
     return {

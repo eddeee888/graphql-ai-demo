@@ -2,11 +2,14 @@ import type { MutationResolvers } from './../../../types.generated';
 export const addItemToCart: NonNullable<
   MutationResolvers['addItemToCart']
 > = async (_parent, { input }, { currentUser, cartsService }) => {
-  const cart = cartsService.addItemToCart({
+  const result = cartsService.addItemToCart({
     userId: currentUser,
     productId: input.productId,
     count: input.count,
   });
 
-  return cart;
+  return {
+    __typename: 'AddItemToCartResponse',
+    result,
+  };
 };

@@ -42,25 +42,31 @@ export class ProductRatingsService {
     this.data = data;
   }
 
-  getRatingAvg(productId: string): number {
-    const product = this.data[productId];
+  getRatingAvgByProductIds(productIds: string[]): number[] {
+    const result: number[] = [];
 
-    if (!product) {
-      return 0;
+    for (const id of productIds) {
+      const product = this.data[id];
+      if (!product) {
+        result.push(0);
+        continue;
+      }
+
+      if (product.ratings.length === 0) {
+        result.push(0);
+        continue;
+      }
+
+      result.push(
+        product.ratings.reduce((sum, rating) => sum + rating.rating, 0) /
+          product.ratings.length,
+      );
     }
 
-    const ratings = product.ratings;
-
-    if (ratings.length === 0) {
-      return 0;
-    }
-
-    return (
-      ratings.reduce((sum, rating) => sum + rating.rating, 0) / ratings.length
-    );
+    return result;
   }
 
-  rate({
+  rateProduct({
     creatorActorId,
     productId,
     rating,
@@ -84,6 +90,6 @@ export class ProductRatingsService {
       createdAt: new Date(),
     });
 
-    return this.getRatingAvg(productId);
+    return this.getRatingAvgByProductIds([productId])[0];
   }
 }

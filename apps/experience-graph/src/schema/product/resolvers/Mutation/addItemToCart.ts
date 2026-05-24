@@ -5,9 +5,11 @@ import type { MutationResolvers } from './../../../types.generated';
 const AddItemToCartDoc = graphql(`
   mutation AddItemToCart($input: AddItemToCartInput!) {
     addItemToCart(input: $input) {
-      id
-      items {
-        ...CartItemMapper
+      result {
+        id
+        items {
+          ...CartItemMapper
+        }
       }
     }
   }
@@ -17,14 +19,14 @@ export const addItemToCart: NonNullable<
   MutationResolvers['addItemToCart']
 > = async (_parent, { input }) => {
   try {
-    const result = await execute(AddItemToCartDoc, {
+    const response = await execute(AddItemToCartDoc, {
       input: {
         productId: input.productId,
         count: 1,
       },
     });
 
-    if (!result.data) {
+    if (!response.data) {
       return {
         __typename: 'ResponseError',
         type: 'SERVER_ERROR',
@@ -33,7 +35,7 @@ export const addItemToCart: NonNullable<
 
     return {
       __typename: 'AddItemToCartResponseSuccess',
-      result: result.data.addItemToCart,
+      result: response.data.addItemToCart.result,
     };
   } catch {
     return {

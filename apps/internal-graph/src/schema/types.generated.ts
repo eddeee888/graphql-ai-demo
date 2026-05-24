@@ -1,11 +1,8 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { ProductMapper } from './product/schema.mappers';
 import { ResolverContext } from '../main';
 export type Maybe<T> = T | null | undefined;
 export type InputMaybe<T> = T | null | undefined;
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
-export type EnumResolverSignature<T, AllowedValues = any> = { [key in keyof T]?: AllowedValues };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string | number; }
@@ -20,6 +17,11 @@ export type AddItemToCartInput = {
   productId: Scalars['ID']['input'];
 };
 
+export type AddItemToCartResponse = {
+  __typename?: 'AddItemToCartResponse';
+  result: Cart;
+};
+
 export type Cart = {
   __typename?: 'Cart';
   id: Scalars['ID']['output'];
@@ -32,11 +34,21 @@ export type CartItem = {
   productId: Scalars['ID']['output'];
 };
 
+export type CartResponse = {
+  __typename?: 'CartResponse';
+  result: Cart;
+};
+
+export type ClearCartResponse = {
+  __typename?: 'ClearCartResponse';
+  result: Cart;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
-  addItemToCart: Cart;
-  clearCart: Cart;
-  rateProduct?: Maybe<ProductRating>;
+  addItemToCart: AddItemToCartResponse;
+  clearCart: ClearCartResponse;
+  rateProduct: RateProductResponse;
 };
 
 
@@ -74,10 +86,29 @@ export type Product = {
   stockCount: Scalars['Int']['output'];
 };
 
+export type ProductListFilterInput = {
+  categories?: InputMaybe<Array<Scalars['String']['input']>>;
+  inStock?: InputMaybe<Scalars['Boolean']['input']>;
+  maxPrice?: InputMaybe<Scalars['Int']['input']>;
+  minPrice?: InputMaybe<Scalars['Int']['input']>;
+  searchTerm?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ProductListResponse = {
+  __typename?: 'ProductListResponse';
+  pagination: PaginationResult;
+  result: Array<Product>;
+};
+
 export type ProductRating = {
   __typename?: 'ProductRating';
   id: Scalars['ID']['output'];
   value: Scalars['Float']['output'];
+};
+
+export type ProductRatingByProductIdsResponse = {
+  __typename?: 'ProductRatingByProductIdsResponse';
+  result: Array<ProductRating>;
 };
 
 export type ProductReviewCount = {
@@ -86,26 +117,17 @@ export type ProductReviewCount = {
   value: Scalars['Int']['output'];
 };
 
-export type ProductsInput = {
-  categories?: InputMaybe<Array<Scalars['String']['input']>>;
-  inStock?: InputMaybe<Scalars['Boolean']['input']>;
-  maxPrice?: InputMaybe<Scalars['Int']['input']>;
-  minPrice?: InputMaybe<Scalars['Int']['input']>;
-  searchTerm?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ProductsResponse = {
-  __typename?: 'ProductsResponse';
-  pagination: PaginationResult;
-  result: Array<Product>;
+export type ProductsByIdsResponse = {
+  __typename?: 'ProductsByIdsResponse';
+  result: Array<Maybe<Product>>;
 };
 
 export type Query = {
   __typename?: 'Query';
-  cart?: Maybe<Cart>;
-  product?: Maybe<Product>;
-  productRating: ProductRating;
-  products: ProductsResponse;
+  cart: CartResponse;
+  productList: ProductListResponse;
+  productRatingByProductIds: ProductRatingByProductIdsResponse;
+  productsByIds: ProductsByIdsResponse;
 };
 
 
@@ -114,19 +136,19 @@ export type QuerycartArgs = {
 };
 
 
-export type QueryproductArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryproductRatingArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryproductsArgs = {
-  input: ProductsInput;
+export type QueryproductListArgs = {
+  filter: ProductListFilterInput;
   pagination: PaginationInput;
+};
+
+
+export type QueryproductRatingByProductIdsArgs = {
+  ids: Array<Scalars['ID']['input']>;
+};
+
+
+export type QueryproductsByIdsArgs = {
+  ids: Array<Scalars['ID']['input']>;
 };
 
 export type RateProductInput = {
@@ -134,13 +156,10 @@ export type RateProductInput = {
   rating: Scalars['Int']['input'];
 };
 
-export type ResponseError = {
-  __typename?: 'ResponseError';
-  type: ResponseErrorType;
+export type RateProductResponse = {
+  __typename?: 'RateProductResponse';
+  result: ProductRating;
 };
-
-export type ResponseErrorType =
-  | 'SERVER_ERROR';
 
 
 
@@ -218,23 +237,27 @@ export type ResolversTypes = {
   AddItemToCartInput: AddItemToCartInput;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  AddItemToCartResponse: ResolverTypeWrapper<AddItemToCartResponse>;
   Cart: ResolverTypeWrapper<Cart>;
   CartItem: ResolverTypeWrapper<CartItem>;
+  CartResponse: ResolverTypeWrapper<CartResponse>;
+  ClearCartResponse: ResolverTypeWrapper<ClearCartResponse>;
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   PaginationInput: PaginationInput;
   PaginationResult: ResolverTypeWrapper<PaginationResult>;
-  Product: ResolverTypeWrapper<ProductMapper>;
+  Product: ResolverTypeWrapper<Product>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
-  ProductRating: ResolverTypeWrapper<ProductRating>;
-  ProductReviewCount: ResolverTypeWrapper<ProductReviewCount>;
-  ProductsInput: ProductsInput;
+  ProductListFilterInput: ProductListFilterInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
-  ProductsResponse: ResolverTypeWrapper<Omit<ProductsResponse, 'result'> & { result: Array<ResolversTypes['Product']> }>;
+  ProductListResponse: ResolverTypeWrapper<ProductListResponse>;
+  ProductRating: ResolverTypeWrapper<ProductRating>;
+  ProductRatingByProductIdsResponse: ResolverTypeWrapper<ProductRatingByProductIdsResponse>;
+  ProductReviewCount: ResolverTypeWrapper<ProductReviewCount>;
+  ProductsByIdsResponse: ResolverTypeWrapper<ProductsByIdsResponse>;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   RateProductInput: RateProductInput;
-  ResponseError: ResolverTypeWrapper<Omit<ResponseError, 'type'> & { type: ResolversTypes['ResponseErrorType'] }>;
-  ResponseErrorType: ResolverTypeWrapper<'SERVER_ERROR'>;
+  RateProductResponse: ResolverTypeWrapper<RateProductResponse>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -242,22 +265,31 @@ export type ResolversParentTypes = {
   AddItemToCartInput: AddItemToCartInput;
   Int: Scalars['Int']['output'];
   ID: Scalars['ID']['output'];
+  AddItemToCartResponse: AddItemToCartResponse;
   Cart: Cart;
   CartItem: CartItem;
+  CartResponse: CartResponse;
+  ClearCartResponse: ClearCartResponse;
   Mutation: Record<PropertyKey, never>;
   PaginationInput: PaginationInput;
   PaginationResult: PaginationResult;
-  Product: ProductMapper;
+  Product: Product;
   String: Scalars['String']['output'];
   Float: Scalars['Float']['output'];
-  ProductRating: ProductRating;
-  ProductReviewCount: ProductReviewCount;
-  ProductsInput: ProductsInput;
+  ProductListFilterInput: ProductListFilterInput;
   Boolean: Scalars['Boolean']['output'];
-  ProductsResponse: Omit<ProductsResponse, 'result'> & { result: Array<ResolversParentTypes['Product']> };
+  ProductListResponse: ProductListResponse;
+  ProductRating: ProductRating;
+  ProductRatingByProductIdsResponse: ProductRatingByProductIdsResponse;
+  ProductReviewCount: ProductReviewCount;
+  ProductsByIdsResponse: ProductsByIdsResponse;
   Query: Record<PropertyKey, never>;
   RateProductInput: RateProductInput;
-  ResponseError: ResponseError;
+  RateProductResponse: RateProductResponse;
+};
+
+export type AddItemToCartResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['AddItemToCartResponse'] = ResolversParentTypes['AddItemToCartResponse']> = {
+  result?: Resolver<ResolversTypes['Cart'], ParentType, ContextType>;
 };
 
 export type CartResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Cart'] = ResolversParentTypes['Cart']> = {
@@ -270,10 +302,18 @@ export type CartItemResolvers<ContextType = ResolverContext, ParentType extends 
   productId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
 };
 
+export type CartResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['CartResponse'] = ResolversParentTypes['CartResponse']> = {
+  result?: Resolver<ResolversTypes['Cart'], ParentType, ContextType>;
+};
+
+export type ClearCartResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ClearCartResponse'] = ResolversParentTypes['ClearCartResponse']> = {
+  result?: Resolver<ResolversTypes['Cart'], ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addItemToCart?: Resolver<ResolversTypes['Cart'], ParentType, ContextType, RequireFields<MutationaddItemToCartArgs, 'input'>>;
-  clearCart?: Resolver<ResolversTypes['Cart'], ParentType, ContextType>;
-  rateProduct?: Resolver<Maybe<ResolversTypes['ProductRating']>, ParentType, ContextType, RequireFields<MutationrateProductArgs, 'input'>>;
+  addItemToCart?: Resolver<ResolversTypes['AddItemToCartResponse'], ParentType, ContextType, RequireFields<MutationaddItemToCartArgs, 'input'>>;
+  clearCart?: Resolver<ResolversTypes['ClearCartResponse'], ParentType, ContextType>;
+  rateProduct?: Resolver<ResolversTypes['RateProductResponse'], ParentType, ContextType, RequireFields<MutationrateProductArgs, 'input'>>;
 };
 
 export type PaginationResultResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['PaginationResult'] = ResolversParentTypes['PaginationResult']> = {
@@ -294,9 +334,18 @@ export type ProductResolvers<ContextType = ResolverContext, ParentType extends R
   stockCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 };
 
+export type ProductListResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductListResponse'] = ResolversParentTypes['ProductListResponse']> = {
+  pagination?: Resolver<ResolversTypes['PaginationResult'], ParentType, ContextType>;
+  result?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
+};
+
 export type ProductRatingResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductRating'] = ResolversParentTypes['ProductRating']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   value?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+};
+
+export type ProductRatingByProductIdsResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductRatingByProductIdsResponse'] = ResolversParentTypes['ProductRatingByProductIdsResponse']> = {
+  result?: Resolver<Array<ResolversTypes['ProductRating']>, ParentType, ContextType>;
 };
 
 export type ProductReviewCountResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductReviewCount'] = ResolversParentTypes['ProductReviewCount']> = {
@@ -304,35 +353,36 @@ export type ProductReviewCountResolvers<ContextType = ResolverContext, ParentTyp
   value?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 };
 
-export type ProductsResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductsResponse'] = ResolversParentTypes['ProductsResponse']> = {
-  pagination?: Resolver<ResolversTypes['PaginationResult'], ParentType, ContextType>;
-  result?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
+export type ProductsByIdsResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductsByIdsResponse'] = ResolversParentTypes['ProductsByIdsResponse']> = {
+  result?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  cart?: Resolver<Maybe<ResolversTypes['Cart']>, ParentType, ContextType, RequireFields<QuerycartArgs, 'id'>>;
-  product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryproductArgs, 'id'>>;
-  productRating?: Resolver<ResolversTypes['ProductRating'], ParentType, ContextType, RequireFields<QueryproductRatingArgs, 'id'>>;
-  products?: Resolver<ResolversTypes['ProductsResponse'], ParentType, ContextType, RequireFields<QueryproductsArgs, 'input' | 'pagination'>>;
+  cart?: Resolver<ResolversTypes['CartResponse'], ParentType, ContextType, RequireFields<QuerycartArgs, 'id'>>;
+  productList?: Resolver<ResolversTypes['ProductListResponse'], ParentType, ContextType, RequireFields<QueryproductListArgs, 'filter' | 'pagination'>>;
+  productRatingByProductIds?: Resolver<ResolversTypes['ProductRatingByProductIdsResponse'], ParentType, ContextType, RequireFields<QueryproductRatingByProductIdsArgs, 'ids'>>;
+  productsByIds?: Resolver<ResolversTypes['ProductsByIdsResponse'], ParentType, ContextType, RequireFields<QueryproductsByIdsArgs, 'ids'>>;
 };
 
-export type ResponseErrorResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ResponseError'] = ResolversParentTypes['ResponseError']> = {
-  type?: Resolver<ResolversTypes['ResponseErrorType'], ParentType, ContextType>;
+export type RateProductResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['RateProductResponse'] = ResolversParentTypes['RateProductResponse']> = {
+  result?: Resolver<ResolversTypes['ProductRating'], ParentType, ContextType>;
 };
-
-export type ResponseErrorTypeResolvers = EnumResolverSignature<{ SERVER_ERROR?: any }, ResolversTypes['ResponseErrorType']>;
 
 export type Resolvers<ContextType = ResolverContext> = {
+  AddItemToCartResponse?: AddItemToCartResponseResolvers<ContextType>;
   Cart?: CartResolvers<ContextType>;
   CartItem?: CartItemResolvers<ContextType>;
+  CartResponse?: CartResponseResolvers<ContextType>;
+  ClearCartResponse?: ClearCartResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   PaginationResult?: PaginationResultResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
+  ProductListResponse?: ProductListResponseResolvers<ContextType>;
   ProductRating?: ProductRatingResolvers<ContextType>;
+  ProductRatingByProductIdsResponse?: ProductRatingByProductIdsResponseResolvers<ContextType>;
   ProductReviewCount?: ProductReviewCountResolvers<ContextType>;
-  ProductsResponse?: ProductsResponseResolvers<ContextType>;
+  ProductsByIdsResponse?: ProductsByIdsResponseResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  ResponseError?: ResponseErrorResolvers<ContextType>;
-  ResponseErrorType?: ResponseErrorTypeResolvers;
+  RateProductResponse?: RateProductResponseResolvers<ContextType>;
 };
 

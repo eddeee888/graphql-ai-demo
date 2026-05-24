@@ -1,14 +1,22 @@
 extend type Query {
-  productRating(id: ID!): ProductRating!
+  productRatingByProductIds(ids: [ID!]!): ProductRatingByProductIdsResponse!
 }
 
 extend type Mutation {
-  rateProduct(input: RateProductInput!): ProductRating
+  rateProduct(input: RateProductInput!): RateProductResponse!
+}
+
+type ProductRatingByProductIdsResponse {
+  result: [ProductRating!]!
 }
 
 input RateProductInput {
   id: ID!
   rating: Int!
+}
+
+type RateProductResponse {
+  result: ProductRating!
 }
 
 type ProductRating {
