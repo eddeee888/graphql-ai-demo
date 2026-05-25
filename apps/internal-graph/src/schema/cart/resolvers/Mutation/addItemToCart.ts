@@ -3,7 +3,7 @@ export const addItemToCart: NonNullable<
   MutationResolvers['addItemToCart']
 > = async (_parent, { input }, { currentUser, cartsService }) => {
   const result = cartsService.addItemToCart({
-    userId: currentUser,
+    userId: currentUser.id,
     productId: input.productId,
     count: input.count,
   });

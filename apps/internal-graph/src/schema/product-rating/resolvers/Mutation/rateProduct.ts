@@ -3,7 +3,7 @@ export const rateProduct: NonNullable<
   MutationResolvers['rateProduct']
 > = async (_parent, { input }, { currentUser, productRatingsService }) => {
   const newRatingAvg = productRatingsService.rateProduct({
-    creatorActorId: currentUser,
+    creatorActorId: currentUser.id,
     productId: input.id,
     rating: input.rating,
   });
