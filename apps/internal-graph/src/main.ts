@@ -1,27 +1,43 @@
 import { createServer } from 'node:http';
+import { GraphQLError } from 'graphql';
 import { createSchema, createYoga } from 'graphql-yoga';
 import { typeDefs } from './schema/typeDefs.generated';
 import { resolvers } from './schema/resolvers.generated';
 import { ProductsService } from './data-services/products.service';
 import { ProductRatingsService } from './data-services/productRatings.service';
 import { CartsService } from './data-services/cart.service';
+import { UsersService, type DatabaseUser } from './data-services/users.service';
 
 export interface ResolverContext {
-  currentUser: string;
+  currentUser: DatabaseUser;
   productsService: ProductsService;
   productRatingsService: ProductRatingsService;
   cartsService: CartsService;
 }
 
+const usersService = new UsersService();
+const productsService = new ProductsService();
+const productRatingsService = new ProductRatingsService();
+const cartsService = new CartsService();
+
 const server = createServer(
   createYoga<ResolverContext>({
     schema: createSchema<ResolverContext>({ typeDefs, resolvers }),
-    context: (): ResolverContext => ({
-      currentUser: 'user-1', // FIXME: hardcoded user
-      productsService: new ProductsService(),
-      productRatingsService: new ProductRatingsService(),
-      cartsService: new CartsService(),
-    }),
+    context: ({ request }): ResolverContext => {
+      const userId = request.headers.get('x-user-id');
+      const user = usersService.getUserById(userId ?? '');
+      if (!user) {
+        throw new GraphQLError('Unauthorized', {
+          extensions: { http: { status: 401 } },
+        });
+      }
+      return {
+        currentUser: user,
+        productsService,
+        productRatingsService,
+        cartsService,
+      };
+    },
   }),
 );
 
