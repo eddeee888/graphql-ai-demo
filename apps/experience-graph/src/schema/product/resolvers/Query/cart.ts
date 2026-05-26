@@ -1,5 +1,4 @@
 import { graphql } from '../../../../gql';
-import { execute } from '../../../execute';
 import type { QueryResolvers } from './../../../types.generated';
 
 const CartDoc = graphql(`
@@ -18,6 +17,7 @@ const CartDoc = graphql(`
 export const cart: NonNullable<QueryResolvers['cart']> = async (
   _parent,
   { id },
+  { execute },
 ) => {
   try {
     const response = await execute(CartDoc, { id });

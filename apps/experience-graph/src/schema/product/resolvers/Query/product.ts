@@ -1,5 +1,4 @@
 import { graphql } from '../../../../gql';
-import { execute } from '../../../execute';
 import type { QueryResolvers } from './../../../types.generated';
 
 const ProductDoc = graphql(`
@@ -15,6 +14,7 @@ const ProductDoc = graphql(`
 export const product: NonNullable<QueryResolvers['product']> = async (
   _parent,
   { id },
+  { execute },
 ) => {
   const product = await execute(ProductDoc, { id });
 

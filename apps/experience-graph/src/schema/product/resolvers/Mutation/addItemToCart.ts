@@ -1,5 +1,4 @@
 import { graphql } from '../../../../gql';
-import { execute } from '../../../execute';
 import type { MutationResolvers } from './../../../types.generated';
 
 const AddItemToCartDoc = graphql(`
@@ -17,7 +16,7 @@ const AddItemToCartDoc = graphql(`
 
 export const addItemToCart: NonNullable<
   MutationResolvers['addItemToCart']
-> = async (_parent, { input }) => {
+> = async (_parent, { input }, { execute }) => {
   try {
     const response = await execute(AddItemToCartDoc, {
       input: {

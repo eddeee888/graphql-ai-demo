@@ -1,5 +1,4 @@
 import { graphql } from '../../../../gql';
-import { execute } from '../../../execute';
 import type { MutationResolvers } from './../../../types.generated';
 
 const RateProductDoc = graphql(`
@@ -15,7 +14,7 @@ const RateProductDoc = graphql(`
 
 export const rateProduct: NonNullable<
   MutationResolvers['rateProduct']
-> = async (_parent, { input }) => {
+> = async (_parent, { input }, { execute }) => {
   try {
     const response = await execute(RateProductDoc, { input });
 
