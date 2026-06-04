@@ -1,5 +1,4 @@
 import { graphql } from '../../../gql';
-import { execute } from '../../execute';
 import type { ProductResolvers } from './../../types.generated';
 
 const ProductRatingDoc = graphql(`
@@ -17,7 +16,7 @@ export const Product: ProductResolvers = {
   inStock: async ({ stockCount }) => {
     return stockCount > 0;
   },
-  rating: async ({ id }) => {
+  rating: async ({ id }, _, { execute }) => {
     const resp = await execute(ProductRatingDoc, { id });
 
     if (!resp.data?.productRatingByProductIds?.result[0]) {

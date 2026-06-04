@@ -21,7 +21,12 @@ const Cart = lazy(() =>
 );
 
 const client = new ApolloClient({
-  link: new HttpLink({ uri: 'http://localhost:3000/graphql' }),
+  link: new HttpLink({
+    uri: 'http://localhost:3000/graphql',
+    headers: {
+      'x-user-id': localStorage.getItem('x-user-id') || '',
+    },
+  }),
   cache: new InMemoryCache(),
 });
 

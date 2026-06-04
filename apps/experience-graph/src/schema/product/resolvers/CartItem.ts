@@ -1,5 +1,4 @@
 import { graphql } from '../../../gql';
-import { execute } from '../../execute';
 import type { CartItemResolvers } from './../../types.generated';
 
 const CartItemProductDoc = graphql(`
@@ -13,7 +12,7 @@ const CartItemProductDoc = graphql(`
 `);
 
 export const CartItem: CartItemResolvers = {
-  product: async ({ productId }, _arg, _ctx) => {
+  product: async ({ productId }, _arg, { execute }) => {
     const response = await execute(CartItemProductDoc, {
       id: productId,
     });
