@@ -1,4 +1,4 @@
-import styles from './ErrorMessage.module.css';
+import { Button } from '../Button';
 
 interface ErrorMessageProps {
   message?: string;
@@ -10,14 +10,10 @@ export function ErrorMessage({
   onRetry,
 }: ErrorMessageProps) {
   return (
-    <div className={styles['error-container']}>
-      <div className={styles['error-icon']}>⚠️</div>
-      <p className={styles['error-text']}>{message}</p>
-      {onRetry && (
-        <button className={styles['retry-button']} onClick={onRetry}>
-          Try Again
-        </button>
-      )}
+    <div className="flex flex-col items-center justify-center p-12 min-h-52 text-center">
+      <div className="text-5xl mb-4">⚠️</div>
+      <p className="text-lg text-red-400 mb-6 max-w-sm">{message}</p>
+      {onRetry && <Button onClick={onRetry}>Try Again</Button>}
     </div>
   );
 }
