@@ -19,14 +19,14 @@ export const Product: ProductResolvers = {
   rating: async ({ id }, _, { execute }) => {
     const resp = await execute(ProductRatingDoc, { id });
 
-    if (!resp.data?.productRatingByProductIds?.result[0]) {
+    const result = resp.data?.productRatingByProductIds?.result[0];
+
+    if (!result) {
       return {
         __typename: 'ResponseError',
         type: 'SERVER_ERROR',
       };
     }
-
-    const result = resp.data.productRatingByProductIds.result[0];
 
     return {
       __typename: 'ProductRatingResponseSuccess',

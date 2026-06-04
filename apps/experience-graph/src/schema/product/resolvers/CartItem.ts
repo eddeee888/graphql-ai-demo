@@ -17,14 +17,14 @@ export const CartItem: CartItemResolvers = {
       id: productId,
     });
 
-    if (!response.data?.productsByIds?.result[0]) {
+    const product = response.data?.productsByIds?.result[0];
+
+    if (!product) {
       return {
         __typename: 'ResponseError',
         type: 'SERVER_ERROR',
       };
     }
-
-    const product = response.data.productsByIds.result[0];
 
     return {
       __typename: 'CartItemProductResponseSuccess',

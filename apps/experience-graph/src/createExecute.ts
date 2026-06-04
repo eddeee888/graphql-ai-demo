@@ -1,5 +1,5 @@
 import type { ExecutionResult } from 'graphql';
-import type { TypedDocumentString } from '../gql/graphql';
+import type { TypedDocumentString } from './gql/graphql';
 
 export function createExecute(headers: Record<string, string | null>) {
   const forwardedHeaders = Object.fromEntries(
