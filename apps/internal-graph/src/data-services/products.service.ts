@@ -19,7 +19,7 @@ const data: Record<string, DatabaseProduct> = {
     category: 'Electronics',
     imageUrl:
       'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
-    stockCount: 5,
+    stockCount: 0,
     reviewCount: 234,
   },
   'product-2': {

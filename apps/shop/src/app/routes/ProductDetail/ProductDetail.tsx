@@ -1,5 +1,4 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import styles from './ProductDetail.module.css';
 import { FC } from 'react';
 import { useMutation, useQuery } from '@apollo/client/react';
 import {
@@ -9,6 +8,9 @@ import {
 } from './ProductDetail.graphql';
 import { ErrorMessage } from '../../components/ErrorMessage';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
+import { LinkButton } from '../../components/LinkButton';
+import { StarRating } from '../../components/StarRating';
+import { Button } from '../../components/Button';
 
 const handleRetry = () => {
   // Force re-fetch by navigating to the same URL
@@ -56,88 +58,77 @@ const ProductDetailInner: FC<{ id: string }> = ({ id }) => {
     return <ErrorMessage message="Product not found" onRetry={handleRetry} />;
   }
 
-  const getStars = (rating: number) => {
-    if (!product) return [];
-    const stars = [];
-    for (let i = 0; i < 5; i++) {
-      stars.push(i < Math.floor(rating));
-    }
-    return stars;
-  };
-
   return (
-    <div className={styles['product-detail-container']}>
-      <button
-        className={styles['back-button']}
+    <div className="max-w-7xl m-auto p-6">
+      <LinkButton
         onClick={() => {
           navigate('/products');
         }}
       >
         ← Back to Products
-      </button>
+      </LinkButton>
 
-      <div className={styles['product-detail']}>
-        <div className={styles['product-image']}>
-          <img src={product.imageUrl} alt={product.name} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white border rounded-lg p-8 shadow-md">
+        <div className="relative w-full h-[400px] lg:h-[400px] bg-gray-50 rounded-lg overflow-hidden">
+          <img
+            className="w-full h-full object-cover"
+            src={product.imageUrl}
+            alt={product.name}
+          />
           {!product.inStock && (
-            <div className={styles['out-of-stock-overlay']}>Out of Stock</div>
+            <div className="absolute inset-0 bg-black/70 text-white flex items-center justify-center font-bold text-2xl">
+              Out of Stock
+            </div>
           )}
         </div>
 
-        <div className={styles['product-info']}>
-          <div className={styles['product-category']}>{product.category}</div>
-          <h1 className={styles['product-name']}>{product.name}</h1>
+        <div className="flex flex-col gap-5">
+          <div className="text-gray-400 text-sm uppercase">
+            {product.category}
+          </div>
+          <h1 className="text-2xl m-0">{product.name}</h1>
 
-          <div className={styles['product-rating']}>
-            <span className={styles['stars']}>
-              {getStars(
+          <div className="flex items-center gap-3">
+            <StarRating
+              rating={
                 product.rating.__typename === 'ProductRatingResponseSuccess'
                   ? product.rating.result.value
-                  : 0,
-              ).map((filled, index) => (
-                <span
-                  key={index}
-                  className={filled ? styles['filled'] : ''}
-                  onClick={() => {
-                    rateProduct({
-                      variables: {
-                        input: {
-                          id,
-                          rating: index + 1,
-                        },
-                      },
-                    });
-                  }}
-                >
-                  ★
-                </span>
-              ))}
-            </span>
-            <span className={styles['review-count']}>
+                  : 0
+              }
+              onClick={(index) =>
+                rateProduct({
+                  variables: {
+                    input: {
+                      id,
+                      rating: index + 1,
+                    },
+                  },
+                })
+              }
+            />
+            <span className="text-sm text-gray-400">
               ({product.reviewCount} reviews)
             </span>
           </div>
 
-          <div className={styles['product-price']}>
-            ${product.price.toFixed(2)}
-          </div>
+          <div className="font-bold text-2xl">${product.price.toFixed(2)}</div>
 
-          <div className={styles['product-availability']}>
+          <div>
             {product.inStock ? (
-              <span className={styles['in-stock']}>✓ In Stock</span>
+              <span className="text-green-500 font-semibold">✓ In Stock</span>
             ) : (
-              <span className={styles['out-of-stock']}>Out of Stock</span>
+              <span className="text-red-500 font-semibold">Out of Stock</span>
             )}
           </div>
 
-          <div className={styles['product-description']}>
-            <h2>Description</h2>
+          <div className="border-t border-gray-400 py-5">
+            <h2 className="text-lg mb-3">Description</h2>
             <p>{product.description}</p>
           </div>
 
-          <div className={styles['product-actions']}>
-            <button
-              className={styles['add-to-cart-btn']}
+          <div>
+            <Button
+              className="w-full"
               onClick={async () => {
                 await addItemToCard({
                   variables: {
@@ -151,25 +142,25 @@ const ProductDetailInner: FC<{ id: string }> = ({ id }) => {
               disabled={!product.inStock}
             >
               {product.inStock ? 'Add to Cart' : 'Out of Stock'}
-            </button>
+            </Button>
           </div>
 
-          <div className={styles['product-details']}>
-            <h3>Product Details</h3>
+          <div className="border-t pt-5">
+            <h3 className="text-xl mb-4">Product Details</h3>
             <ul>
-              <li>
+              <li className="py-2 border-b">
                 <strong>Product ID:</strong> {product.id}
               </li>
-              <li>
+              <li className="py-2 border-b">
                 <strong>Category:</strong> {product.category}
               </li>
               {product.rating.__typename === 'ProductRatingResponseSuccess' && (
-                <li>
+                <li className="py-2 border-b">
                   <strong>Rating:</strong>{' '}
                   {product.rating.result.value.toFixed(1)} out of 5
                 </li>
               )}
-              <li>
+              <li className="py-2">
                 <strong>Reviews:</strong> {product.reviewCount} customer reviews
               </li>
             </ul>

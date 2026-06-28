@@ -18,14 +18,14 @@ export const product: NonNullable<QueryResolvers['product']> = async (
 ) => {
   const product = await execute(ProductDoc, { id });
 
-  if (!product.data?.productsByIds?.result) {
+  const productResult = product.data?.productsByIds?.result[0];
+
+  if (!productResult) {
     return {
       __typename: 'ResponseError',
       type: 'SERVER_ERROR',
     };
   }
-
-  const productResult = product.data.productsByIds.result[0];
 
   return {
     __typename: 'ProductResponseSuccess',

@@ -2,7 +2,7 @@ import { createServer } from 'node:http';
 import { createSchema, createYoga } from 'graphql-yoga';
 import { typeDefs } from './schema/typeDefs.generated';
 import { resolvers } from './schema/resolvers.generated';
-import { createExecute } from './schema/execute';
+import { createExecute } from './createExecute';
 
 export type ResolverContext = {
   execute: ReturnType<typeof createExecute>;
