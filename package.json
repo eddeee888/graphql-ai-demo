@@ -76,9 +76,6 @@
     "vitest": "4.1.8"
   },
   "workspaces": [
-    "apps/*",
-    "libs/api/products",
-    "libs/shared/*",
-    "libs/shop/*"
+    "apps/*"
   ]
 }
