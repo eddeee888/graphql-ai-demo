@@ -16,11 +16,18 @@ const CartDoc = graphql(`
 
 export const cart: NonNullable<QueryResolvers['cart']> = async (
   _parent,
-  { id },
-  { execute },
+  _arg,
+  { execute, userId },
 ) => {
   try {
-    const response = await execute(CartDoc, { id });
+    if (!userId) {
+      return {
+        __typename: 'ResponseError',
+        type: 'SERVER_ERROR',
+      };
+    }
+
+    const response = await execute(CartDoc, { id: userId });
 
     const result = response.data?.cart.result;
     if (!result) {

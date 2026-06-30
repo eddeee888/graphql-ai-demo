@@ -7,11 +7,7 @@ import { Button } from '../../components/Button';
 import { Link } from '../../components/Link';
 
 export const Cart: FC = () => {
-  const cartId = 'user-1'; // FIXME: should get from header
-
-  const { data, loading, error } = useQuery(CartDoc, {
-    variables: { id: cartId },
-  });
+  const { data, loading, error } = useQuery(CartDoc);
   const [clearCart] = useMutation(ClearCartDoc);
 
   if (loading) {

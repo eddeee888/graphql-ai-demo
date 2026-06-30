@@ -6,12 +6,13 @@ import    { products as Query_products } from './product/resolvers/Query/product
 import    { addItemToCart as Mutation_addItemToCart } from './product/resolvers/Mutation/addItemToCart';
 import    { clearCart as Mutation_clearCart } from './product/resolvers/Mutation/clearCart';
 import    { rateProduct as Mutation_rateProduct } from './product/resolvers/Mutation/rateProduct';
+import    { cartUpdates as Subscription_cartUpdates } from './product/resolvers/Subscription/cartUpdates';
 import    { CartItem } from './product/resolvers/CartItem';
 import    { Product } from './product/resolvers/Product';
     export const resolvers: Resolvers = {
       Query: { cart: Query_cart,product: Query_product,products: Query_products },
       Mutation: { addItemToCart: Mutation_addItemToCart,clearCart: Mutation_clearCart,rateProduct: Mutation_rateProduct },
-      
+      Subscription: { cartUpdates: Subscription_cartUpdates },
       CartItem: CartItem,
 Product: Product
     }

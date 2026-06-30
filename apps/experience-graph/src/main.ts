@@ -1,20 +1,32 @@
 import { createServer } from 'node:http';
-import { createSchema, createYoga } from 'graphql-yoga';
+import { useGraphQLSSE } from '@graphql-yoga/plugin-graphql-sse';
+import { createPubSub, createSchema, createYoga } from 'graphql-yoga';
 import { typeDefs } from './schema/typeDefs.generated';
 import { resolvers } from './schema/resolvers.generated';
 import { createExecute } from './createExecute';
 
 export type ResolverContext = {
   execute: ReturnType<typeof createExecute>;
+  userId: string | null;
+  pubSub: typeof pubSub;
 };
+
+const pubSub = createPubSub<{
+  cartUpdates: [
+    userId: string,
+    update: { userId: string; addedProductId: string },
+  ];
+}>();
 
 const server = createServer(
   createYoga<ResolverContext>({
     schema: createSchema<ResolverContext>({ typeDefs, resolvers }),
     context: ({ request }): ResolverContext => {
-      const headers = { 'x-user-id': request.headers.get('x-user-id') };
-      return { execute: createExecute(headers) };
+      const userId = request.headers.get('x-user-id');
+      const headers = { 'x-user-id': userId };
+      return { execute: createExecute(headers), pubSub, userId };
     },
+    plugins: [useGraphQLSSE()],
   }),
 );
 

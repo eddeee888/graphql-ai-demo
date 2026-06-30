@@ -4,7 +4,7 @@ extend type Query {
     input: ProductsInput!
     pagination: PaginationInput!
   ): ProductsResponse!
-  cart(id: ID!): CartResponse!
+  cart: CartResponse!
 }
 
 extend type Mutation {
@@ -13,12 +13,11 @@ extend type Mutation {
   clearCart: ClearCartResponse!
 }
 
+extend type Subscription {
+  cartUpdates: CartUpdatesResponseSuccess!
+}
+
 union ProductResponse = ProductResponseSuccess | ResponseError
-union ProductsResponse = ProductsResponseSuccess | ResponseError
-union RateProductResponse = RateProductResponseSuccess | ResponseError
-union CartResponse = CartResponseSuccess | ResponseError
-union AddItemToCartResponse = AddItemToCartResponseSuccess | ResponseError
-union ClearCartResponse = ClearCartResponseSuccess | ResponseError
 
 type ProductResponseSuccess {
   result: Product
@@ -32,6 +31,8 @@ input ProductsInput {
   searchTerm: String
 }
 
+union ProductsResponse = ProductsResponseSuccess | ResponseError
+
 type ProductsResponseSuccess {
   result: [Product!]!
   total: Int!
@@ -39,6 +40,8 @@ type ProductsResponseSuccess {
   pageSize: Int!
   totalPages: Int!
 }
+
+union CartResponse = CartResponseSuccess | ResponseError
 
 type CartResponseSuccess {
   result: Cart!
@@ -48,6 +51,8 @@ input RateProductInput {
   id: ID!
   rating: Int!
 }
+
+union RateProductResponse = RateProductResponseSuccess | ResponseError
 
 type RateProductResponseSuccess {
   result: ProductRating!
@@ -76,6 +81,8 @@ type ProductRating {
   value: Float!
 }
 
+union AddItemToCartResponse = AddItemToCartResponseSuccess | ResponseError
+
 input AddItemToCartInput {
   productId: ID!
 }
@@ -84,6 +91,7 @@ type AddItemToCartResponseSuccess {
   result: Cart!
 }
 
+union ClearCartResponse = ClearCartResponseSuccess | ResponseError
 type ClearCartResponseSuccess {
   result: Cart!
 }
@@ -102,4 +110,8 @@ union CartItemProductResponse = CartItemProductResponseSuccess | ResponseError
 
 type CartItemProductResponseSuccess {
   result: Product!
+}
+
+type CartUpdatesResponseSuccess {
+  update: String!
 }
