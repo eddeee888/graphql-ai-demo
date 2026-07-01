@@ -137,7 +137,6 @@ const ProductDetailInner: FC<{ id: string }> = ({ id }) => {
                     },
                   },
                 });
-                alert(`Added ${product.name} to cart!`);
               }}
               disabled={!product.inStock}
             >
