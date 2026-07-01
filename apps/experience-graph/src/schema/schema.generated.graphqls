@@ -30,6 +30,10 @@ type CartResponseSuccess {
   result: Cart!
 }
 
+type CartUpdatesResponseSuccess {
+  update: String!
+}
+
 union ClearCartResponse = ClearCartResponseSuccess | ResponseError
 
 type ClearCartResponseSuccess {
@@ -95,7 +99,7 @@ type ProductsResponseSuccess {
 }
 
 type Query {
-  cart(id: ID!): CartResponse!
+  cart: CartResponse!
   product(id: ID!): ProductResponse!
   products(input: ProductsInput!, pagination: PaginationInput!): ProductsResponse!
 }
@@ -117,4 +121,8 @@ type ResponseError {
 
 enum ResponseErrorType {
   SERVER_ERROR
+}
+
+type Subscription {
+  cartUpdates: CartUpdatesResponseSuccess!
 }

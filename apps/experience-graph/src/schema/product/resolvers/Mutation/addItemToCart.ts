@@ -16,8 +16,15 @@ const AddItemToCartDoc = graphql(`
 
 export const addItemToCart: NonNullable<
   MutationResolvers['addItemToCart']
-> = async (_parent, { input }, { execute }) => {
+> = async (_parent, { input }, { execute, pubSub, userId }) => {
   try {
+    if (!userId) {
+      return {
+        __typename: 'ResponseError',
+        type: 'SERVER_ERROR',
+      };
+    }
+
     const response = await execute(AddItemToCartDoc, {
       input: {
         productId: input.productId,
@@ -31,6 +38,11 @@ export const addItemToCart: NonNullable<
         type: 'SERVER_ERROR',
       };
     }
+
+    pubSub.publish('cartUpdates', userId, {
+      userId,
+      addedProductId: input.productId,
+    });
 
     return {
       __typename: 'AddItemToCartResponseSuccess',

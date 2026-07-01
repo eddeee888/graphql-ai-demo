@@ -9,7 +9,9 @@
   "dependencies": {
     "@apollo/client": "4.1.9",
     "@graphql-typed-document-node/core": "3.2.0",
+    "@graphql-yoga/plugin-graphql-sse": "3.21.2",
     "graphql": "16.14.0",
+    "graphql-sse": "2.6.0",
     "graphql-yoga": "5.21.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
@@ -76,9 +78,6 @@
     "vitest": "4.1.8"
   },
   "workspaces": [
-    "apps/*",
-    "libs/api/products",
-    "libs/shared/*",
-    "libs/shop/*"
+    "apps/*"
   ]
 }

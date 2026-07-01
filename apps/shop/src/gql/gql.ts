@@ -14,7 +14,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "\n  query Cart($id: ID!) {\n    cart(id: $id) {\n      ... on CartResponseSuccess {\n        result {\n          ...CartFragment\n        }\n      }\n      ... on ResponseError {\n        __typename\n      }\n    }\n  }\n": typeof types.CartDocument,
+    "\n  subscription CartUpdates {\n    cartUpdates {\n      update\n    }\n  }\n": typeof types.CartUpdatesDocument,
+    "\n  query Cart {\n    cart {\n      ... on CartResponseSuccess {\n        result {\n          ...CartFragment\n        }\n      }\n      ... on ResponseError {\n        __typename\n      }\n    }\n  }\n": typeof types.CartDocument,
     "\n  mutation ClearCart {\n    clearCart {\n      ... on ClearCartResponseSuccess {\n        result {\n          ...CartFragment\n        }\n      }\n    }\n  }\n": typeof types.ClearCartDocument,
     "\n  fragment CartFragment on Cart {\n    id\n    items {\n      product {\n        ... on CartItemProductResponseSuccess {\n          result {\n            id\n            name\n          }\n        }\n        ... on ResponseError {\n          __typename\n        }\n      }\n      count\n    }\n  }\n": typeof types.CartFragmentFragmentDoc,
     "\n  query ProductDetail($id: ID!) {\n    product(id: $id) {\n      ... on ProductResponseSuccess {\n        result {\n          id\n          name\n          imageUrl\n          inStock\n          category\n          reviewCount\n          price\n          description\n          rating {\n            ... on ProductRatingResponseSuccess {\n              result {\n                id\n                value\n              }\n            }\n            ... on ResponseError {\n              __typename\n            }\n          }\n        }\n      }\n      ... on ResponseError {\n        __typename\n      }\n    }\n  }\n": typeof types.ProductDetailDocument,
@@ -23,7 +24,8 @@ type Documents = {
     "\n  query ProductList($input: ProductsInput!, $pagination: PaginationInput!) {\n    products(input: $input, pagination: $pagination) {\n      ... on ProductsResponseSuccess {\n        result {\n          id\n          name\n          price\n          category\n          imageUrl\n          inStock\n          rating {\n            ... on ProductRatingResponseSuccess {\n              result {\n                id\n                value\n              }\n            }\n            ... on ResponseError {\n              __typename\n            }\n          }\n          reviewCount\n        }\n        total\n        totalPages\n        page\n        pageSize\n      }\n      ... on ResponseError {\n        __typename\n      }\n    }\n  }\n": typeof types.ProductListDocument,
 };
 const documents: Documents = {
-    "\n  query Cart($id: ID!) {\n    cart(id: $id) {\n      ... on CartResponseSuccess {\n        result {\n          ...CartFragment\n        }\n      }\n      ... on ResponseError {\n        __typename\n      }\n    }\n  }\n": types.CartDocument,
+    "\n  subscription CartUpdates {\n    cartUpdates {\n      update\n    }\n  }\n": types.CartUpdatesDocument,
+    "\n  query Cart {\n    cart {\n      ... on CartResponseSuccess {\n        result {\n          ...CartFragment\n        }\n      }\n      ... on ResponseError {\n        __typename\n      }\n    }\n  }\n": types.CartDocument,
     "\n  mutation ClearCart {\n    clearCart {\n      ... on ClearCartResponseSuccess {\n        result {\n          ...CartFragment\n        }\n      }\n    }\n  }\n": types.ClearCartDocument,
     "\n  fragment CartFragment on Cart {\n    id\n    items {\n      product {\n        ... on CartItemProductResponseSuccess {\n          result {\n            id\n            name\n          }\n        }\n        ... on ResponseError {\n          __typename\n        }\n      }\n      count\n    }\n  }\n": types.CartFragmentFragmentDoc,
     "\n  query ProductDetail($id: ID!) {\n    product(id: $id) {\n      ... on ProductResponseSuccess {\n        result {\n          id\n          name\n          imageUrl\n          inStock\n          category\n          reviewCount\n          price\n          description\n          rating {\n            ... on ProductRatingResponseSuccess {\n              result {\n                id\n                value\n              }\n            }\n            ... on ResponseError {\n              __typename\n            }\n          }\n        }\n      }\n      ... on ResponseError {\n        __typename\n      }\n    }\n  }\n": types.ProductDetailDocument,
@@ -49,7 +51,11 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query Cart($id: ID!) {\n    cart(id: $id) {\n      ... on CartResponseSuccess {\n        result {\n          ...CartFragment\n        }\n      }\n      ... on ResponseError {\n        __typename\n      }\n    }\n  }\n"): (typeof documents)["\n  query Cart($id: ID!) {\n    cart(id: $id) {\n      ... on CartResponseSuccess {\n        result {\n          ...CartFragment\n        }\n      }\n      ... on ResponseError {\n        __typename\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  subscription CartUpdates {\n    cartUpdates {\n      update\n    }\n  }\n"): (typeof documents)["\n  subscription CartUpdates {\n    cartUpdates {\n      update\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query Cart {\n    cart {\n      ... on CartResponseSuccess {\n        result {\n          ...CartFragment\n        }\n      }\n      ... on ResponseError {\n        __typename\n      }\n    }\n  }\n"): (typeof documents)["\n  query Cart {\n    cart {\n      ... on CartResponseSuccess {\n        result {\n          ...CartFragment\n        }\n      }\n      ... on ResponseError {\n        __typename\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

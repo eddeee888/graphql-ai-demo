@@ -1,8 +1,8 @@
 import { graphql } from '../../../gql';
 
 export const CartDoc = graphql(`
-  query Cart($id: ID!) {
-    cart(id: $id) {
+  query Cart {
+    cart {
       ... on CartResponseSuccess {
         result {
           ...CartFragment
