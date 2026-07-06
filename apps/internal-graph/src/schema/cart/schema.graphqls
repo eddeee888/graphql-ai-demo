@@ -4,7 +4,7 @@ extend type Query {
 
 extend type Mutation {
   addItemToCart(input: AddItemToCartInput!): AddItemToCartResponse!
-  clearCart: ClearCartResponse!
+  clearCart(input: ClearCartInput!): ClearCartResponse!
 }
 
 type CartResponse {
@@ -12,12 +12,17 @@ type CartResponse {
 }
 
 input AddItemToCartInput {
+  userId: ID!
   productId: ID!
   count: Int!
 }
 
 type AddItemToCartResponse {
   result: Cart!
+}
+
+input ClearCartInput {
+  userId: ID!
 }
 
 type ClearCartResponse {

@@ -27,6 +27,7 @@ export const addItemToCart: NonNullable<
 
     const response = await execute(AddItemToCartDoc, {
       input: {
+        userId,
         productId: input.productId,
         count: 1,
       },

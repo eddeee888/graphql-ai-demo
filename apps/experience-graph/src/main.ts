@@ -23,7 +23,7 @@ const server = createServer(
     schema: createSchema<ResolverContext>({ typeDefs, resolvers }),
     context: ({ request }): ResolverContext => {
       const userId = request.headers.get('x-user-id');
-      const headers = { 'x-user-id': userId };
+      const headers = { 'x-agent-id': 'experience-graph' };
       return { execute: createExecute(headers), pubSub, userId };
     },
     plugins: [useGraphQLSSE()],

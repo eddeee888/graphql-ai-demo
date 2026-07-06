@@ -1,10 +1,10 @@
 import type { MutationResolvers } from './../../../types.generated';
 export const rateProduct: NonNullable<
   MutationResolvers['rateProduct']
-> = async (_parent, { input }, { currentUser, productRatingsService }) => {
+> = async (_parent, { input }, { productRatingsService }) => {
   const newRatingAvg = productRatingsService.rateProduct({
-    creatorActorId: currentUser.id,
-    productId: input.id,
+    creatorActorId: input.userId,
+    productId: input.productId,
     rating: input.rating,
   });
 
@@ -12,7 +12,7 @@ export const rateProduct: NonNullable<
     __typename: 'RateProductResponse',
     result: {
       __typename: 'ProductRating',
-      id: input.id,
+      id: input.productId,
       value: newRatingAvg,
     },
   };

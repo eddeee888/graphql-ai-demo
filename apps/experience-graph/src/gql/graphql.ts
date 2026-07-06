@@ -7,6 +7,7 @@ import { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
 export type AddItemToCartInput = {
   count: number;
   productId: string | number;
+  userId: string | number;
 };
 
 export type PaginationInput = {
@@ -23,8 +24,9 @@ export type ProductListFilterInput = {
 };
 
 export type RateProductInput = {
-  id: string | number;
+  productId: string | number;
   rating: number;
+  userId: string | number;
 };
 
 export type CartItemMapperFragment = { productId: string, count: number };
@@ -45,7 +47,9 @@ export type AddItemToCartMutationVariables = Exact<{
 
 export type AddItemToCartMutation = { addItemToCart: { result: { id: string, items: Array<{ productId: string, count: number }> } } };
 
-export type ClearCartMutationVariables = Exact<{ [key: string]: never; }>;
+export type ClearCartMutationVariables = Exact<{
+  userId: string | number;
+}>;
 
 
 export type ClearCartMutation = { clearCart: { result: { id: string, items: Array<{ productId: string, count: number }> } } };
@@ -158,8 +162,8 @@ export const AddItemToCartDocument = new TypedDocumentString(`
   count
 }`) as unknown as TypedDocumentString<AddItemToCartMutation, AddItemToCartMutationVariables>;
 export const ClearCartDocument = new TypedDocumentString(`
-    mutation ClearCart {
-  clearCart {
+    mutation ClearCart($userId: ID!) {
+  clearCart(input: {userId: $userId}) {
     result {
       id
       items {

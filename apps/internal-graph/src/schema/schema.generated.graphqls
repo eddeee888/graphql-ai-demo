@@ -1,6 +1,7 @@
 input AddItemToCartInput {
   count: Int!
   productId: ID!
+  userId: ID!
 }
 
 type AddItemToCartResponse {
@@ -21,13 +22,17 @@ type CartResponse {
   result: Cart!
 }
 
+input ClearCartInput {
+  userId: ID!
+}
+
 type ClearCartResponse {
   result: Cart!
 }
 
 type Mutation {
   addItemToCart(input: AddItemToCartInput!): AddItemToCartResponse!
-  clearCart: ClearCartResponse!
+  clearCart(input: ClearCartInput!): ClearCartResponse!
   rateProduct(input: RateProductInput!): RateProductResponse!
 }
 
@@ -93,8 +98,9 @@ type Query {
 }
 
 input RateProductInput {
-  id: ID!
+  productId: ID!
   rating: Int!
+  userId: ID!
 }
 
 type RateProductResponse {

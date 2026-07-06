@@ -15,6 +15,7 @@ export type Scalars = {
 export type AddItemToCartInput = {
   count: Scalars['Int']['input'];
   productId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 export type AddItemToCartResponse = {
@@ -39,6 +40,10 @@ export type CartResponse = {
   result: Cart;
 };
 
+export type ClearCartInput = {
+  userId: Scalars['ID']['input'];
+};
+
 export type ClearCartResponse = {
   __typename?: 'ClearCartResponse';
   result: Cart;
@@ -54,6 +59,11 @@ export type Mutation = {
 
 export type MutationaddItemToCartArgs = {
   input: AddItemToCartInput;
+};
+
+
+export type MutationclearCartArgs = {
+  input: ClearCartInput;
 };
 
 
@@ -152,8 +162,9 @@ export type QueryproductsByIdsArgs = {
 };
 
 export type RateProductInput = {
-  id: Scalars['ID']['input'];
+  productId: Scalars['ID']['input'];
   rating: Scalars['Int']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 export type RateProductResponse = {
@@ -241,6 +252,7 @@ export type ResolversTypes = {
   Cart: ResolverTypeWrapper<Cart>;
   CartItem: ResolverTypeWrapper<CartItem>;
   CartResponse: ResolverTypeWrapper<CartResponse>;
+  ClearCartInput: ClearCartInput;
   ClearCartResponse: ResolverTypeWrapper<ClearCartResponse>;
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   PaginationInput: PaginationInput;
@@ -269,6 +281,7 @@ export type ResolversParentTypes = {
   Cart: Cart;
   CartItem: CartItem;
   CartResponse: CartResponse;
+  ClearCartInput: ClearCartInput;
   ClearCartResponse: ClearCartResponse;
   Mutation: Record<PropertyKey, never>;
   PaginationInput: PaginationInput;
@@ -312,7 +325,7 @@ export type ClearCartResponseResolvers<ContextType = ResolverContext, ParentType
 
 export type MutationResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addItemToCart?: Resolver<ResolversTypes['AddItemToCartResponse'], ParentType, ContextType, RequireFields<MutationaddItemToCartArgs, 'input'>>;
-  clearCart?: Resolver<ResolversTypes['ClearCartResponse'], ParentType, ContextType>;
+  clearCart?: Resolver<ResolversTypes['ClearCartResponse'], ParentType, ContextType, RequireFields<MutationclearCartArgs, 'input'>>;
   rateProduct?: Resolver<ResolversTypes['RateProductResponse'], ParentType, ContextType, RequireFields<MutationrateProductArgs, 'input'>>;
 };
 

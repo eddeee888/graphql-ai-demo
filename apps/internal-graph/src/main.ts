@@ -6,16 +6,13 @@ import { resolvers } from './schema/resolvers.generated';
 import { ProductsService } from './data-services/products.service';
 import { ProductRatingsService } from './data-services/productRatings.service';
 import { CartsService } from './data-services/cart.service';
-import { UsersService, type DatabaseUser } from './data-services/users.service';
 
 export interface ResolverContext {
-  currentUser: DatabaseUser;
   productsService: ProductsService;
   productRatingsService: ProductRatingsService;
   cartsService: CartsService;
 }
 
-const usersService = new UsersService();
 const productsService = new ProductsService();
 const productRatingsService = new ProductRatingsService();
 const cartsService = new CartsService();
@@ -24,15 +21,14 @@ const server = createServer(
   createYoga<ResolverContext>({
     schema: createSchema<ResolverContext>({ typeDefs, resolvers }),
     context: ({ request }): ResolverContext => {
-      const userId = request.headers.get('x-user-id');
-      const user = usersService.getUserById(userId ?? '');
-      if (!user) {
+      const agentId = request.headers.get('x-agent-id');
+
+      if (!agentId) {
         throw new GraphQLError('Unauthorized', {
           extensions: { http: { status: 401 } },
         });
       }
       return {
-        currentUser: user,
         productsService,
         productRatingsService,
         cartsService,
