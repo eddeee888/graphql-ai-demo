@@ -60,14 +60,14 @@ export type RateProductMutationVariables = Exact<{
 }>;
 
 
-export type RateProductMutation = { rateProduct: { result: { id: string, value: number } } };
+export type RateProductMutation = { rateProduct: { result: { id: string, average: number } } };
 
 export type ProductRatingQueryVariables = Exact<{
   id: string | number;
 }>;
 
 
-export type ProductRatingQuery = { productRatingByProductIds: { result: Array<{ id: string, value: number }> } };
+export type ProductRatingQuery = { productRatingByProductIds: { result: Array<{ id: string, average: number }> } };
 
 export type CartQueryVariables = Exact<{
   id: string | number;
@@ -182,7 +182,7 @@ export const RateProductDocument = new TypedDocumentString(`
   rateProduct(input: $input) {
     result {
       id
-      value
+      average
     }
   }
 }
@@ -192,7 +192,7 @@ export const ProductRatingDocument = new TypedDocumentString(`
   productRatingByProductIds(ids: [$id]) {
     result {
       id
-      value
+      average
     }
   }
 }

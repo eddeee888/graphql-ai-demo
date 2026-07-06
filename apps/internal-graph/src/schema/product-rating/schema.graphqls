@@ -13,7 +13,7 @@ extend type Mutation {
 }
 
 type ProductRatingByProductIdsResponse {
-  result: [ProductRating!]!
+  result: [Product_Rating!]!
 }
 
 input RateProductInput {
@@ -23,10 +23,16 @@ input RateProductInput {
 }
 
 type RateProductResponse {
-  result: ProductRating!
+  result: Product_Rating!
 }
 
-type ProductRating {
-  id: ID! # Product ID
-  value: Float!
+"""
+Product_Rating is an extension of Product entity
+"""
+type Product_Rating {
+  """
+  Product_Rating's ID is Product's ID
+  """
+  id: ID!
+  average: Float!
 }

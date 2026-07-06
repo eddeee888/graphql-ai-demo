@@ -8,9 +8,9 @@ export const productRatingByProductIds: NonNullable<
     __typename: 'ProductRatingByProductIdsResponse',
     result: ids.map((id, index) => {
       return {
-        __typename: 'ProductRating',
+        __typename: 'Product_Rating',
         id,
-        value: result[index],
+        average: result[index],
       };
     }),
   };

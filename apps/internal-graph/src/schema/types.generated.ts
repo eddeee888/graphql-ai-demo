@@ -116,15 +116,17 @@ export type ProductListResponse = {
   result: Array<Product>;
 };
 
-export type ProductRating = {
-  __typename?: 'ProductRating';
-  id: Scalars['ID']['output'];
-  value: Scalars['Float']['output'];
-};
-
 export type ProductRatingByProductIdsResponse = {
   __typename?: 'ProductRatingByProductIdsResponse';
-  result: Array<ProductRating>;
+  result: Array<Product_Rating>;
+};
+
+/** Product_Rating is an extension of Product entity */
+export type Product_Rating = {
+  __typename?: 'Product_Rating';
+  average: Scalars['Float']['output'];
+  /** Product_Rating's ID is Product's ID */
+  id: Scalars['ID']['output'];
 };
 
 export type ProductsByIdsResponse = {
@@ -184,7 +186,7 @@ export type RateProductInput = {
 
 export type RateProductResponse = {
   __typename?: 'RateProductResponse';
-  result: ProductRating;
+  result: Product_Rating;
 };
 
 
@@ -278,8 +280,8 @@ export type ResolversTypes = {
   ProductListFilterInput: ProductListFilterInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   ProductListResponse: ResolverTypeWrapper<ProductListResponse>;
-  ProductRating: ResolverTypeWrapper<ProductRating>;
   ProductRatingByProductIdsResponse: ResolverTypeWrapper<ProductRatingByProductIdsResponse>;
+  Product_Rating: ResolverTypeWrapper<Product_Rating>;
   ProductsByIdsResponse: ResolverTypeWrapper<ProductsByIdsResponse>;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   RateProductInput: RateProductInput;
@@ -306,8 +308,8 @@ export type ResolversParentTypes = {
   ProductListFilterInput: ProductListFilterInput;
   Boolean: Scalars['Boolean']['output'];
   ProductListResponse: ProductListResponse;
-  ProductRating: ProductRating;
   ProductRatingByProductIdsResponse: ProductRatingByProductIdsResponse;
+  Product_Rating: Product_Rating;
   ProductsByIdsResponse: ProductsByIdsResponse;
   Query: Record<PropertyKey, never>;
   RateProductInput: RateProductInput;
@@ -365,13 +367,13 @@ export type ProductListResponseResolvers<ContextType = ResolverContext, ParentTy
   result?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
 };
 
-export type ProductRatingResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductRating'] = ResolversParentTypes['ProductRating']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  value?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+export type ProductRatingByProductIdsResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductRatingByProductIdsResponse'] = ResolversParentTypes['ProductRatingByProductIdsResponse']> = {
+  result?: Resolver<Array<ResolversTypes['Product_Rating']>, ParentType, ContextType>;
 };
 
-export type ProductRatingByProductIdsResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductRatingByProductIdsResponse'] = ResolversParentTypes['ProductRatingByProductIdsResponse']> = {
-  result?: Resolver<Array<ResolversTypes['ProductRating']>, ParentType, ContextType>;
+export type Product_RatingResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Product_Rating'] = ResolversParentTypes['Product_Rating']> = {
+  average?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
 };
 
 export type ProductsByIdsResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductsByIdsResponse'] = ResolversParentTypes['ProductsByIdsResponse']> = {
@@ -386,7 +388,7 @@ export type QueryResolvers<ContextType = ResolverContext, ParentType extends Res
 };
 
 export type RateProductResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['RateProductResponse'] = ResolversParentTypes['RateProductResponse']> = {
-  result?: Resolver<ResolversTypes['ProductRating'], ParentType, ContextType>;
+  result?: Resolver<ResolversTypes['Product_Rating'], ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = ResolverContext> = {
@@ -399,8 +401,8 @@ export type Resolvers<ContextType = ResolverContext> = {
   PaginationResult?: PaginationResultResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
   ProductListResponse?: ProductListResponseResolvers<ContextType>;
-  ProductRating?: ProductRatingResolvers<ContextType>;
   ProductRatingByProductIdsResponse?: ProductRatingByProductIdsResponseResolvers<ContextType>;
+  Product_Rating?: Product_RatingResolvers<ContextType>;
   ProductsByIdsResponse?: ProductsByIdsResponseResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   RateProductResponse?: RateProductResponseResolvers<ContextType>;

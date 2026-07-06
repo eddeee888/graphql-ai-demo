@@ -6,7 +6,7 @@ const ProductRatingDoc = graphql(`
     productRatingByProductIds(ids: [$id]) {
       result {
         id
-        value
+        average
       }
     }
   }
@@ -30,7 +30,10 @@ export const Product: ProductResolvers = {
 
     return {
       __typename: 'ProductRatingResponseSuccess',
-      result,
+      result: {
+        id: result.id,
+        value: result.average,
+      },
     };
   },
 };

@@ -80,13 +80,16 @@ type ProductListResponse {
   result: [Product!]!
 }
 
-type ProductRating {
-  id: ID!
-  value: Float!
+type ProductRatingByProductIdsResponse {
+  result: [Product_Rating!]!
 }
 
-type ProductRatingByProductIdsResponse {
-  result: [ProductRating!]!
+"""Product_Rating is an extension of Product entity"""
+type Product_Rating {
+  average: Float!
+
+  """Product_Rating's ID is Product's ID"""
+  id: ID!
 }
 
 type ProductsByIdsResponse {
@@ -125,5 +128,5 @@ input RateProductInput {
 }
 
 type RateProductResponse {
-  result: ProductRating!
+  result: Product_Rating!
 }

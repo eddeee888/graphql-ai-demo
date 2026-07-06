@@ -11,9 +11,9 @@ export const rateProduct: NonNullable<
   return {
     __typename: 'RateProductResponse',
     result: {
-      __typename: 'ProductRating',
+      __typename: 'Product_Rating',
       id: input.productId,
-      value: newRatingAvg,
+      average: newRatingAvg,
     },
   };
 };

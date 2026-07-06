@@ -6,7 +6,7 @@ const RateProductDoc = graphql(`
     rateProduct(input: $input) {
       result {
         id
-        value
+        average
       }
     }
   }
@@ -31,7 +31,7 @@ export const rateProduct: NonNullable<
       },
     });
 
-    const rating = response.data?.rateProduct?.result.value;
+    const rating = response.data?.rateProduct?.result.average;
     if (rating === undefined) {
       return {
         __typename: 'ResponseError',
