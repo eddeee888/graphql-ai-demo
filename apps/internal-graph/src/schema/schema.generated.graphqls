@@ -9,6 +9,7 @@ type AddItemToCartResponse {
 }
 
 type Cart {
+  """Each user only has one cart, so the Cart ID is the User's ID"""
   id: ID!
   items: [CartItem!]!
 }
@@ -31,16 +32,23 @@ type ClearCartResponse {
 }
 
 type Mutation {
+  """Mutation to add a product to a user's cart"""
   addItemToCart(input: AddItemToCartInput!): AddItemToCartResponse!
+
+  """Mutation to clear a user's cart"""
   clearCart(input: ClearCartInput!): ClearCartResponse!
+
+  """Mutation.rateProduct rates a product as the userId in the input"""
   rateProduct(input: RateProductInput!): RateProductResponse!
 }
 
+"""Standard pagination input"""
 input PaginationInput {
   page: Int
   pageSize: Int
 }
 
+"""Standard pagination result"""
 type PaginationResult {
   page: Int!
   pageSize: Int!
@@ -86,9 +94,27 @@ type ProductsByIdsResponse {
 }
 
 type Query {
+  """
+  Query.cart
+  Gets a user's cart by the user's ID
+  Note that each user can only have one cart
+  """
   cart(id: ID!): CartResponse!
+
+  """
+  Query.productList is more expensive to run compared to Query.productsByIds
+  This is because it does a scan across all items in the database
+  If the request has product IDs, Query.productsByIds instead
+  """
   productList(filter: ProductListFilterInput!, pagination: PaginationInput!): ProductListResponse!
+
+  """Query.productRatingByProductIds gets ratings of provided product IDs"""
   productRatingByProductIds(ids: [ID!]!): ProductRatingByProductIdsResponse!
+
+  """
+  Query.productsByIds should be used if a list of IDs is known
+  e.g. if the UI takes in an product ID to display
+  """
   productsByIds(ids: [ID!]!): ProductsByIdsResponse!
 }
 

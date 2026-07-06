@@ -1,8 +1,14 @@
 extend type Query {
+  """
+  Query.productRatingByProductIds gets ratings of provided product IDs
+  """
   productRatingByProductIds(ids: [ID!]!): ProductRatingByProductIdsResponse!
 }
 
 extend type Mutation {
+  """
+  Mutation.rateProduct rates a product as the userId in the input
+  """
   rateProduct(input: RateProductInput!): RateProductResponse!
 }
 

@@ -25,6 +25,7 @@ export type AddItemToCartResponse = {
 
 export type Cart = {
   __typename?: 'Cart';
+  /** Each user only has one cart, so the Cart ID is the User's ID */
   id: Scalars['ID']['output'];
   items: Array<CartItem>;
 };
@@ -51,8 +52,11 @@ export type ClearCartResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Mutation to add a product to a user's cart */
   addItemToCart: AddItemToCartResponse;
+  /** Mutation to clear a user's cart */
   clearCart: ClearCartResponse;
+  /** Mutation.rateProduct rates a product as the userId in the input */
   rateProduct: RateProductResponse;
 };
 
@@ -71,11 +75,13 @@ export type MutationrateProductArgs = {
   input: RateProductInput;
 };
 
+/** Standard pagination input */
 export type PaginationInput = {
   page?: InputMaybe<Scalars['Int']['input']>;
   pageSize?: InputMaybe<Scalars['Int']['input']>;
 };
 
+/** Standard pagination result */
 export type PaginationResult = {
   __typename?: 'PaginationResult';
   page: Scalars['Int']['output'];
@@ -128,9 +134,24 @@ export type ProductsByIdsResponse = {
 
 export type Query = {
   __typename?: 'Query';
+  /**
+   * Query.cart
+   * Gets a user's cart by the user's ID
+   * Note that each user can only have one cart
+   */
   cart: CartResponse;
+  /**
+   * Query.productList is more expensive to run compared to Query.productsByIds
+   * This is because it does a scan across all items in the database
+   * If the request has product IDs, Query.productsByIds instead
+   */
   productList: ProductListResponse;
+  /** Query.productRatingByProductIds gets ratings of provided product IDs */
   productRatingByProductIds: ProductRatingByProductIdsResponse;
+  /**
+   * Query.productsByIds should be used if a list of IDs is known
+   * e.g. if the UI takes in an product ID to display
+   */
   productsByIds: ProductsByIdsResponse;
 };
 

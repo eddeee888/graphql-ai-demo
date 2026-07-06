@@ -1,11 +1,17 @@
 type Query
 type Mutation
 
+"""
+Standard pagination input
+"""
 input PaginationInput {
   page: Int
   pageSize: Int
 }
 
+"""
+Standard pagination result
+"""
 type PaginationResult {
   total: Int!
   page: Int!

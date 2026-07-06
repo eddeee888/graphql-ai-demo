@@ -10,6 +10,7 @@ export type AddItemToCartInput = {
   userId: string | number;
 };
 
+/** Standard pagination input */
 export type PaginationInput = {
   page?: number | null | undefined;
   pageSize?: number | null | undefined;

@@ -1,9 +1,20 @@
 extend type Query {
+  """
+  Query.cart
+  Gets a user's cart by the user's ID
+  Note that each user can only have one cart
+  """
   cart(id: ID!): CartResponse!
 }
 
 extend type Mutation {
+  """
+  Mutation to add a product to a user's cart
+  """
   addItemToCart(input: AddItemToCartInput!): AddItemToCartResponse!
+  """
+  Mutation to clear a user's cart
+  """
   clearCart(input: ClearCartInput!): ClearCartResponse!
 }
 
@@ -30,6 +41,9 @@ type ClearCartResponse {
 }
 
 type Cart {
+  """
+  Each user only has one cart, so the Cart ID is the User's ID
+  """
   id: ID!
   items: [CartItem!]!
 }

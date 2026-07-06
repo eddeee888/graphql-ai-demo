@@ -1,5 +1,14 @@
 extend type Query {
+  """
+  Query.productsByIds should be used if a list of IDs is known
+  e.g. if the UI takes in an product ID to display
+  """
   productsByIds(ids: [ID!]!): ProductsByIdsResponse!
+  """
+  Query.productList is more expensive to run compared to Query.productsByIds
+  This is because it does a scan across all items in the database
+  If the request has product IDs, Query.productsByIds instead
+  """
   productList(
     filter: ProductListFilterInput!
     pagination: PaginationInput!
