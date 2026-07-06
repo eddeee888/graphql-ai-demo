@@ -81,11 +81,6 @@ type ProductRatingByProductIdsResponse {
   result: [ProductRating!]!
 }
 
-type ProductReviewCount {
-  id: ID!
-  value: Int!
-}
-
 type ProductsByIdsResponse {
   result: [Product]!
 }

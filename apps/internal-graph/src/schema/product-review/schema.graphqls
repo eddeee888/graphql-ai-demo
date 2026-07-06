@@ -1,4 +1,0 @@
-type ProductReviewCount {
-  id: ID! # Product ID
-  value: Int!
-}

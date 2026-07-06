@@ -121,12 +121,6 @@ export type ProductRatingByProductIdsResponse = {
   result: Array<ProductRating>;
 };
 
-export type ProductReviewCount = {
-  __typename?: 'ProductReviewCount';
-  id: Scalars['ID']['output'];
-  value: Scalars['Int']['output'];
-};
-
 export type ProductsByIdsResponse = {
   __typename?: 'ProductsByIdsResponse';
   result: Array<Maybe<Product>>;
@@ -265,7 +259,6 @@ export type ResolversTypes = {
   ProductListResponse: ResolverTypeWrapper<ProductListResponse>;
   ProductRating: ResolverTypeWrapper<ProductRating>;
   ProductRatingByProductIdsResponse: ResolverTypeWrapper<ProductRatingByProductIdsResponse>;
-  ProductReviewCount: ResolverTypeWrapper<ProductReviewCount>;
   ProductsByIdsResponse: ResolverTypeWrapper<ProductsByIdsResponse>;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   RateProductInput: RateProductInput;
@@ -294,7 +287,6 @@ export type ResolversParentTypes = {
   ProductListResponse: ProductListResponse;
   ProductRating: ProductRating;
   ProductRatingByProductIdsResponse: ProductRatingByProductIdsResponse;
-  ProductReviewCount: ProductReviewCount;
   ProductsByIdsResponse: ProductsByIdsResponse;
   Query: Record<PropertyKey, never>;
   RateProductInput: RateProductInput;
@@ -361,11 +353,6 @@ export type ProductRatingByProductIdsResponseResolvers<ContextType = ResolverCon
   result?: Resolver<Array<ResolversTypes['ProductRating']>, ParentType, ContextType>;
 };
 
-export type ProductReviewCountResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductReviewCount'] = ResolversParentTypes['ProductReviewCount']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  value?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-};
-
 export type ProductsByIdsResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductsByIdsResponse'] = ResolversParentTypes['ProductsByIdsResponse']> = {
   result?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
 };
@@ -393,7 +380,6 @@ export type Resolvers<ContextType = ResolverContext> = {
   ProductListResponse?: ProductListResponseResolvers<ContextType>;
   ProductRating?: ProductRatingResolvers<ContextType>;
   ProductRatingByProductIdsResponse?: ProductRatingByProductIdsResponseResolvers<ContextType>;
-  ProductReviewCount?: ProductReviewCountResolvers<ContextType>;
   ProductsByIdsResponse?: ProductsByIdsResponseResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   RateProductResponse?: RateProductResponseResolvers<ContextType>;
