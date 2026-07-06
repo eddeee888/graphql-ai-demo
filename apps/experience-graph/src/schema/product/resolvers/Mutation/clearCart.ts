@@ -2,8 +2,8 @@ import { graphql } from '../../../../gql';
 import type { MutationResolvers } from './../../../types.generated';
 
 const ClearCartDoc = graphql(`
-  mutation ClearCart {
-    clearCart {
+  mutation ClearCart($userId: ID!) {
+    clearCart(input: { userId: $userId }) {
       result {
         id
         items {
@@ -14,11 +14,20 @@ const ClearCartDoc = graphql(`
   }
 `);
 
-export const clearCart: NonNullable<
-  MutationResolvers['clearCart']
-> = async (_parent, _args, { execute }) => {
+export const clearCart: NonNullable<MutationResolvers['clearCart']> = async (
+  _parent,
+  _args,
+  { execute, userId },
+) => {
   try {
-    const response = await execute(ClearCartDoc);
+    if (!userId) {
+      return {
+        __typename: 'ResponseError',
+        type: 'SERVER_ERROR',
+      };
+    }
+
+    const response = await execute(ClearCartDoc, { userId });
 
     if (!response.data) {
       return {

@@ -1,10 +1,10 @@
 import type { MutationResolvers } from './../../../types.generated';
 export const clearCart: NonNullable<MutationResolvers['clearCart']> = async (
   _parent,
-  _arg,
-  { currentUser, cartsService },
+  { input },
+  { cartsService },
 ) => {
-  const result = cartsService.clearCart(currentUser.id);
+  const result = cartsService.clearCart(input.userId);
 
   return {
     __typename: 'ClearCartResponse',

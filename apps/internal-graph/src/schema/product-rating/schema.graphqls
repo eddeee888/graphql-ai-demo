@@ -11,7 +11,8 @@ type ProductRatingByProductIdsResponse {
 }
 
 input RateProductInput {
-  id: ID!
+  userId: ID!
+  productId: ID!
   rating: Int!
 }
 
