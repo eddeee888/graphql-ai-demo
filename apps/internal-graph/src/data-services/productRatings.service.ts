@@ -57,6 +57,11 @@ export class ProductRatingsService {
         (rating) => rating.productId === id,
       );
 
+      if (ratings.length === 0) {
+        result.push(0);
+        continue;
+      }
+
       result.push(
         ratings.reduce((sum, rating) => sum + rating.rating, 0) /
           ratings.length,

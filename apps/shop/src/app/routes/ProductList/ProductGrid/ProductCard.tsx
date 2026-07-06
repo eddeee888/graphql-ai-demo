@@ -24,8 +24,6 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
     }
   };
 
-  console.log(product.inStock);
-
   return (
     <div
       className={`
