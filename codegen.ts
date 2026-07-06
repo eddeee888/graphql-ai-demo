@@ -46,6 +46,11 @@ const config: CodegenConfig = {
     'apps/internal-graph/src/schema': defineConfig(
       {
         resolverGeneration: 'minimal',
+        scalarsOverrides: {
+          DateTime: {
+            type: { input: 'Date', output: 'Date | string' },
+          },
+        },
         typesPluginsConfig: {
           contextType: '../main#ResolverContext',
         },

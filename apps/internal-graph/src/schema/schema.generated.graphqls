@@ -31,6 +31,8 @@ type ClearCartResponse {
   result: Cart!
 }
 
+scalar DateTime
+
 type Mutation {
   """Mutation to add a product to a user's cart"""
   addItemToCart(input: AddItemToCartInput!): AddItemToCartResponse!
@@ -80,8 +82,35 @@ type ProductListResponse {
   result: [Product!]!
 }
 
+type ProductRating {
+  """When the rating was created"""
+  createdAt: DateTime!
+
+  """The effective person who made this rating"""
+  creatorUserId: ID!
+
+  """ProductRating's UUID"""
+  id: ID!
+
+  """The product that the rating was rated for"""
+  productId: ID!
+
+  """The value of the rating"""
+  rating: Int!
+}
+
 type ProductRatingByProductIdsResponse {
   result: [Product_Rating!]!
+}
+
+input ProductRatingsFilterInput {
+  from: DateTime!
+  to: DateTime!
+}
+
+type ProductRatingsResponse {
+  pagination: PaginationResult!
+  ratings: [ProductRating!]!
 }
 
 """Product_Rating is an extension of Product entity"""
@@ -113,6 +142,9 @@ type Query {
 
   """Query.productRatingByProductIds gets ratings of provided product IDs"""
   productRatingByProductIds(ids: [ID!]!): ProductRatingByProductIdsResponse!
+
+  """Query.productRatings gets paginated list of ProductRating"""
+  productRatings(filter: ProductRatingsFilterInput!, pagination: PaginationInput!): ProductRatingsResponse!
 
   """
   Query.productsByIds should be used if a list of IDs is known

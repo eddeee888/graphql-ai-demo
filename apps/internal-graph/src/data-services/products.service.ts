@@ -1,3 +1,8 @@
+import {
+  createPaginatedResult,
+  type PaginatedResult,
+} from './utils/createPaginatedResult';
+
 interface DatabaseProduct {
   id: string;
   name: string;
@@ -175,15 +180,7 @@ export class ProductsService {
       page?: number | null;
       pageSize?: number | null;
     };
-  }): {
-    result: DatabaseProduct[];
-    pagination: {
-      page: number;
-      pageSize: number;
-      total: number;
-      totalPages: number;
-    };
-  } {
+  }): PaginatedResult<DatabaseProduct> {
     let filteredProducts = Object.values(this.data);
 
     // Apply filters
@@ -220,22 +217,11 @@ export class ProductsService {
     const page = pagination?.page || 1;
     const pageSize = pagination?.pageSize || 10;
 
-    // Calculate pagination
-    const total = filteredProducts.length;
-    const totalPages = Math.ceil(total / pageSize);
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const items = filteredProducts.slice(startIndex, endIndex);
-
-    return {
-      result: items,
-      pagination: {
-        total,
-        page,
-        pageSize,
-        totalPages,
-      },
-    };
+    return createPaginatedResult({
+      items: filteredProducts,
+      page,
+      pageSize,
+    });
   }
 
   getProductByIds(ids: string[]): (DatabaseProduct | null)[] {

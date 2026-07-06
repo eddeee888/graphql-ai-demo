@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { ResolverContext } from '../main';
 export type Maybe<T> = T | null | undefined;
 export type InputMaybe<T> = T | null | undefined;
@@ -10,6 +10,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  DateTime: { input: Date; output: Date | string; }
 };
 
 export type AddItemToCartInput = {
@@ -116,9 +117,34 @@ export type ProductListResponse = {
   result: Array<Product>;
 };
 
+export type ProductRating = {
+  __typename?: 'ProductRating';
+  /** When the rating was created */
+  createdAt: Scalars['DateTime']['output'];
+  /** The effective person who made this rating */
+  creatorUserId: Scalars['ID']['output'];
+  /** ProductRating's UUID */
+  id: Scalars['ID']['output'];
+  /** The product that the rating was rated for */
+  productId: Scalars['ID']['output'];
+  /** The value of the rating */
+  rating: Scalars['Int']['output'];
+};
+
 export type ProductRatingByProductIdsResponse = {
   __typename?: 'ProductRatingByProductIdsResponse';
   result: Array<Product_Rating>;
+};
+
+export type ProductRatingsFilterInput = {
+  from: Scalars['DateTime']['input'];
+  to: Scalars['DateTime']['input'];
+};
+
+export type ProductRatingsResponse = {
+  __typename?: 'ProductRatingsResponse';
+  pagination: PaginationResult;
+  ratings: Array<ProductRating>;
 };
 
 /** Product_Rating is an extension of Product entity */
@@ -150,6 +176,8 @@ export type Query = {
   productList: ProductListResponse;
   /** Query.productRatingByProductIds gets ratings of provided product IDs */
   productRatingByProductIds: ProductRatingByProductIdsResponse;
+  /** Query.productRatings gets paginated list of ProductRating */
+  productRatings: ProductRatingsResponse;
   /**
    * Query.productsByIds should be used if a list of IDs is known
    * e.g. if the UI takes in an product ID to display
@@ -171,6 +199,12 @@ export type QueryproductListArgs = {
 
 export type QueryproductRatingByProductIdsArgs = {
   ids: Array<Scalars['ID']['input']>;
+};
+
+
+export type QueryproductRatingsArgs = {
+  filter: ProductRatingsFilterInput;
+  pagination: PaginationInput;
 };
 
 
@@ -271,6 +305,7 @@ export type ResolversTypes = {
   CartResponse: ResolverTypeWrapper<CartResponse>;
   ClearCartInput: ClearCartInput;
   ClearCartResponse: ResolverTypeWrapper<ClearCartResponse>;
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   PaginationInput: PaginationInput;
   PaginationResult: ResolverTypeWrapper<PaginationResult>;
@@ -280,7 +315,10 @@ export type ResolversTypes = {
   ProductListFilterInput: ProductListFilterInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   ProductListResponse: ResolverTypeWrapper<ProductListResponse>;
+  ProductRating: ResolverTypeWrapper<ProductRating>;
   ProductRatingByProductIdsResponse: ResolverTypeWrapper<ProductRatingByProductIdsResponse>;
+  ProductRatingsFilterInput: ProductRatingsFilterInput;
+  ProductRatingsResponse: ResolverTypeWrapper<ProductRatingsResponse>;
   Product_Rating: ResolverTypeWrapper<Product_Rating>;
   ProductsByIdsResponse: ResolverTypeWrapper<ProductsByIdsResponse>;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
@@ -299,6 +337,7 @@ export type ResolversParentTypes = {
   CartResponse: CartResponse;
   ClearCartInput: ClearCartInput;
   ClearCartResponse: ClearCartResponse;
+  DateTime: Scalars['DateTime']['output'];
   Mutation: Record<PropertyKey, never>;
   PaginationInput: PaginationInput;
   PaginationResult: PaginationResult;
@@ -308,7 +347,10 @@ export type ResolversParentTypes = {
   ProductListFilterInput: ProductListFilterInput;
   Boolean: Scalars['Boolean']['output'];
   ProductListResponse: ProductListResponse;
+  ProductRating: ProductRating;
   ProductRatingByProductIdsResponse: ProductRatingByProductIdsResponse;
+  ProductRatingsFilterInput: ProductRatingsFilterInput;
+  ProductRatingsResponse: ProductRatingsResponse;
   Product_Rating: Product_Rating;
   ProductsByIdsResponse: ProductsByIdsResponse;
   Query: Record<PropertyKey, never>;
@@ -337,6 +379,10 @@ export type CartResponseResolvers<ContextType = ResolverContext, ParentType exte
 export type ClearCartResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ClearCartResponse'] = ResolversParentTypes['ClearCartResponse']> = {
   result?: Resolver<ResolversTypes['Cart'], ParentType, ContextType>;
 };
+
+export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+  name: 'DateTime';
+}
 
 export type MutationResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addItemToCart?: Resolver<ResolversTypes['AddItemToCartResponse'], ParentType, ContextType, RequireFields<MutationaddItemToCartArgs, 'input'>>;
@@ -367,8 +413,21 @@ export type ProductListResponseResolvers<ContextType = ResolverContext, ParentTy
   result?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
 };
 
+export type ProductRatingResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductRating'] = ResolversParentTypes['ProductRating']> = {
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  creatorUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  productId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  rating?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+};
+
 export type ProductRatingByProductIdsResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductRatingByProductIdsResponse'] = ResolversParentTypes['ProductRatingByProductIdsResponse']> = {
   result?: Resolver<Array<ResolversTypes['Product_Rating']>, ParentType, ContextType>;
+};
+
+export type ProductRatingsResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductRatingsResponse'] = ResolversParentTypes['ProductRatingsResponse']> = {
+  pagination?: Resolver<ResolversTypes['PaginationResult'], ParentType, ContextType>;
+  ratings?: Resolver<Array<ResolversTypes['ProductRating']>, ParentType, ContextType>;
 };
 
 export type Product_RatingResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Product_Rating'] = ResolversParentTypes['Product_Rating']> = {
@@ -384,6 +443,7 @@ export type QueryResolvers<ContextType = ResolverContext, ParentType extends Res
   cart?: Resolver<ResolversTypes['CartResponse'], ParentType, ContextType, RequireFields<QuerycartArgs, 'id'>>;
   productList?: Resolver<ResolversTypes['ProductListResponse'], ParentType, ContextType, RequireFields<QueryproductListArgs, 'filter' | 'pagination'>>;
   productRatingByProductIds?: Resolver<ResolversTypes['ProductRatingByProductIdsResponse'], ParentType, ContextType, RequireFields<QueryproductRatingByProductIdsArgs, 'ids'>>;
+  productRatings?: Resolver<ResolversTypes['ProductRatingsResponse'], ParentType, ContextType, RequireFields<QueryproductRatingsArgs, 'filter' | 'pagination'>>;
   productsByIds?: Resolver<ResolversTypes['ProductsByIdsResponse'], ParentType, ContextType, RequireFields<QueryproductsByIdsArgs, 'ids'>>;
 };
 
@@ -397,11 +457,14 @@ export type Resolvers<ContextType = ResolverContext> = {
   CartItem?: CartItemResolvers<ContextType>;
   CartResponse?: CartResponseResolvers<ContextType>;
   ClearCartResponse?: ClearCartResponseResolvers<ContextType>;
+  DateTime?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
   PaginationResult?: PaginationResultResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
   ProductListResponse?: ProductListResponseResolvers<ContextType>;
+  ProductRating?: ProductRatingResolvers<ContextType>;
   ProductRatingByProductIdsResponse?: ProductRatingByProductIdsResponseResolvers<ContextType>;
+  ProductRatingsResponse?: ProductRatingsResponseResolvers<ContextType>;
   Product_Rating?: Product_RatingResolvers<ContextType>;
   ProductsByIdsResponse?: ProductsByIdsResponseResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

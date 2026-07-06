@@ -3,6 +3,13 @@ extend type Query {
   Query.productRatingByProductIds gets ratings of provided product IDs
   """
   productRatingByProductIds(ids: [ID!]!): ProductRatingByProductIdsResponse!
+  """
+  Query.productRatings gets paginated list of ProductRating
+  """
+  productRatings(
+    filter: ProductRatingsFilterInput!
+    pagination: PaginationInput!
+  ): ProductRatingsResponse!
 }
 
 extend type Mutation {
@@ -26,6 +33,16 @@ type RateProductResponse {
   result: Product_Rating!
 }
 
+input ProductRatingsFilterInput {
+  from: DateTime!
+  to: DateTime!
+}
+
+type ProductRatingsResponse {
+  ratings: [ProductRating!]!
+  pagination: PaginationResult!
+}
+
 """
 Product_Rating is an extension of Product entity
 """
@@ -35,4 +52,23 @@ type Product_Rating {
   """
   id: ID!
   average: Float!
+}
+
+type ProductRating {
+  """
+  ProductRating's UUID
+  """
+  id: ID!
+  """
+  The effective person who made this rating
+  """
+  creatorUserId: ID!
+  """
+  The value of the rating
+  """
+  rating: Int!
+  """
+  When the rating was created
+  """
+  createdAt: DateTime!
 }

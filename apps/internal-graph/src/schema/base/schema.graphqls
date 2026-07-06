@@ -18,3 +18,5 @@ type PaginationResult {
   pageSize: Int!
   totalPages: Int!
 }
+
+scalar DateTime
