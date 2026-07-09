@@ -23,7 +23,6 @@
           "assets": [
             "apps/experience-graph/src/assets"
           ],
-          "generatePackageJson": true,
           "esbuildOptions": {
             "sourcemap": true,
             "outExtension": {

@@ -16,7 +16,6 @@
         "main": "apps/internal-graph/src/main.ts",
         "tsConfig": "apps/internal-graph/tsconfig.app.json",
         "assets": ["apps/internal-graph/src/assets"],
-        "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
           "outExtension": {
