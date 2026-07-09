@@ -125,8 +125,6 @@ export type ProductRating = {
   creatorUserId: Scalars['ID']['output'];
   /** ProductRating's UUID */
   id: Scalars['ID']['output'];
-  /** The product that the rating was rated for */
-  productId: Scalars['ID']['output'];
   /** The value of the rating */
   rating: Scalars['Int']['output'];
 };
@@ -417,7 +415,6 @@ export type ProductRatingResolvers<ContextType = ResolverContext, ParentType ext
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   creatorUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   rating?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 };
 

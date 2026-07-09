@@ -92,9 +92,6 @@ type ProductRating {
   """ProductRating's UUID"""
   id: ID!
 
-  """The product that the rating was rated for"""
-  productId: ID!
-
   """The value of the rating"""
   rating: Int!
 }
