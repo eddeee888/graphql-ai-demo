@@ -1,0 +1,30 @@
+query GetProducts($input: ProductsInput!, $pagination: PaginationInput!)
+@mcpTool(name: "get_products", description: "Get paginated product list") {
+  products(input: $input, pagination: $pagination) {
+    ... on ProductsResponseSuccess {
+      result {
+        id
+        name
+        description
+        price
+        category
+        inStock
+        rating {
+          ... on ProductRatingResponseSuccess {
+            result {
+              id
+              value
+            }
+          }
+          ... on ResponseError {
+            __typename
+          }
+        }
+        reviewCount
+      }
+    }
+    ... on ResponseError {
+      __typename
+    }
+  }
+}

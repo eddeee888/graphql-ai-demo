@@ -1,5 +1,8 @@
 import { createServer } from 'node:http';
 import { useGraphQLSSE } from '@graphql-yoga/plugin-graphql-sse';
+import { useMCP } from '@graphql-hive/plugin-mcp';
+import { Logger } from '@graphql-hive/logger';
+import { useDisableIntrospection } from '@envelop/disable-introspection';
 import { createPubSub, createSchema, createYoga } from 'graphql-yoga';
 import { typeDefs } from './schema/typeDefs.generated';
 import { resolvers } from './schema/resolvers.generated';
@@ -14,7 +17,7 @@ export type ResolverContext = {
 const pubSub = createPubSub<{
   cartUpdates: [
     userId: string,
-    update: { userId: string; addedProductId: string },
+    update: { userId: string; addedProductId: string; count: number },
   ];
 }>();
 
@@ -26,7 +29,18 @@ const server = createServer(
       const headers = { 'x-agent-id': 'experience-graph' };
       return { execute: createExecute(headers), pubSub, userId };
     },
-    plugins: [useGraphQLSSE()],
+
+    plugins: [
+      useDisableIntrospection(),
+      useGraphQLSSE(),
+      useMCP(
+        { log: new Logger() },
+        {
+          name: 'experience-graph-mcp',
+          operationsPath: './apps/experience-graph/src/mcp/operations',
+        },
+      ),
+    ],
   }),
 );
 

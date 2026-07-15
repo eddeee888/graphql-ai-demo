@@ -16,6 +16,7 @@ export type Scalars = {
 };
 
 export type AddItemToCartInput = {
+  count?: InputMaybe<Scalars['Int']['input']>;
   productId: Scalars['ID']['input'];
 };
 
@@ -290,12 +291,12 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   AddItemToCartInput: AddItemToCartInput;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   AddItemToCartResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['AddItemToCartResponse']>;
   AddItemToCartResponseSuccess: ResolverTypeWrapper<Omit<AddItemToCartResponseSuccess, 'result'> & { result: ResolversTypes['Cart'] }>;
   Cart: ResolverTypeWrapper<Omit<Cart, 'items'> & { items: Array<ResolversTypes['CartItem']> }>;
   CartItem: ResolverTypeWrapper<CartItemMapper>;
-  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   CartItemProductResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['CartItemProductResponse']>;
   CartItemProductResponseSuccess: ResolverTypeWrapper<Omit<CartItemProductResponseSuccess, 'result'> & { result: ResolversTypes['Product'] }>;
   CartResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['CartResponse']>;
@@ -329,12 +330,12 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   AddItemToCartInput: AddItemToCartInput;
+  Int: Scalars['Int']['output'];
   ID: Scalars['ID']['output'];
   AddItemToCartResponse: ResolversUnionTypes<ResolversParentTypes>['AddItemToCartResponse'];
   AddItemToCartResponseSuccess: Omit<AddItemToCartResponseSuccess, 'result'> & { result: ResolversParentTypes['Cart'] };
   Cart: Omit<Cart, 'items'> & { items: Array<ResolversParentTypes['CartItem']> };
   CartItem: CartItemMapper;
-  Int: Scalars['Int']['output'];
   CartItemProductResponse: ResolversUnionTypes<ResolversParentTypes>['CartItemProductResponse'];
   CartItemProductResponseSuccess: Omit<CartItemProductResponseSuccess, 'result'> & { result: ResolversParentTypes['Product'] };
   CartResponse: ResolversUnionTypes<ResolversParentTypes>['CartResponse'];

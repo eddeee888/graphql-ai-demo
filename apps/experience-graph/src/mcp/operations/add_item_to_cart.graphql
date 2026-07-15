@@ -1,0 +1,27 @@
+mutation AddItemToCart($input: AddItemToCartInput!)
+@mcpTool(name: "add_item_to_cart", description: "Add item/s to cart") {
+  addItemToCart(input: $input) {
+    ... on AddItemToCartResponseSuccess {
+      result {
+        id
+        items {
+          product {
+            ... on CartItemProductResponseSuccess {
+              result {
+                id
+                name
+              }
+            }
+            ... on ResponseError {
+              __typename
+            }
+          }
+          count
+        }
+      }
+    }
+    ... on ResponseError {
+      __typename
+    }
+  }
+}

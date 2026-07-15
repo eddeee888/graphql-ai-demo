@@ -25,11 +25,13 @@ export const addItemToCart: NonNullable<
       };
     }
 
+    const itemCount = input.count || 1;
+
     const response = await execute(AddItemToCartDoc, {
       input: {
         userId,
         productId: input.productId,
-        count: 1,
+        count: itemCount,
       },
     });
 
@@ -43,6 +45,7 @@ export const addItemToCart: NonNullable<
     pubSub.publish('cartUpdates', userId, {
       userId,
       addedProductId: input.productId,
+      count: itemCount,
     });
 
     return {

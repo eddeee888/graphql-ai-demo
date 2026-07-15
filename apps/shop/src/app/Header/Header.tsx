@@ -62,6 +62,7 @@ const ToastContainer: React.FC<{ toasts: Toast[] }> = ({ toasts }) => {
           aria-live="polite"
           className="
             flex items-start gap-3 rounded-lg border border-l-4
+            border-gray-200 border-l-green-500
             px-4 py-3 shadow-md
             bg-white
           "

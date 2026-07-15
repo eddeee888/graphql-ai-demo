@@ -28,7 +28,7 @@ export const cartUpdates: NonNullable<SubscriptionResolvers['cartUpdates']> = {
     }
 
     return {
-      update: `${productResult.name} has been added to your cart!`,
+      update: `${parent.count} ${productResult.name} added to your cart!`,
     } as any;
   },
 };
