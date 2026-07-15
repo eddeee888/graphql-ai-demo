@@ -1,0 +1,16 @@
+mutation ClearCart
+@mcpTool(name: "clear_cart", description: "Clear cart of logged in user") {
+  clearCart {
+    ... on ClearCartResponseSuccess {
+      result {
+        id
+        items {
+          count
+        }
+      }
+    }
+    ... on ResponseError {
+      __typename
+    }
+  }
+}

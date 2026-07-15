@@ -1,0 +1,40 @@
+query GetCart
+@mcpTool(name: "get_cart", description: "Get logged in user cart") {
+  cart {
+    ... on CartResponseSuccess {
+      result {
+        id
+        items {
+          count
+          product {
+            ... on CartItemProductResponseSuccess {
+              result {
+                id
+                name
+                description
+                price
+                category
+                inStock
+                rating {
+                  ... on ProductRatingResponseSuccess {
+                    result {
+                      id
+                      value
+                    }
+                  }
+                  ... on ResponseError {
+                    __typename
+                  }
+                }
+                reviewCount
+              }
+            }
+          }
+        }
+      }
+    }
+    ... on ResponseError {
+      __typename
+    }
+  }
+}
