@@ -15,6 +15,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 type Documents = {
     "\n  subscription CartUpdates {\n    cartUpdates {\n      update\n    }\n  }\n": typeof types.CartUpdatesDocument,
+    "\n  mutation StartAgentChat {\n    startAgentChat\n  }\n": typeof types.StartAgentChatDocument,
+    "\n  subscription AgentChatUpdates {\n    agentChatUpdates {\n      ... on RunCompleted {\n        seq\n      }\n      ... on TextDelta {\n        seq\n        text\n      }\n    }\n  }\n": typeof types.AgentChatUpdatesDocument,
     "\n  query Cart {\n    cart {\n      ... on CartResponseSuccess {\n        result {\n          ...CartFragment\n        }\n      }\n      ... on ResponseError {\n        __typename\n      }\n    }\n  }\n": typeof types.CartDocument,
     "\n  mutation ClearCart {\n    clearCart {\n      ... on ClearCartResponseSuccess {\n        result {\n          ...CartFragment\n        }\n      }\n    }\n  }\n": typeof types.ClearCartDocument,
     "\n  fragment CartFragment on Cart {\n    id\n    items {\n      product {\n        ... on CartItemProductResponseSuccess {\n          result {\n            id\n            name\n          }\n        }\n        ... on ResponseError {\n          __typename\n        }\n      }\n      count\n    }\n  }\n": typeof types.CartFragmentFragmentDoc,
@@ -25,6 +27,8 @@ type Documents = {
 };
 const documents: Documents = {
     "\n  subscription CartUpdates {\n    cartUpdates {\n      update\n    }\n  }\n": types.CartUpdatesDocument,
+    "\n  mutation StartAgentChat {\n    startAgentChat\n  }\n": types.StartAgentChatDocument,
+    "\n  subscription AgentChatUpdates {\n    agentChatUpdates {\n      ... on RunCompleted {\n        seq\n      }\n      ... on TextDelta {\n        seq\n        text\n      }\n    }\n  }\n": types.AgentChatUpdatesDocument,
     "\n  query Cart {\n    cart {\n      ... on CartResponseSuccess {\n        result {\n          ...CartFragment\n        }\n      }\n      ... on ResponseError {\n        __typename\n      }\n    }\n  }\n": types.CartDocument,
     "\n  mutation ClearCart {\n    clearCart {\n      ... on ClearCartResponseSuccess {\n        result {\n          ...CartFragment\n        }\n      }\n    }\n  }\n": types.ClearCartDocument,
     "\n  fragment CartFragment on Cart {\n    id\n    items {\n      product {\n        ... on CartItemProductResponseSuccess {\n          result {\n            id\n            name\n          }\n        }\n        ... on ResponseError {\n          __typename\n        }\n      }\n      count\n    }\n  }\n": types.CartFragmentFragmentDoc,
@@ -52,6 +56,14 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  subscription CartUpdates {\n    cartUpdates {\n      update\n    }\n  }\n"): (typeof documents)["\n  subscription CartUpdates {\n    cartUpdates {\n      update\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation StartAgentChat {\n    startAgentChat\n  }\n"): (typeof documents)["\n  mutation StartAgentChat {\n    startAgentChat\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  subscription AgentChatUpdates {\n    agentChatUpdates {\n      ... on RunCompleted {\n        seq\n      }\n      ... on TextDelta {\n        seq\n        text\n      }\n    }\n  }\n"): (typeof documents)["\n  subscription AgentChatUpdates {\n    agentChatUpdates {\n      ... on RunCompleted {\n        seq\n      }\n      ... on TextDelta {\n        seq\n        text\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

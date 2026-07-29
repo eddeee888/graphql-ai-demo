@@ -17,6 +17,9 @@ const ProductDetail = lazy(() =>
 const Cart = lazy(() =>
   import('./routes/Cart').then((m) => ({ default: m.Cart })),
 );
+const AgentChat = lazy(() =>
+  import('./routes/AgentChat').then((m) => ({ default: m.AgentChat })),
+);
 
 const client = createApolloClient();
 
@@ -32,6 +35,7 @@ export const App: React.FC = () => {
               <Route path="/products" element={<ProductList />} />
               <Route path="/products/:id" element={<ProductDetail />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/agent-chat" element={<AgentChat />} />
               <Route path="*" element={<Navigate to="/products" replace />} />
             </Routes>
           </Suspense>

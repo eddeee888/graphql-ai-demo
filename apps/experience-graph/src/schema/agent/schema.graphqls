@@ -1,0 +1,20 @@
+extend type Mutation {
+  startAgentChat: Boolean!
+}
+
+extend type Subscription {
+  agentChatUpdates: AgentEvent!
+}
+
+interface AgentEvent {
+  seq: Int!
+}
+
+type TextDelta implements AgentEvent {
+  seq: Int!
+  text: String!
+}
+
+type RunCompleted implements AgentEvent {
+  seq: Int!
+}

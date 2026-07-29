@@ -24,6 +24,10 @@ export const Header: React.FC = () => {
             <Link href="/cart" variant="secondary">
               Go to cart
             </Link>
+            &nbsp; | &nbsp;
+            <Link href="/agent-chat" variant="secondary">
+              Agent chat
+            </Link>
           </div>
         </div>
       </header>

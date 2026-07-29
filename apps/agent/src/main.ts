@@ -3,6 +3,11 @@ import * as strands from '@strands-agents/sdk';
 import express from 'express';
 
 const PORT = process.env.PORT || 8080;
+const AWS_BEARER_TOKEN_BEDROCK = process.env.AWS_BEARER_TOKEN_BEDROCK;
+
+if (!AWS_BEARER_TOKEN_BEDROCK) {
+  throw new Error('AWS_BEARER_TOKEN_BEDROCK is missing');
+}
 
 // Define a custom tool
 const calculatorTool = strands.tool({
@@ -30,6 +35,7 @@ const calculatorTool = strands.tool({
 // Configure the agent with Amazon Bedrock
 const agent = new strands.Agent({
   model: new strands.BedrockModel({
+    modelId: 'amazon.nova-lite-v1:0',
     region: 'ap-southeast-2', // Change to your preferred region
   }),
   tools: [calculatorTool],
@@ -48,18 +54,36 @@ app.get('/ping', (_, res) =>
 // Agent invocation endpoint (REQUIRED)
 // AWS sends binary payload, so we use express.raw middleware
 app.post('/invocations', express.raw({ type: '*/*' }), async (req, res) => {
+  // Decode binary payload from AWS SDK
+  const prompt = new TextDecoder().decode(req.body);
+
+  // Stream the response back as Server-Sent Events (SSE)
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
+
+  const send = (data: unknown) => res.write(`${JSON.stringify(data)}\n\n`);
+
   try {
-    // Decode binary payload from AWS SDK
-    const prompt = new TextDecoder().decode(req.body);
-
-    // Invoke the agent
-    const response = await agent.invoke(prompt);
-
-    // Return response
-    return res.json({ response });
+    let seq = 0;
+    for await (const event of agent.stream(prompt)) {
+      // Forward only the incremental text deltas to the client
+      if (
+        event.type === 'modelStreamUpdateEvent' &&
+        event.event.type === 'modelContentBlockDeltaEvent' &&
+        event.event.delta.type === 'textDelta'
+      ) {
+        send({ seq, text: event.event.delta.text });
+        seq++;
+      }
+    }
+    send({ seq, done: true });
   } catch (err) {
     console.error('Error processing request:', err);
-    return res.status(500).json({ error: 'Internal server error' });
+    send({ error: 'Internal server error' });
+  } finally {
+    res.end();
   }
 });
 

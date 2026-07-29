@@ -9,6 +9,10 @@ type AddItemToCartResponseSuccess {
   result: Cart!
 }
 
+interface AgentEvent {
+  seq: Int!
+}
+
 type Cart {
   id: ID!
   items: [CartItem!]!
@@ -45,6 +49,7 @@ type Mutation {
   addItemToCart(input: AddItemToCartInput!): AddItemToCartResponse!
   clearCart: ClearCartResponse!
   rateProduct(input: RateProductInput!): RateProductResponse!
+  startAgentChat: Boolean!
 }
 
 input PaginationInput {
@@ -124,6 +129,16 @@ enum ResponseErrorType {
   SERVER_ERROR
 }
 
+type RunCompleted implements AgentEvent {
+  seq: Int!
+}
+
 type Subscription {
+  agentChatUpdates: AgentEvent!
   cartUpdates: CartUpdatesResponseSuccess!
+}
+
+type TextDelta implements AgentEvent {
+  seq: Int!
+  text: String!
 }
