@@ -15,6 +15,9 @@ import * as types from './graphql';
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
+    "\n  fragment ChatMessageMapper on ChatMessage {\n    id\n    senderId\n    content\n    createdAt\n  }\n": typeof types.ChatMessageMapperFragmentDoc,
+    "\n  mutation SendAgentChatMessage($input: SendChatMessageInput!) {\n    sendChatMessage(input: $input) {\n      ...ChatMessageMapper\n    }\n  }\n": typeof types.SendAgentChatMessageDocument,
+    "\n  mutation CreateAgentChat($input: CreateChatInput!) {\n    createChat(input: $input) {\n      id\n      messages {\n        result {\n          ...ChatMessageMapper\n        }\n      }\n    }\n  }\n": typeof types.CreateAgentChatDocument,
     "\n  fragment CartItemMapper on CartItem {\n    productId\n    count\n  }\n": typeof types.CartItemMapperFragmentDoc,
     "\n  fragment ProductMapper on Product {\n    id\n    name\n    description\n    price\n    category\n    imageUrl\n    stockCount\n    reviewCount\n    stockCount\n  }\n": typeof types.ProductMapperFragmentDoc,
     "\n  query CartItemProduct($id: ID!) {\n    productsByIds(ids: [$id]) {\n      result {\n        ...ProductMapper\n      }\n    }\n  }\n": typeof types.CartItemProductDocument,
@@ -27,6 +30,9 @@ type Documents = {
     "\n  query Products(\n    $filter: ProductListFilterInput!\n    $pagination: PaginationInput!\n  ) {\n    productList(filter: $filter, pagination: $pagination) {\n      result {\n        id\n        name\n        description\n        price\n        category\n        imageUrl\n        stockCount\n        reviewCount\n      }\n      pagination {\n        total\n        totalPages\n        page\n        pageSize\n      }\n    }\n  }\n": typeof types.ProductsDocument,
 };
 const documents: Documents = {
+    "\n  fragment ChatMessageMapper on ChatMessage {\n    id\n    senderId\n    content\n    createdAt\n  }\n": types.ChatMessageMapperFragmentDoc,
+    "\n  mutation SendAgentChatMessage($input: SendChatMessageInput!) {\n    sendChatMessage(input: $input) {\n      ...ChatMessageMapper\n    }\n  }\n": types.SendAgentChatMessageDocument,
+    "\n  mutation CreateAgentChat($input: CreateChatInput!) {\n    createChat(input: $input) {\n      id\n      messages {\n        result {\n          ...ChatMessageMapper\n        }\n      }\n    }\n  }\n": types.CreateAgentChatDocument,
     "\n  fragment CartItemMapper on CartItem {\n    productId\n    count\n  }\n": types.CartItemMapperFragmentDoc,
     "\n  fragment ProductMapper on Product {\n    id\n    name\n    description\n    price\n    category\n    imageUrl\n    stockCount\n    reviewCount\n    stockCount\n  }\n": types.ProductMapperFragmentDoc,
     "\n  query CartItemProduct($id: ID!) {\n    productsByIds(ids: [$id]) {\n      result {\n        ...ProductMapper\n      }\n    }\n  }\n": types.CartItemProductDocument,
@@ -39,6 +45,18 @@ const documents: Documents = {
     "\n  query Products(\n    $filter: ProductListFilterInput!\n    $pagination: PaginationInput!\n  ) {\n    productList(filter: $filter, pagination: $pagination) {\n      result {\n        id\n        name\n        description\n        price\n        category\n        imageUrl\n        stockCount\n        reviewCount\n      }\n      pagination {\n        total\n        totalPages\n        page\n        pageSize\n      }\n    }\n  }\n": types.ProductsDocument,
 };
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment ChatMessageMapper on ChatMessage {\n    id\n    senderId\n    content\n    createdAt\n  }\n"): typeof import('./graphql').ChatMessageMapperFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation SendAgentChatMessage($input: SendChatMessageInput!) {\n    sendChatMessage(input: $input) {\n      ...ChatMessageMapper\n    }\n  }\n"): typeof import('./graphql').SendAgentChatMessageDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation CreateAgentChat($input: CreateChatInput!) {\n    createChat(input: $input) {\n      id\n      messages {\n        result {\n          ...ChatMessageMapper\n        }\n      }\n    }\n  }\n"): typeof import('./graphql').CreateAgentChatDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

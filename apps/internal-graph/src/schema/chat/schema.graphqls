@@ -1,0 +1,32 @@
+extend type Mutation {
+  createChat(input: CreateChatInput!): Chat!
+  sendChatMessage(input: SendChatMessageInput!): ChatMessage!
+}
+
+input CreateChatInput {
+  chatId: ID!
+  creatorId: ID!
+}
+
+input SendChatMessageInput {
+  chatId: ID!
+  messageId: ID!
+  senderId: ID!
+  content: String!
+}
+
+type Chat {
+  id: ID!
+  messages: ChatMessagesResponse!
+}
+
+type ChatMessagesResponse {
+  result: [ChatMessage!]!
+}
+
+type ChatMessage {
+  id: ID!
+  senderId: ID!
+  content: String!
+  createdAt: DateTime!
+}

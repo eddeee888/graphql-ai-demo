@@ -10,6 +10,11 @@ export type AddItemToCartInput = {
   userId: string | number;
 };
 
+export type CreateChatInput = {
+  chatId: string | number;
+  creatorId: string | number;
+};
+
 /** Standard pagination input */
 export type PaginationInput = {
   page?: number | null | undefined;
@@ -29,6 +34,29 @@ export type RateProductInput = {
   rating: number;
   userId: string | number;
 };
+
+export type SendChatMessageInput = {
+  chatId: string | number;
+  content: string;
+  messageId: string | number;
+  senderId: string | number;
+};
+
+export type ChatMessageMapperFragment = { id: string, senderId: string, content: string, createdAt: string };
+
+export type SendAgentChatMessageMutationVariables = Exact<{
+  input: SendChatMessageInput;
+}>;
+
+
+export type SendAgentChatMessageMutation = { sendChatMessage: { id: string, senderId: string, content: string, createdAt: string } };
+
+export type CreateAgentChatMutationVariables = Exact<{
+  input: CreateChatInput;
+}>;
+
+
+export type CreateAgentChatMutation = { createChat: { id: string, messages: { result: Array<{ id: string, senderId: string, content: string, createdAt: string }> } } };
 
 export type CartItemMapperFragment = { productId: string, count: number };
 
@@ -109,6 +137,14 @@ export class TypedDocumentString<TResult, TVariables>
     return this.value;
   }
 }
+export const ChatMessageMapperFragmentDoc = new TypedDocumentString(`
+    fragment ChatMessageMapper on ChatMessage {
+  id
+  senderId
+  content
+  createdAt
+}
+    `, {"fragmentName":"ChatMessageMapper"}) as unknown as TypedDocumentString<ChatMessageMapperFragment, unknown>;
 export const CartItemMapperFragmentDoc = new TypedDocumentString(`
     fragment CartItemMapper on CartItem {
   productId
@@ -128,6 +164,35 @@ export const ProductMapperFragmentDoc = new TypedDocumentString(`
   stockCount
 }
     `, {"fragmentName":"ProductMapper"}) as unknown as TypedDocumentString<ProductMapperFragment, unknown>;
+export const SendAgentChatMessageDocument = new TypedDocumentString(`
+    mutation SendAgentChatMessage($input: SendChatMessageInput!) {
+  sendChatMessage(input: $input) {
+    ...ChatMessageMapper
+  }
+}
+    fragment ChatMessageMapper on ChatMessage {
+  id
+  senderId
+  content
+  createdAt
+}`) as unknown as TypedDocumentString<SendAgentChatMessageMutation, SendAgentChatMessageMutationVariables>;
+export const CreateAgentChatDocument = new TypedDocumentString(`
+    mutation CreateAgentChat($input: CreateChatInput!) {
+  createChat(input: $input) {
+    id
+    messages {
+      result {
+        ...ChatMessageMapper
+      }
+    }
+  }
+}
+    fragment ChatMessageMapper on ChatMessage {
+  id
+  senderId
+  content
+  createdAt
+}`) as unknown as TypedDocumentString<CreateAgentChatMutation, CreateAgentChatMutationVariables>;
 export const CartItemProductDocument = new TypedDocumentString(`
     query CartItemProduct($id: ID!) {
   productsByIds(ids: [$id]) {

@@ -23,12 +23,33 @@ type CartResponse {
   result: Cart!
 }
 
+type Chat {
+  id: ID!
+  messages: ChatMessagesResponse!
+}
+
+type ChatMessage {
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  senderId: ID!
+}
+
+type ChatMessagesResponse {
+  result: [ChatMessage!]!
+}
+
 input ClearCartInput {
   userId: ID!
 }
 
 type ClearCartResponse {
   result: Cart!
+}
+
+input CreateChatInput {
+  chatId: ID!
+  creatorId: ID!
 }
 
 scalar DateTime
@@ -39,9 +60,11 @@ type Mutation {
 
   """Mutation to clear a user's cart"""
   clearCart(input: ClearCartInput!): ClearCartResponse!
+  createChat(input: CreateChatInput!): Chat!
 
   """Mutation.rateProduct rates a product as the userId in the input"""
   rateProduct(input: RateProductInput!): RateProductResponse!
+  sendChatMessage(input: SendChatMessageInput!): ChatMessage!
 }
 
 """Standard pagination input"""
@@ -158,4 +181,11 @@ input RateProductInput {
 
 type RateProductResponse {
   result: Product_Rating!
+}
+
+input SendChatMessageInput {
+  chatId: ID!
+  content: String!
+  messageId: ID!
+  senderId: ID!
 }

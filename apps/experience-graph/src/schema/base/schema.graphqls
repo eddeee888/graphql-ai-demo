@@ -7,6 +7,7 @@ type ResponseError {
 }
 
 enum ResponseErrorType {
+  UNAUTHENTICATED
   SERVER_ERROR
 }
 
@@ -14,3 +15,5 @@ input PaginationInput {
   page: Int
   pageSize: Int
 }
+
+scalar DateTime

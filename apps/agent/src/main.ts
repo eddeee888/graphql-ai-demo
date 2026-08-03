@@ -77,6 +77,18 @@ app.post('/invocations', express.raw({ type: '*/*' }), async (req, res) => {
         send({ seq, text: event.event.delta.text });
         seq++;
       }
+
+      // the final AgentResult, emitted once the run completes
+      if (event.type === 'agentResultEvent') {
+        send({
+          seq,
+          finalResult: event.result.lastMessage.content
+            .filter((block) => block.type === 'textBlock')
+            .map((block) => block.text)
+            .join('\n'),
+        });
+        seq++;
+      }
     }
     send({ seq, done: true });
   } catch (err) {

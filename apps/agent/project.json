@@ -1,5 +1,5 @@
 {
-  "name": "agent",
+  "name": "@org/agent",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/agent/src",
   "projectType": "application",
@@ -67,15 +67,15 @@
       "defaultConfiguration": "development",
       "dependsOn": ["build"],
       "options": {
-        "buildTarget": "agent:build",
+        "buildTarget": "@org/agent:build",
         "runBuildTargetDependencies": false
       },
       "configurations": {
         "development": {
-          "buildTarget": "agent:build:development"
+          "buildTarget": "@org/agent:build:development"
         },
         "production": {
-          "buildTarget": "agent:build:production"
+          "buildTarget": "@org/agent:build:production"
         }
       }
     }
