@@ -27,6 +27,10 @@ export type AddItemToCartResponseSuccess = {
   result: Cart;
 };
 
+export type AgentEvent = {
+  seq: Scalars['Int']['output'];
+};
+
 export type Cart = {
   __typename?: 'Cart';
   id: Scalars['ID']['output'];
@@ -70,6 +74,7 @@ export type Mutation = {
   addItemToCart: AddItemToCartResponse;
   clearCart: ClearCartResponse;
   rateProduct: RateProductResponse;
+  startAgentChat: Scalars['Boolean']['output'];
 };
 
 
@@ -177,9 +182,21 @@ export type ResponseError = {
 export type ResponseErrorType =
   | 'SERVER_ERROR';
 
+export type RunCompleted = AgentEvent & {
+  __typename?: 'RunCompleted';
+  seq: Scalars['Int']['output'];
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
+  agentChatUpdates: AgentEvent;
   cartUpdates: CartUpdatesResponseSuccess;
+};
+
+export type TextDelta = AgentEvent & {
+  __typename?: 'TextDelta';
+  seq: Scalars['Int']['output'];
+  text: Scalars['String']['output'];
 };
 
 
@@ -287,6 +304,13 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
   ;
 };
 
+/** Mapping of interface types */
+export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
+  AgentEvent:
+    | ( RunCompleted & { __typename: 'RunCompleted' } )
+    | ( TextDelta & { __typename: 'TextDelta' } )
+  ;
+};
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
@@ -295,6 +319,7 @@ export type ResolversTypes = {
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   AddItemToCartResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['AddItemToCartResponse']>;
   AddItemToCartResponseSuccess: ResolverTypeWrapper<Omit<AddItemToCartResponseSuccess, 'result'> & { result: ResolversTypes['Cart'] }>;
+  AgentEvent: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['AgentEvent']>;
   Cart: ResolverTypeWrapper<Omit<Cart, 'items'> & { items: Array<ResolversTypes['CartItem']> }>;
   CartItem: ResolverTypeWrapper<CartItemMapper>;
   CartItemProductResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['CartItemProductResponse']>;
@@ -306,9 +331,9 @@ export type ResolversTypes = {
   ClearCartResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['ClearCartResponse']>;
   ClearCartResponseSuccess: ResolverTypeWrapper<Omit<ClearCartResponseSuccess, 'result'> & { result: ResolversTypes['Cart'] }>;
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   PaginationInput: PaginationInput;
   Product: ResolverTypeWrapper<ProductMapper>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ProductRating: ResolverTypeWrapper<ProductRating>;
   ProductRatingResponse: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['ProductRatingResponse']>;
@@ -324,7 +349,9 @@ export type ResolversTypes = {
   RateProductResponseSuccess: ResolverTypeWrapper<RateProductResponseSuccess>;
   ResponseError: ResolverTypeWrapper<Omit<ResponseError, 'type'> & { type: ResolversTypes['ResponseErrorType'] }>;
   ResponseErrorType: ResolverTypeWrapper<'SERVER_ERROR'>;
+  RunCompleted: ResolverTypeWrapper<RunCompleted>;
   Subscription: ResolverTypeWrapper<Record<PropertyKey, never>>;
+  TextDelta: ResolverTypeWrapper<TextDelta>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -334,6 +361,7 @@ export type ResolversParentTypes = {
   ID: Scalars['ID']['output'];
   AddItemToCartResponse: ResolversUnionTypes<ResolversParentTypes>['AddItemToCartResponse'];
   AddItemToCartResponseSuccess: Omit<AddItemToCartResponseSuccess, 'result'> & { result: ResolversParentTypes['Cart'] };
+  AgentEvent: ResolversInterfaceTypes<ResolversParentTypes>['AgentEvent'];
   Cart: Omit<Cart, 'items'> & { items: Array<ResolversParentTypes['CartItem']> };
   CartItem: CartItemMapper;
   CartItemProductResponse: ResolversUnionTypes<ResolversParentTypes>['CartItemProductResponse'];
@@ -345,9 +373,9 @@ export type ResolversParentTypes = {
   ClearCartResponse: ResolversUnionTypes<ResolversParentTypes>['ClearCartResponse'];
   ClearCartResponseSuccess: Omit<ClearCartResponseSuccess, 'result'> & { result: ResolversParentTypes['Cart'] };
   Mutation: Record<PropertyKey, never>;
+  Boolean: Scalars['Boolean']['output'];
   PaginationInput: PaginationInput;
   Product: ProductMapper;
-  Boolean: Scalars['Boolean']['output'];
   Float: Scalars['Float']['output'];
   ProductRating: ProductRating;
   ProductRatingResponse: ResolversUnionTypes<ResolversParentTypes>['ProductRatingResponse'];
@@ -362,7 +390,9 @@ export type ResolversParentTypes = {
   RateProductResponse: ResolversUnionTypes<ResolversParentTypes>['RateProductResponse'];
   RateProductResponseSuccess: RateProductResponseSuccess;
   ResponseError: ResponseError;
+  RunCompleted: RunCompleted;
   Subscription: Record<PropertyKey, never>;
+  TextDelta: TextDelta;
 };
 
 export type AddItemToCartResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['AddItemToCartResponse'] = ResolversParentTypes['AddItemToCartResponse']> = {
@@ -372,6 +402,10 @@ export type AddItemToCartResponseResolvers<ContextType = ResolverContext, Parent
 export type AddItemToCartResponseSuccessResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['AddItemToCartResponseSuccess'] = ResolversParentTypes['AddItemToCartResponseSuccess']> = {
   result?: Resolver<ResolversTypes['Cart'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AgentEventResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['AgentEvent'] = ResolversParentTypes['AgentEvent']> = {
+  __resolveType?: TypeResolveFn<'RunCompleted' | 'TextDelta', ParentType, ContextType>;
 };
 
 export type CartResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Cart'] = ResolversParentTypes['Cart']> = {
@@ -419,6 +453,7 @@ export type MutationResolvers<ContextType = ResolverContext, ParentType extends 
   addItemToCart?: Resolver<ResolversTypes['AddItemToCartResponse'], ParentType, ContextType, RequireFields<MutationaddItemToCartArgs, 'input'>>;
   clearCart?: Resolver<ResolversTypes['ClearCartResponse'], ParentType, ContextType>;
   rateProduct?: Resolver<ResolversTypes['RateProductResponse'], ParentType, ContextType, RequireFields<MutationrateProductArgs, 'input'>>;
+  startAgentChat?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
 };
 
 export type ProductResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']> = {
@@ -491,13 +526,26 @@ export type ResponseErrorResolvers<ContextType = ResolverContext, ParentType ext
 
 export type ResponseErrorTypeResolvers = EnumResolverSignature<{ SERVER_ERROR?: any }, ResolversTypes['ResponseErrorType']>;
 
+export type RunCompletedResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['RunCompleted'] = ResolversParentTypes['RunCompleted']> = {
+  seq?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type SubscriptionResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
+  agentChatUpdates?: SubscriptionResolver<ResolversTypes['AgentEvent'], "agentChatUpdates", ParentType, ContextType>;
   cartUpdates?: SubscriptionResolver<ResolversTypes['CartUpdatesResponseSuccess'], "cartUpdates", ParentType, ContextType>;
+};
+
+export type TextDeltaResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['TextDelta'] = ResolversParentTypes['TextDelta']> = {
+  seq?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = ResolverContext> = {
   AddItemToCartResponse?: AddItemToCartResponseResolvers<ContextType>;
   AddItemToCartResponseSuccess?: AddItemToCartResponseSuccessResolvers<ContextType>;
+  AgentEvent?: AgentEventResolvers<ContextType>;
   Cart?: CartResolvers<ContextType>;
   CartItem?: CartItemResolvers<ContextType>;
   CartItemProductResponse?: CartItemProductResponseResolvers<ContextType>;
@@ -521,6 +569,8 @@ export type Resolvers<ContextType = ResolverContext> = {
   RateProductResponseSuccess?: RateProductResponseSuccessResolvers<ContextType>;
   ResponseError?: ResponseErrorResolvers<ContextType>;
   ResponseErrorType?: ResponseErrorTypeResolvers;
+  RunCompleted?: RunCompletedResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  TextDelta?: TextDeltaResolvers<ContextType>;
 };
 

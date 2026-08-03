@@ -19,6 +19,12 @@ const pubSub = createPubSub<{
     userId: string,
     update: { userId: string; addedProductId: string; count: number },
   ];
+  agentChatUpdates: [
+    userId: string,
+    update:
+      | { type: 'text-delta'; seq: number; text: string }
+      | { type: 'run-completed'; seq: number },
+  ];
 }>();
 
 const server = createServer(
