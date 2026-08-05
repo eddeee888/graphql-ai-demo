@@ -1,5 +1,42 @@
+extend type Query {
+  agentChat: AgentChatResponse!
+}
+
 extend type Mutation {
-  startAgentChat: Boolean!
+  sendAgentChatMessage(
+    input: SendAgentChatMessageInput!
+  ): SendAgentChatMessageResponse!
+}
+
+union AgentChatResponse = AgentChatResponseSuccess | ResponseError
+
+type AgentChatResponseSuccess {
+  result: AgentChat!
+}
+
+type AgentChat {
+  id: ID!
+  messages: [ChatMessage!]!
+}
+
+input SendAgentChatMessageInput {
+  messageId: ID!
+  content: String!
+}
+
+union SendAgentChatMessageResponse =
+  | SendAgentChatMessageResponseSuccess
+  | ResponseError
+
+type SendAgentChatMessageResponseSuccess {
+  result: ChatMessage!
+}
+
+type ChatMessage {
+  id: ID!
+  isMe: Boolean!
+  content: String!
+  createdAt: DateTime!
 }
 
 extend type Subscription {

@@ -1,10 +1,18 @@
 export const Button: React.FC<{
   children: string;
+  type?: 'button' | 'reset' | 'submit';
   variant?: 'primary' | 'secondary';
   className?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
-}> = ({ children, variant = 'primary', disabled, onClick, className }) => {
+}> = ({
+  children,
+  type = 'button',
+  variant = 'primary',
+  disabled,
+  onClick,
+  className,
+}) => {
   return (
     <button
       className={`
@@ -16,6 +24,7 @@ export const Button: React.FC<{
         transition-colors duration-300 
         ${className}`}
       onClick={onClick}
+      type={type}
     >
       {children}
     </button>

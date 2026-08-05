@@ -6,16 +6,19 @@ import { resolvers } from './schema/resolvers.generated';
 import { ProductsService } from './data-services/products.service';
 import { ProductRatingsService } from './data-services/productRatings.service';
 import { CartsService } from './data-services/cart.service';
+import { ChatsService } from './data-services/chat.service';
 
 export interface ResolverContext {
   productsService: ProductsService;
   productRatingsService: ProductRatingsService;
   cartsService: CartsService;
+  chatsService: ChatsService;
 }
 
 const productsService = new ProductsService();
 const productRatingsService = new ProductRatingsService();
 const cartsService = new CartsService();
+const chatsService = new ChatsService();
 
 const server = createServer(
   createYoga<ResolverContext>({
@@ -32,6 +35,7 @@ const server = createServer(
         productsService,
         productRatingsService,
         cartsService,
+        chatsService,
       };
     },
   }),

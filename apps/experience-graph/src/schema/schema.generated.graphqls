@@ -9,6 +9,17 @@ type AddItemToCartResponseSuccess {
   result: Cart!
 }
 
+type AgentChat {
+  id: ID!
+  messages: [ChatMessage!]!
+}
+
+union AgentChatResponse = AgentChatResponseSuccess | ResponseError
+
+type AgentChatResponseSuccess {
+  result: AgentChat!
+}
+
 interface AgentEvent {
   seq: Int!
 }
@@ -39,17 +50,26 @@ type CartUpdatesResponseSuccess {
   update: String!
 }
 
+type ChatMessage {
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  isMe: Boolean!
+}
+
 union ClearCartResponse = ClearCartResponseSuccess | ResponseError
 
 type ClearCartResponseSuccess {
   result: Cart!
 }
 
+scalar DateTime
+
 type Mutation {
   addItemToCart(input: AddItemToCartInput!): AddItemToCartResponse!
   clearCart: ClearCartResponse!
   rateProduct(input: RateProductInput!): RateProductResponse!
-  startAgentChat: Boolean!
+  sendAgentChatMessage(input: SendAgentChatMessageInput!): SendAgentChatMessageResponse!
 }
 
 input PaginationInput {
@@ -105,6 +125,7 @@ type ProductsResponseSuccess {
 }
 
 type Query {
+  agentChat: AgentChatResponse!
   cart: CartResponse!
   product(id: ID!): ProductResponse!
   products(input: ProductsInput!, pagination: PaginationInput!): ProductsResponse!
@@ -127,10 +148,22 @@ type ResponseError {
 
 enum ResponseErrorType {
   SERVER_ERROR
+  UNAUTHENTICATED
 }
 
 type RunCompleted implements AgentEvent {
   seq: Int!
+}
+
+input SendAgentChatMessageInput {
+  content: String!
+  messageId: ID!
+}
+
+union SendAgentChatMessageResponse = ResponseError | SendAgentChatMessageResponseSuccess
+
+type SendAgentChatMessageResponseSuccess {
+  result: ChatMessage!
 }
 
 type Subscription {

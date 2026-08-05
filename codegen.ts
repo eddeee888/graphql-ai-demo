@@ -18,6 +18,9 @@ const config: CodegenConfig = {
       config: {
         nonOptionalTypename: true,
         skipTypeNameForRoot: true,
+        scalars: {
+          DateTime: 'string',
+        },
       },
     },
     'apps/experience-graph/src/gql/': {
@@ -32,6 +35,9 @@ const config: CodegenConfig = {
       },
       config: {
         documentMode: 'string',
+        scalars: {
+          DateTime: 'string',
+        },
       },
     },
     'apps/experience-graph/src/schema': defineConfig(

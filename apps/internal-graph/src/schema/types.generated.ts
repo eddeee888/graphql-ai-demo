@@ -42,6 +42,25 @@ export type CartResponse = {
   result: Cart;
 };
 
+export type Chat = {
+  __typename?: 'Chat';
+  id: Scalars['ID']['output'];
+  messages: ChatMessagesResponse;
+};
+
+export type ChatMessage = {
+  __typename?: 'ChatMessage';
+  content: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  senderId: Scalars['ID']['output'];
+};
+
+export type ChatMessagesResponse = {
+  __typename?: 'ChatMessagesResponse';
+  result: Array<ChatMessage>;
+};
+
 export type ClearCartInput = {
   userId: Scalars['ID']['input'];
 };
@@ -51,14 +70,21 @@ export type ClearCartResponse = {
   result: Cart;
 };
 
+export type CreateChatInput = {
+  chatId: Scalars['ID']['input'];
+  creatorId: Scalars['ID']['input'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   /** Mutation to add a product to a user's cart */
   addItemToCart: AddItemToCartResponse;
   /** Mutation to clear a user's cart */
   clearCart: ClearCartResponse;
+  createChat: Chat;
   /** Mutation.rateProduct rates a product as the userId in the input */
   rateProduct: RateProductResponse;
+  sendChatMessage: ChatMessage;
 };
 
 
@@ -72,8 +98,18 @@ export type MutationclearCartArgs = {
 };
 
 
+export type MutationcreateChatArgs = {
+  input: CreateChatInput;
+};
+
+
 export type MutationrateProductArgs = {
   input: RateProductInput;
+};
+
+
+export type MutationsendChatMessageArgs = {
+  input: SendChatMessageInput;
 };
 
 /** Standard pagination input */
@@ -221,6 +257,13 @@ export type RateProductResponse = {
   result: Product_Rating;
 };
 
+export type SendChatMessageInput = {
+  chatId: Scalars['ID']['input'];
+  content: Scalars['String']['input'];
+  messageId: Scalars['ID']['input'];
+  senderId: Scalars['ID']['input'];
+};
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -301,14 +344,18 @@ export type ResolversTypes = {
   Cart: ResolverTypeWrapper<Cart>;
   CartItem: ResolverTypeWrapper<CartItem>;
   CartResponse: ResolverTypeWrapper<CartResponse>;
+  Chat: ResolverTypeWrapper<Chat>;
+  ChatMessage: ResolverTypeWrapper<ChatMessage>;
+  String: ResolverTypeWrapper<Scalars['String']['output']>;
+  ChatMessagesResponse: ResolverTypeWrapper<ChatMessagesResponse>;
   ClearCartInput: ClearCartInput;
   ClearCartResponse: ResolverTypeWrapper<ClearCartResponse>;
+  CreateChatInput: CreateChatInput;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   PaginationInput: PaginationInput;
   PaginationResult: ResolverTypeWrapper<PaginationResult>;
   Product: ResolverTypeWrapper<Product>;
-  String: ResolverTypeWrapper<Scalars['String']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ProductListFilterInput: ProductListFilterInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
@@ -322,6 +369,7 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   RateProductInput: RateProductInput;
   RateProductResponse: ResolverTypeWrapper<RateProductResponse>;
+  SendChatMessageInput: SendChatMessageInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -333,14 +381,18 @@ export type ResolversParentTypes = {
   Cart: Cart;
   CartItem: CartItem;
   CartResponse: CartResponse;
+  Chat: Chat;
+  ChatMessage: ChatMessage;
+  String: Scalars['String']['output'];
+  ChatMessagesResponse: ChatMessagesResponse;
   ClearCartInput: ClearCartInput;
   ClearCartResponse: ClearCartResponse;
+  CreateChatInput: CreateChatInput;
   DateTime: Scalars['DateTime']['output'];
   Mutation: Record<PropertyKey, never>;
   PaginationInput: PaginationInput;
   PaginationResult: PaginationResult;
   Product: Product;
-  String: Scalars['String']['output'];
   Float: Scalars['Float']['output'];
   ProductListFilterInput: ProductListFilterInput;
   Boolean: Scalars['Boolean']['output'];
@@ -354,6 +406,7 @@ export type ResolversParentTypes = {
   Query: Record<PropertyKey, never>;
   RateProductInput: RateProductInput;
   RateProductResponse: RateProductResponse;
+  SendChatMessageInput: SendChatMessageInput;
 };
 
 export type AddItemToCartResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['AddItemToCartResponse'] = ResolversParentTypes['AddItemToCartResponse']> = {
@@ -374,6 +427,22 @@ export type CartResponseResolvers<ContextType = ResolverContext, ParentType exte
   result?: Resolver<ResolversTypes['Cart'], ParentType, ContextType>;
 };
 
+export type ChatResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Chat'] = ResolversParentTypes['Chat']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  messages?: Resolver<ResolversTypes['ChatMessagesResponse'], ParentType, ContextType>;
+};
+
+export type ChatMessageResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ChatMessage'] = ResolversParentTypes['ChatMessage']> = {
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  senderId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+};
+
+export type ChatMessagesResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ChatMessagesResponse'] = ResolversParentTypes['ChatMessagesResponse']> = {
+  result?: Resolver<Array<ResolversTypes['ChatMessage']>, ParentType, ContextType>;
+};
+
 export type ClearCartResponseResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ClearCartResponse'] = ResolversParentTypes['ClearCartResponse']> = {
   result?: Resolver<ResolversTypes['Cart'], ParentType, ContextType>;
 };
@@ -385,7 +454,9 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 export type MutationResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addItemToCart?: Resolver<ResolversTypes['AddItemToCartResponse'], ParentType, ContextType, RequireFields<MutationaddItemToCartArgs, 'input'>>;
   clearCart?: Resolver<ResolversTypes['ClearCartResponse'], ParentType, ContextType, RequireFields<MutationclearCartArgs, 'input'>>;
+  createChat?: Resolver<ResolversTypes['Chat'], ParentType, ContextType, RequireFields<MutationcreateChatArgs, 'input'>>;
   rateProduct?: Resolver<ResolversTypes['RateProductResponse'], ParentType, ContextType, RequireFields<MutationrateProductArgs, 'input'>>;
+  sendChatMessage?: Resolver<ResolversTypes['ChatMessage'], ParentType, ContextType, RequireFields<MutationsendChatMessageArgs, 'input'>>;
 };
 
 export type PaginationResultResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['PaginationResult'] = ResolversParentTypes['PaginationResult']> = {
@@ -453,6 +524,9 @@ export type Resolvers<ContextType = ResolverContext> = {
   Cart?: CartResolvers<ContextType>;
   CartItem?: CartItemResolvers<ContextType>;
   CartResponse?: CartResponseResolvers<ContextType>;
+  Chat?: ChatResolvers<ContextType>;
+  ChatMessage?: ChatMessageResolvers<ContextType>;
+  ChatMessagesResponse?: ChatMessagesResponseResolvers<ContextType>;
   ClearCartResponse?: ClearCartResponseResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;

@@ -11,20 +11,23 @@
       "serve": {
         "dependsOn": [
           "@org/experience-graph:serve",
-          "@org/internal-graph:serve"
+          "@org/internal-graph:serve",
+          "@org/agent:serve"
         ]
       },
       "dev": {
         "dependsOn": [
           "@org/experience-graph:serve",
-          "@org/internal-graph:serve"
+          "@org/internal-graph:serve",
+          "@org/agent:serve"
         ]
       },
       "preview": {
         "dependsOn": [
           "build",
           "@org/experience-graph:serve",
-          "@org/internal-graph:serve"
+          "@org/internal-graph:serve",
+          "@org/agent:serve"
         ]
       }
     }
