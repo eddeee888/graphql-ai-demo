@@ -22,6 +22,13 @@ const pubSub = createPubSub<{
   agentChatUpdates: [
     userId: string,
     update:
+      | {
+          type: 'chat-message';
+          id: string;
+          content: string;
+          senderId: string;
+          createdAt: string | Date;
+        }
       | { type: 'text-delta'; seq: number; text: string }
       | { type: 'run-completed'; seq: number },
   ];

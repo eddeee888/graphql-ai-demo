@@ -40,18 +40,19 @@ type ChatMessage {
 }
 
 extend type Subscription {
-  agentChatUpdates: AgentEvent!
+  agentChatUpdates: AgentChatUpdate!
 }
 
-interface AgentEvent {
-  seq: Int!
-}
+union AgentChatUpdate =
+  | ChatMessage
+  | AgentEventTextDelta
+  | AgentEventRunCompleted
 
-type TextDelta implements AgentEvent {
+type AgentEventTextDelta {
   seq: Int!
   text: String!
 }
 
-type RunCompleted implements AgentEvent {
+type AgentEventRunCompleted {
   seq: Int!
 }

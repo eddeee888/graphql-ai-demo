@@ -9,6 +9,7 @@ import { Button } from '../../components/Button';
 import { useState } from 'react';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { ErrorMessage } from '../../components/ErrorMessage';
+import { ApolloCache } from '@apollo/client';
 
 export const AgentChat: React.FC = () => {
   const [userMessage, setUserMessage] = useState('');
@@ -24,19 +25,35 @@ export const AgentChat: React.FC = () => {
   const { loading, error, data } = useQuery(AgentChatDoc);
 
   useSubscription(AgentChatUpdatesDoc, {
-    onData: ({ data }) => {
-      if (data.data?.agentChatUpdates.__typename === 'RunCompleted') {
+    onData: ({ data, client }) => {
+      if (!data.data) {
+        return;
+      }
+
+      if (data.data.agentChatUpdates.__typename === 'AgentEventRunCompleted') {
         setAgentMessage((prev) => ({
           ...prev,
           state: 'completed',
+          value: [],
         }));
-      } else if (data.data?.agentChatUpdates.__typename === 'TextDelta') {
-        const newValue = data.data?.agentChatUpdates.text;
+        return;
+      } else if (
+        data.data.agentChatUpdates.__typename === 'AgentEventTextDelta'
+      ) {
+        const newValue = data.data.agentChatUpdates.text;
         setAgentMessage((prev) => ({
           state: 'in_progress',
           value: [...prev.value, newValue],
         }));
+        return;
       }
+
+      // When new chat messages come, add it to the list
+      addMessageToChat({
+        cache: client.cache,
+        chatId: agentChat.id,
+        newMessage: data.data.agentChatUpdates,
+      });
     },
   });
 
@@ -73,6 +90,7 @@ export const AgentChat: React.FC = () => {
                 result: {
                   __typename: 'ChatMessage',
                   id: 'mock-message-id',
+                  isMe: true,
                   content: userMessage,
                   createdAt: new Date().toISOString(),
                 },
@@ -88,29 +106,10 @@ export const AgentChat: React.FC = () => {
             }
             const newMessage = result.data.sendAgentChatMessage.result;
 
-            const chatCacheId = cache.identify({
-              __typename: 'AgentChat',
-              id: agentChat.id,
-            });
-            if (!chatCacheId) {
-              return;
-            }
-
-            cache.modify({
-              id: chatCacheId,
-              fields: {
-                messages(existing = [], { readField, toReference }) {
-                  const alreadyPresent = existing.some(
-                    (ref: any) => readField('id', ref) === newMessage.id,
-                  );
-                  if (alreadyPresent) {
-                    return existing;
-                  }
-
-                  const newMessageRef = toReference(newMessage, true);
-                  return [...existing, newMessageRef];
-                },
-              },
+            addMessageToChat({
+              cache,
+              chatId: agentChat.id,
+              newMessage,
             });
           },
         });
@@ -133,7 +132,7 @@ export const AgentChat: React.FC = () => {
             <div
               className={`
                 max-w-[75%] px-4 py-2 rounded-2xl text-sm leading-relaxed
-              bg-white text-gray-900 border border-gray-200 rounded-bl-sm self-start
+              bg-green-200 text-gray-900 border border-gray-200 rounded-bl-sm self-start
               `}
             >
               {agentMessage.value.join(' ')}
@@ -155,4 +154,47 @@ export const AgentChat: React.FC = () => {
       </div>
     </form>
   );
+};
+
+const addMessageToChat = ({
+  cache,
+  chatId,
+  newMessage,
+}: {
+  cache: ApolloCache;
+  chatId: string;
+  newMessage: {
+    __typename: 'ChatMessage';
+    id: string;
+    isMe: boolean;
+    content: string;
+    createdAt: string;
+  };
+}): void => {
+  const chatCacheId = cache.identify({
+    __typename: 'AgentChat',
+    id: chatId,
+  });
+  if (!chatCacheId) {
+    return;
+  }
+
+  cache.modify({
+    id: chatCacheId,
+    fields: {
+      messages(existing = [], { readField, toReference }) {
+        const alreadyPresent = existing.some(
+          (ref: any) => readField('id', ref) === newMessage.id,
+        );
+        if (alreadyPresent) {
+          return existing;
+        }
+
+        const newMessageRef = toReference(newMessage, true);
+        return [...existing, newMessageRef].sort(
+          (a, b) => a.createdAt - b.createdAt,
+        );
+      },
+    },
+  });
 };
