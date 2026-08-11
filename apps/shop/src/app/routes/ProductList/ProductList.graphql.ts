@@ -24,10 +24,10 @@ export const ProductListDoc = graphql(`
           }
           reviewCount
         }
-        total
-        totalPages
-        page
-        pageSize
+        pagination {
+          total
+          totalPages
+        }
       }
       ... on ResponseError {
         __typename

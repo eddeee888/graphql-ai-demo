@@ -8,20 +8,10 @@ const ProductsDoc = graphql(`
   ) {
     productList(filter: $filter, pagination: $pagination) {
       result {
-        id
-        name
-        description
-        price
-        category
-        imageUrl
-        stockCount
-        reviewCount
+        ...ProductMapper
       }
       pagination {
-        total
-        totalPages
-        page
-        pageSize
+        ...PaginationMapper
       }
     }
   }
@@ -47,9 +37,6 @@ export const products: NonNullable<QueryResolvers['products']> = async (
   return {
     __typename: 'ProductsResponseSuccess',
     result: response.data.productList.result,
-    total: response.data.productList.pagination.total,
-    totalPages: response.data.productList.pagination.totalPages,
-    page: response.data.productList.pagination.page,
-    pageSize: response.data.productList.pagination.pageSize,
+    pagination: response.data.productList.pagination,
   };
 };

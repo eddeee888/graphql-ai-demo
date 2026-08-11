@@ -79,6 +79,13 @@ type Mutation {
   sendAgentChatMessage(input: SendAgentChatMessageInput!): SendAgentChatMessageResponse!
 }
 
+type Pagination {
+  page: Int!
+  pageSize: Int!
+  total: Int!
+  totalPages: Int!
+}
+
 input PaginationInput {
   page: Int
   pageSize: Int
@@ -124,11 +131,8 @@ input ProductsInput {
 union ProductsResponse = ProductsResponseSuccess | ResponseError
 
 type ProductsResponseSuccess {
-  page: Int!
-  pageSize: Int!
+  pagination: Pagination!
   result: [Product!]!
-  total: Int!
-  totalPages: Int!
 }
 
 type Query {

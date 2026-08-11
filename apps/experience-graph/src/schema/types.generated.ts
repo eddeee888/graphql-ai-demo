@@ -124,6 +124,14 @@ export type MutationsendAgentChatMessageArgs = {
   input: SendAgentChatMessageInput;
 };
 
+export type Pagination = {
+  __typename?: 'Pagination';
+  page: Scalars['Int']['output'];
+  pageSize: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+  totalPages: Scalars['Int']['output'];
+};
+
 export type PaginationInput = {
   page?: InputMaybe<Scalars['Int']['input']>;
   pageSize?: InputMaybe<Scalars['Int']['input']>;
@@ -174,11 +182,8 @@ export type ProductsResponse = ProductsResponseSuccess | ResponseError;
 
 export type ProductsResponseSuccess = {
   __typename?: 'ProductsResponseSuccess';
-  page: Scalars['Int']['output'];
-  pageSize: Scalars['Int']['output'];
+  pagination: Pagination;
   result: Array<Product>;
-  total: Scalars['Int']['output'];
-  totalPages: Scalars['Int']['output'];
 };
 
 export type Query = {
@@ -385,6 +390,7 @@ export type ResolversTypes = {
   ClearCartResponseSuccess: ResolverTypeWrapper<Omit<ClearCartResponseSuccess, 'result'> & { result: ResolversTypes['Cart'] }>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
+  Pagination: ResolverTypeWrapper<Pagination>;
   PaginationInput: PaginationInput;
   Product: ResolverTypeWrapper<ProductMapper>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
@@ -435,6 +441,7 @@ export type ResolversParentTypes = {
   ClearCartResponseSuccess: Omit<ClearCartResponseSuccess, 'result'> & { result: ResolversParentTypes['Cart'] };
   DateTime: Scalars['DateTime']['output'];
   Mutation: Record<PropertyKey, never>;
+  Pagination: Pagination;
   PaginationInput: PaginationInput;
   Product: ProductMapper;
   Float: Scalars['Float']['output'];
@@ -555,6 +562,13 @@ export type MutationResolvers<ContextType = ResolverContext, ParentType extends 
   sendAgentChatMessage?: Resolver<ResolversTypes['SendAgentChatMessageResponse'], ParentType, ContextType, RequireFields<MutationsendAgentChatMessageArgs, 'input'>>;
 };
 
+export type PaginationResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Pagination'] = ResolversParentTypes['Pagination']> = {
+  page?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  pageSize?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalPages?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+};
+
 export type ProductResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']> = {
   category?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -595,11 +609,8 @@ export type ProductsResponseResolvers<ContextType = ResolverContext, ParentType 
 };
 
 export type ProductsResponseSuccessResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['ProductsResponseSuccess'] = ResolversParentTypes['ProductsResponseSuccess']> = {
-  page?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  pageSize?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  pagination?: Resolver<ResolversTypes['Pagination'], ParentType, ContextType>;
   result?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
-  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  totalPages?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -661,6 +672,7 @@ export type Resolvers<ContextType = ResolverContext> = {
   ClearCartResponseSuccess?: ClearCartResponseSuccessResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
+  Pagination?: PaginationResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
   ProductRating?: ProductRatingResolvers<ContextType>;
   ProductRatingResponse?: ProductRatingResponseResolvers<ContextType>;
