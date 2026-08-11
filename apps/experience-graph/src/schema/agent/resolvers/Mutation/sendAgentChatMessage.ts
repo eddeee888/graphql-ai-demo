@@ -32,13 +32,23 @@ export const sendAgentChatMessage: NonNullable<
       });
     },
     onFinalResult: async (finalResult) => {
+      const newMessage = {
+        chatId: userId,
+        content: finalResult,
+        messageId: randomUUID(),
+        senderId: `${userId}-agent`,
+      };
+
       await execute(SendAgentChatMessageDoc, {
-        input: {
-          chatId: userId,
-          content: finalResult,
-          messageId: randomUUID(),
-          senderId: `${userId}-agent`,
-        },
+        input: newMessage,
+      });
+
+      pubSub.publish('agentChatUpdates', userId, {
+        type: 'chat-message',
+        id: newMessage.messageId,
+        content: newMessage.content,
+        senderId: newMessage.senderId,
+        createdAt: new Date(),
       });
     },
     onDone: (params) => {
@@ -68,6 +78,14 @@ export const sendAgentChatMessage: NonNullable<
       type: 'SERVER_ERROR',
     };
   }
+
+  pubSub.publish('agentChatUpdates', userId, {
+    type: 'chat-message',
+    id: newMessage.id,
+    content: newMessage.content,
+    senderId: newMessage.senderId,
+    createdAt: newMessage.createdAt,
+  });
 
   return {
     __typename: 'SendAgentChatMessageResponseSuccess',

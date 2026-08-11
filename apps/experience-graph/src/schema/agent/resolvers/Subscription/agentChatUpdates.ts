@@ -8,22 +8,39 @@ export const agentChatUpdates: NonNullable<
     }
     return pubSub.subscribe('agentChatUpdates', userId);
   },
-  resolve: async (
+  resolve: (
     parent:
+      | {
+          type: 'chat-message';
+          id: string;
+          content: string;
+          senderId: string;
+          createdAt: string;
+        }
       | { type: 'text-delta'; seq: number; text: string }
       | { type: 'run-completed'; seq: number },
   ) => {
     if (parent.type === 'text-delta') {
       return {
-        __typename: 'TextDelta',
+        __typename: 'AgentEventTextDelta',
         seq: parent.seq,
         text: parent.text,
       };
     }
 
+    if (parent.type === 'run-completed') {
+      return {
+        __typename: 'AgentEventRunCompleted',
+        seq: parent.seq,
+      };
+    }
+
     return {
-      __typename: 'RunCompleted',
-      seq: parent.seq,
+      __typename: 'ChatMessage',
+      id: parent.id,
+      senderId: parent.senderId,
+      content: parent.content,
+      createdAt: parent.createdAt,
     } as any;
   },
 };

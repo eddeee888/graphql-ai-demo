@@ -24,10 +24,16 @@ export const AgentChatDoc = graphql(`
 export const AgentChatUpdatesDoc = graphql(`
   subscription AgentChatUpdates {
     agentChatUpdates {
-      ... on RunCompleted {
+      ... on ChatMessage {
+        id
+        isMe
+        content
+        createdAt
+      }
+      ... on AgentEventRunCompleted {
         seq
       }
-      ... on TextDelta {
+      ... on AgentEventTextDelta {
         seq
         text
       }
@@ -41,6 +47,7 @@ export const SendAgentMessageDoc = graphql(`
       ... on SendAgentChatMessageResponseSuccess {
         result {
           id
+          isMe
           content
           createdAt
         }

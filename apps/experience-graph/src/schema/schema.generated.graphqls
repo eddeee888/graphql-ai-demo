@@ -20,8 +20,15 @@ type AgentChatResponseSuccess {
   result: AgentChat!
 }
 
-interface AgentEvent {
+union AgentChatUpdate = AgentEventRunCompleted | AgentEventTextDelta | ChatMessage
+
+type AgentEventRunCompleted {
   seq: Int!
+}
+
+type AgentEventTextDelta {
+  seq: Int!
+  text: String!
 }
 
 type Cart {
@@ -151,10 +158,6 @@ enum ResponseErrorType {
   UNAUTHENTICATED
 }
 
-type RunCompleted implements AgentEvent {
-  seq: Int!
-}
-
 input SendAgentChatMessageInput {
   content: String!
   messageId: ID!
@@ -167,11 +170,6 @@ type SendAgentChatMessageResponseSuccess {
 }
 
 type Subscription {
-  agentChatUpdates: AgentEvent!
+  agentChatUpdates: AgentChatUpdate!
   cartUpdates: CartUpdatesResponseSuccess!
-}
-
-type TextDelta implements AgentEvent {
-  seq: Int!
-  text: String!
 }
