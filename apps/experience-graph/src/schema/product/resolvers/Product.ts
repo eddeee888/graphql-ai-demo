@@ -1,23 +1,24 @@
 import { graphql } from '../../../gql';
 import type { ProductResolvers } from './../../types.generated';
 
-const ProductRatingDoc = graphql(`
-  query ProductRating($id: ID!) {
-    productRatingByProductIds(ids: [$id]) {
-      result {
-        id
-        average
-      }
-    }
-  }
-`);
-
 export const Product: ProductResolvers = {
   inStock: async ({ stockCount }) => {
     return stockCount > 0;
   },
   rating: async ({ id }, _, { execute }) => {
-    const resp = await execute(ProductRatingDoc, { id });
+    const resp = await execute(
+      graphql(`
+        query ProductRating($id: ID!) {
+          productRatingByProductIds(ids: [$id]) {
+            result {
+              id
+              average
+            }
+          }
+        }
+      `),
+      { id },
+    );
 
     const result = resp.data?.productRatingByProductIds?.result[0];
 
