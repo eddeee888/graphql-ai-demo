@@ -58,6 +58,8 @@ export type CreateAgentChatMutationVariables = Exact<{
 
 export type CreateAgentChatMutation = { createChat: { id: string, messages: { result: Array<{ id: string, senderId: string, content: string, createdAt: string }> } } };
 
+export type PaginationMapperFragment = { total: number, page: number, pageSize: number, totalPages: number };
+
 export type CartItemMapperFragment = { productId: string, count: number };
 
 export type ProductMapperFragment = { id: string, name: string, description: string, price: number, category: string, imageUrl: string, stockCount: number, reviewCount: number };
@@ -117,7 +119,7 @@ export type ProductsQueryVariables = Exact<{
 }>;
 
 
-export type ProductsQuery = { productList: { result: Array<{ id: string, name: string, description: string, price: number, category: string, imageUrl: string, stockCount: number, reviewCount: number }>, pagination: { total: number, totalPages: number, page: number, pageSize: number } } };
+export type ProductsQuery = { productList: { result: Array<{ id: string, name: string, description: string, price: number, category: string, imageUrl: string, stockCount: number, reviewCount: number }>, pagination: { total: number, page: number, pageSize: number, totalPages: number } } };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -145,6 +147,14 @@ export const ChatMessageMapperFragmentDoc = new TypedDocumentString(`
   createdAt
 }
     `, {"fragmentName":"ChatMessageMapper"}) as unknown as TypedDocumentString<ChatMessageMapperFragment, unknown>;
+export const PaginationMapperFragmentDoc = new TypedDocumentString(`
+    fragment PaginationMapper on PaginationResult {
+  total
+  page
+  pageSize
+  totalPages
+}
+    `, {"fragmentName":"PaginationMapper"}) as unknown as TypedDocumentString<PaginationMapperFragment, unknown>;
 export const CartItemMapperFragmentDoc = new TypedDocumentString(`
     fragment CartItemMapper on CartItem {
   productId
@@ -300,21 +310,27 @@ export const ProductsDocument = new TypedDocumentString(`
     query Products($filter: ProductListFilterInput!, $pagination: PaginationInput!) {
   productList(filter: $filter, pagination: $pagination) {
     result {
-      id
-      name
-      description
-      price
-      category
-      imageUrl
-      stockCount
-      reviewCount
+      ...ProductMapper
     }
     pagination {
-      total
-      totalPages
-      page
-      pageSize
+      ...PaginationMapper
     }
   }
 }
-    `) as unknown as TypedDocumentString<ProductsQuery, ProductsQueryVariables>;
+    fragment PaginationMapper on PaginationResult {
+  total
+  page
+  pageSize
+  totalPages
+}
+fragment ProductMapper on Product {
+  id
+  name
+  description
+  price
+  category
+  imageUrl
+  stockCount
+  reviewCount
+  stockCount
+}`) as unknown as TypedDocumentString<ProductsQuery, ProductsQueryVariables>;

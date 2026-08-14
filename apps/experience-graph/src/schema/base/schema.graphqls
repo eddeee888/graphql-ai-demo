@@ -16,4 +16,11 @@ input PaginationInput {
   pageSize: Int
 }
 
+type Pagination {
+  total: Int!
+  page: Int!
+  pageSize: Int!
+  totalPages: Int!
+}
+
 scalar DateTime

@@ -35,10 +35,7 @@ union ProductsResponse = ProductsResponseSuccess | ResponseError
 
 type ProductsResponseSuccess {
   result: [Product!]!
-  total: Int!
-  page: Int!
-  pageSize: Int!
-  totalPages: Int!
+  pagination: Pagination!
 }
 
 union CartResponse = CartResponseSuccess | ResponseError

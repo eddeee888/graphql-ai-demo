@@ -129,8 +129,8 @@ export const ProductList: FC = () => {
       {data && data.products.__typename === 'ProductsResponseSuccess'
         ? (() => {
             const products = data.products.result;
-            const totalProducts = data.products.total;
-            const totalPages = data.products.totalPages;
+            const totalProducts = data.products.pagination.total;
+            const totalPages = data.products.pagination.totalPages;
 
             return (
               <>
