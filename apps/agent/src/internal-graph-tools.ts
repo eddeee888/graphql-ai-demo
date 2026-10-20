@@ -28,6 +28,7 @@ type IntrospectionBody = {
       types?: IntrospectionType[] | null;
     } | null;
   } | null;
+  errors?: Array<{ message?: string | null }> | null;
 };
 
 const postGraph = async (query: string, variables?: Record<string, unknown>) => {
@@ -67,6 +68,13 @@ export const internalGraphSchema = strands.tool({
   inputSchema: z.object({}),
   callback: async () => {
     const body = (await postGraph(INTROSPECTION_QUERY)) as IntrospectionBody;
+    if (body.data == null && (body.errors?.length ?? 0) > 0) {
+      const message = (body.errors ?? [])
+        .map((error) => error.message)
+        .filter((text): text is string => typeof text === 'string' && text.length > 0)
+        .join('; ');
+      throw new Error(message || 'Internal Graph schema introspection failed');
+    }
     const types = body.data?.__schema?.types ?? [];
 
     return types

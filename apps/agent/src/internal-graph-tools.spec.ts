@@ -43,6 +43,15 @@ describe('internal graph tools', () => {
     ]);
   });
 
+  it('fails schema introspection when the body has GraphQL errors and no data', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(jsonResponse({ errors: [{ message: 'Unauthorized' }] })),
+    );
+
+    await expect(internalGraphSchema.invoke({})).rejects.toThrow(/Unauthorized/);
+  });
+
   it('posts the query document and returns the JSON body', async () => {
     vi.stubEnv('INTERNAL_GRAPH_AGENT_ID', 'agent-1');
     const payload = { data: { cart: { id: '1' } } };
