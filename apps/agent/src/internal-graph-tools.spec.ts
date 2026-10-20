@@ -89,6 +89,20 @@ describe('internal graph tools', () => {
     );
   });
 
+  it('surfaces a 401 fetch response as failure instead of the error payload', async () => {
+    const payload = { errors: [{ message: 'Unauthorized' }] };
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: false,
+        status: 401,
+        json: () => payload,
+      }),
+    );
+
+    await expect(internalGraphQuery.invoke({ query: 'query { cart { id } }' })).rejects.toThrow();
+  });
+
   it('rejects mutations and subscriptions', async () => {
     const fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);
