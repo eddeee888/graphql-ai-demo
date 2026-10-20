@@ -69,7 +69,7 @@ const rejectNonQuery = (document: string) => {
 export const internalGraphSchema = strands.tool({
   name: 'internalGraphSchema',
   description:
-    'Reads the Internal Graph schema and returns each type name with its field names.',
+    'Reads the Internal Graph schema and returns each type name with its field names. Use internalGraphQuery tool to run queries.',
   inputSchema: z.object({}),
   callback: async () => {
     const body = (await postGraph(INTROSPECTION_QUERY)) as IntrospectionBody;
@@ -101,7 +101,7 @@ export const internalGraphSchema = strands.tool({
 export const internalGraphQuery = strands.tool({
   name: 'internalGraphQuery',
   description:
-    'Runs a GraphQL query against the Internal Graph and returns the JSON response body. Mutations and subscriptions are rejected.',
+    'Runs a GraphQL query against the Internal Graph and returns the JSON response body.',
   inputSchema: z.object({
     query: z.string().describe('GraphQL query document'),
     variables: z
