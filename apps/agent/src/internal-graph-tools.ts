@@ -40,6 +40,11 @@ const postGraph = async (query: string, variables?: Record<string, unknown>) => 
     body: JSON.stringify({ query, variables: variables ?? {} }),
   });
 
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Internal Graph request failed (${response.status}): ${text}`);
+  }
+
   return response.json();
 };
 

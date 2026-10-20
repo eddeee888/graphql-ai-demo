@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { internalGraphQuery, internalGraphSchema } from './internal-graph-tools';
 
 const jsonResponse = (body: unknown) => ({
+  ok: true,
   json: async () => body,
 });
 
@@ -61,6 +62,22 @@ describe('internal graph tools', () => {
       variables: { id: '1' },
     });
     expect(result).toEqual(payload);
+  });
+
+  it('surfaces HTTP status and response text when the graph request is not ok', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 502,
+      text: async () => '<html>bad gateway</html>',
+      json: async () => {
+        throw new SyntaxError("Unexpected token '<'");
+      },
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(internalGraphQuery.invoke({ query: 'query { cart { id } }' })).rejects.toThrow(
+      /502[\s\S]*<html>bad gateway<\/html>/,
+    );
   });
 
   it('rejects mutations and subscriptions', async () => {
