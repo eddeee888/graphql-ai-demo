@@ -1,6 +1,9 @@
-import { z } from 'zod';
 import * as strands from '@strands-agents/sdk';
 import express from 'express';
+import {
+  internalGraphQuery,
+  internalGraphSchema,
+} from './internal-graph-tools';
 
 const PORT = process.env.PORT || 8080;
 const AWS_BEARER_TOKEN_BEDROCK = process.env.AWS_BEARER_TOKEN_BEDROCK;
@@ -9,36 +12,13 @@ if (!AWS_BEARER_TOKEN_BEDROCK) {
   throw new Error('AWS_BEARER_TOKEN_BEDROCK is missing');
 }
 
-// Define a custom tool
-const calculatorTool = strands.tool({
-  name: 'calculator',
-  description: 'Performs basic arithmetic operations',
-  inputSchema: z.object({
-    operation: z.enum(['add', 'subtract', 'multiply', 'divide']),
-    a: z.number(),
-    b: z.number(),
-  }),
-  callback: (input): number => {
-    switch (input.operation) {
-      case 'add':
-        return input.a + input.b;
-      case 'subtract':
-        return input.a - input.b;
-      case 'multiply':
-        return input.a * input.b;
-      case 'divide':
-        return input.a / input.b;
-    }
-  },
-});
-
 // Configure the agent with Amazon Bedrock
 const agent = new strands.Agent({
   model: new strands.BedrockModel({
     modelId: 'amazon.nova-lite-v1:0',
     region: 'ap-southeast-2', // Change to your preferred region
   }),
-  tools: [calculatorTool],
+  tools: [internalGraphSchema, internalGraphQuery],
 });
 
 const app = express();

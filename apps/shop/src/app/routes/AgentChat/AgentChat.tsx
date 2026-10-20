@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useSubscription } from '@apollo/client/react';
+import Markdown from 'react-markdown';
 import { v4 as uuid } from 'uuid';
 import {
   AgentChatDoc,
@@ -125,7 +126,7 @@ export const AgentChat: React.FC = () => {
                 ${message.isMe ? 'bg-blue-500 text-white rounded-br-sm self-end' : 'bg-white text-gray-900 border border-gray-200 rounded-bl-sm self-start'}
               `}
             >
-              {message.content}
+              <Markdown>{message.content}</Markdown>
             </div>
           ))}
           {agentMessage.value.length > 0 && (
@@ -135,7 +136,7 @@ export const AgentChat: React.FC = () => {
               bg-green-200 text-gray-900 border border-gray-200 rounded-bl-sm self-start
               `}
             >
-              {agentMessage.value.join(' ')}
+              <Markdown>{agentMessage.value.join(' ')}</Markdown>
             </div>
           )}
         </div>
