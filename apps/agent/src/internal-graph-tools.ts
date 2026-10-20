@@ -2,8 +2,6 @@ import { parse, OperationTypeNode } from 'graphql';
 import * as strands from '@strands-agents/sdk';
 import { z } from 'zod';
 
-const DEFAULT_INTERNAL_GRAPH_URL = 'http://localhost:3001/graphql';
-
 const INTROSPECTION_QUERY = `
   query IntrospectionQuery {
     __schema {
@@ -31,19 +29,24 @@ type IntrospectionBody = {
   errors?: Array<{ message?: string | null }> | null;
 };
 
-const postGraph = async (query: string, variables?: Record<string, unknown>) => {
-  const response = await fetch(process.env.INTERNAL_GRAPH_URL ?? DEFAULT_INTERNAL_GRAPH_URL, {
+const postGraph = async (
+  query: string,
+  variables?: Record<string, unknown>,
+) => {
+  const response = await fetch('http://localhost:3001/graphql', {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      'x-agent-id': process.env.INTERNAL_GRAPH_AGENT_ID ?? '',
+      'x-agent-id': 'apps-agent',
     },
     body: JSON.stringify({ query, variables: variables ?? {} }),
   });
 
   if (!response.ok) {
     const text = await response.text();
-    throw new Error(`Internal Graph request failed (${response.status}): ${text}`);
+    throw new Error(
+      `Internal Graph request failed (${response.status}): ${text}`,
+    );
   }
 
   return response.json();
@@ -56,7 +59,9 @@ const rejectNonQuery = (document: string) => {
       definition.kind === 'OperationDefinition' &&
       definition.operation !== OperationTypeNode.QUERY
     ) {
-      throw new Error(`internalGraphQuery rejects ${definition.operation} operations`);
+      throw new Error(
+        `internalGraphQuery rejects ${definition.operation} operations`,
+      );
     }
   }
 };
@@ -71,14 +76,19 @@ export const internalGraphSchema = strands.tool({
     if (body.data == null && (body.errors?.length ?? 0) > 0) {
       const message = (body.errors ?? [])
         .map((error) => error.message)
-        .filter((text): text is string => typeof text === 'string' && text.length > 0)
+        .filter(
+          (text): text is string => typeof text === 'string' && text.length > 0,
+        )
         .join('; ');
       throw new Error(message || 'Internal Graph schema introspection failed');
     }
     const types = body.data?.__schema?.types ?? [];
 
     return types
-      .filter((type): type is IntrospectionType & { name: string } => typeof type.name === 'string')
+      .filter(
+        (type): type is IntrospectionType & { name: string } =>
+          typeof type.name === 'string',
+      )
       .map((type) => ({
         name: type.name,
         fields: (type.fields ?? [])
@@ -94,7 +104,10 @@ export const internalGraphQuery = strands.tool({
     'Runs a GraphQL query against the Internal Graph and returns the JSON response body. Mutations and subscriptions are rejected.',
   inputSchema: z.object({
     query: z.string().describe('GraphQL query document'),
-    variables: z.record(z.string(), z.unknown()).optional().describe('Query variables'),
+    variables: z
+      .record(z.string(), z.unknown())
+      .optional()
+      .describe('Query variables'),
   }),
   callback: async (input) => {
     rejectNonQuery(input.query);

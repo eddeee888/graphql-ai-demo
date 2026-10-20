@@ -1,7 +1,10 @@
 import { z } from 'zod';
 import * as strands from '@strands-agents/sdk';
 import express from 'express';
-import { internalGraphQuery, internalGraphSchema } from './internal-graph-tools';
+import {
+  internalGraphQuery,
+  internalGraphSchema,
+} from './internal-graph-tools';
 
 const PORT = process.env.PORT || 8080;
 const AWS_BEARER_TOKEN_BEDROCK = process.env.AWS_BEARER_TOKEN_BEDROCK;
